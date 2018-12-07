@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+option java_package = "com.bbuhot.server.service";
+option java_multiple_files = true;
+
+message UserDto {
+  int32 error_code = 1;
+  int32 id = 2;
+  string name = 3;
+}

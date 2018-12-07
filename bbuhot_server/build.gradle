@@ -1,0 +1,40 @@
+plugins {
+    id 'net.ltgt.apt' version '0.19'
+    id 'java'
+    id 'idea'
+    id 'application'
+}
+
+idea.module {
+    sourceDirs += file("$buildDir/generated/source/apt/main")
+    testSourceDirs += file("$buildDir/generated/source/apt/test")
+    generatedSourceDirs += file("$buildDir/generated/source/apt/main")
+    generatedSourceDirs += file("$buildDir/generated/source/apt/test")
+}
+
+sourceCompatibility = 1.8
+
+dependencies {
+    implementation 'com.google.dagger:dagger:2.19'
+    apt 'com.google.dagger:dagger-compiler:2.19'
+
+    implementation project(':bbuhot_protobuf')
+    implementation 'com.google.protobuf:protobuf-java-util:3.0.0'
+    implementation 'com.google.guava:guava:27.0.1-jre'
+
+    implementation 'mysql:mysql-connector-java:8.0.13'
+    implementation 'javax.xml.bind:jaxb-api:2.3.0'
+    implementation 'io.undertow:undertow-core:2.0.1.Final'
+    implementation 'org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final'
+    implementation 'org.hibernate:hibernate-core:5.3.7.Final'
+
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+}
+
+application {
+    mainClassName = "com.bbuhot.server.app.EntryPoint"
+}
+
+compileJava {
+    options.compilerArgs << '-Xlint:unchecked'
+}
