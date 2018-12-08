@@ -10,13 +10,6 @@ repositories {
     mavenCentral()
 }
 
-idea.module {
-    sourceDirs += file("$buildDir/generated/source/proto/main")
-    testSourceDirs += file("$buildDir/generated/source/proto/test")
-    generatedSourceDirs += file("$buildDir/generated/source/proto/main")
-    generatedSourceDirs += file("$buildDir/generated/source/proto/test")
-}
-
 dependencies {
     implementation 'com.google.protobuf:protobuf-java:3.0.0'
     implementation 'io.grpc:grpc-stub:1.0.0-pre2'

@@ -1,24 +1,32 @@
 plugins {
-    id 'net.ltgt.apt' version '0.19'
     id 'java'
+    id 'net.ltgt.apt-idea' version '0.19'
     id 'idea'
     id 'application'
 }
 
-idea.module {
-    sourceDirs += file("$buildDir/generated/source/apt/main")
-    testSourceDirs += file("$buildDir/generated/source/apt/test")
-    generatedSourceDirs += file("$buildDir/generated/source/apt/main")
-    generatedSourceDirs += file("$buildDir/generated/source/apt/test")
+idea {
+    module {
+        apt {
+            // whether generated sources dirs are added as generated sources root
+            addGeneratedSourcesDirs = true
+            // whether the annotationProcessor/apt and testAnnotationProcessor/testApt dependencies are added as module dependencies
+            addAptDependencies = true
+
+            // the dependency scope used for apt and/or compileOnly dependencies (when enabled above)
+            mainDependenciesScope = "PROVIDED" // defaults to "COMPILE" when using the Gradle integration in IntelliJ IDEA
+        }
+    }
 }
 
 sourceCompatibility = 1.8
 
 dependencies {
-    implementation 'com.google.dagger:dagger:2.19'
-    apt 'com.google.dagger:dagger-compiler:2.19'
-
     implementation project(':bbuhot_protobuf')
+
+    implementation 'com.google.dagger:dagger:2.19'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.19'
+
     implementation 'com.google.protobuf:protobuf-java-util:3.0.0'
     implementation 'com.google.guava:guava:27.0.1-jre'
 
