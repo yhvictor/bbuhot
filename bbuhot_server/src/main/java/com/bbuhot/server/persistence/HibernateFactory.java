@@ -16,12 +16,10 @@ import org.hibernate.dialect.MySQL55Dialect;
 
 class HibernateFactory {
 
-  private final Flags flags;
   private final Set<Class<?>> annotatedClasses;
 
   @Inject
-  HibernateFactory(Flags flags, Set<Class<?>> annotatedClasses) {
-    this.flags = flags;
+  HibernateFactory(Set<Class<?>> annotatedClasses) {
     this.annotatedClasses = annotatedClasses;
   }
 
@@ -48,9 +46,9 @@ class HibernateFactory {
 
     // Hibernate connection properties
     properties.put(AvailableSettings.DRIVER, Driver.class.getName());
-    properties.put(AvailableSettings.URL, flags.getDatabase().getUrl());
-    properties.put(AvailableSettings.USER, flags.getDatabase().getUser());
-    properties.put(AvailableSettings.PASS, flags.getDatabase().getPassword());
+    properties.put(AvailableSettings.URL, Flags.getInstance().getDatabase().getUrl());
+    properties.put(AvailableSettings.USER, Flags.getInstance().getDatabase().getUser());
+    properties.put(AvailableSettings.PASS, Flags.getInstance().getDatabase().getPassword());
 
     // Standard JPA connection properties
     // properties.put(AvailableSettings.JPA_JDBC_DRIVER, Driver.class.getName());
@@ -58,7 +56,7 @@ class HibernateFactory {
     // properties.put(AvailableSettings.JPA_JDBC_USER, flags.getDatabase().getUser());
     // properties.put(AvailableSettings.JPA_JDBC_PASSWORD, flags.getDatabase().getPassword());
 
-    if (flags.isDebug()) {
+    if (Flags.getInstance().isDebug()) {
       properties.put(AvailableSettings.SHOW_SQL, "True");
     }
 

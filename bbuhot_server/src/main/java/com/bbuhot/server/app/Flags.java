@@ -1,16 +1,19 @@
 package com.bbuhot.server.app;
 
-import javax.inject.Inject;
-
 public class Flags {
+
+  private static Flags flags = new Flags();
 
   private final Database database = new Database();
   private final DiscuzConfig discuzConfig = new DiscuzConfig();
   private final int port = 8080;
   private final boolean isDebug = true;
 
-  @Inject
-  Flags() {
+  private Flags() {
+  }
+
+  public static Flags getInstance() {
+    return flags;
   }
 
   public Database getDatabase() {
@@ -56,9 +59,14 @@ public class Flags {
   public static class DiscuzConfig {
 
     private final String authkey = "76fce85ae9cf5ceeee99c014615ee215qfDf49F0YXdxHuEkru";
+    private final String ucKey = "n42ck829Ebr0FbR2z5P8K973Dcg5j505ed1cSbr3La19ZdD0Wbnfn1W7w6yaj338";
 
     public String getAuthkey() {
       return authkey;
+    }
+
+    public String getUcKey() {
+      return ucKey;
     }
   }
 }

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+import "bbuhot/service/user_dto.proto";
+
+option java_package = "com.bbuhot.server.service";
+option java_multiple_files = true;
+
+enum ErrorCode {
+  NO_ERROR = 0;
+  NO_SUCH_USER = 1;
+  KEY_NOT_MATCHING = 2;
+}

@@ -1,27 +1,37 @@
 package com.bbuhot.server.domain;
 
 import com.bbuhot.server.entity.User;
+import com.bbuhot.server.persistence.UserQueries;
+import com.bbuhot.server.service.AuthDto;
+import com.bbuhot.server.service.AuthRequest;
+import com.bbuhot.server.service.ErrorCode;
 import com.bbuhot.server.service.UserDto;
 import javax.inject.Inject;
-import javax.persistence.EntityManagerFactory;
 
 public class Authority {
 
-  private final EntityManagerFactory entityManagerFactory;
+  private final UserQueries userQueries;
 
   @Inject
-  Authority(EntityManagerFactory entityManagerFactory) {
-    this.entityManagerFactory = entityManagerFactory;
+  Authority(UserQueries userQueries) {
+    this.userQueries = userQueries;
   }
 
-  public UserDto testWorkflow(int uid) {
-    User user =
-        (User)
-            entityManagerFactory
-                .createEntityManager()
-                .createQuery("From User u where u.uid = ?1")
-                .setParameter(1, uid)
-                .getSingleResult();
-    return UserDto.newBuilder().setId(user.getUid()).setName(user.getUserName()).build();
+  public AuthDto auth(AuthRequest authRequest) {
+    User user = userQueries.queryUserById(authRequest.getUid());
+
+    if (user == null) {
+      return AuthDto.newBuilder().setErrorCode(ErrorCode.NO_SUCH_USER).build();
+    }
+
+    if (!AuthorityUtil.isValid(
+        authRequest.getAuth(), authRequest.getSaltKey(), user.getUid(), user.getPassword())) {
+      return AuthDto.newBuilder().setErrorCode(ErrorCode.KEY_NOT_MATCHING).build();
+    }
+
+    return AuthDto.newBuilder()
+        .setErrorCode(ErrorCode.NO_ERROR)
+        .setUser(UserDto.newBuilder().setUid(user.getUid()).setName(user.getUsername()))
+        .build();
   }
 }

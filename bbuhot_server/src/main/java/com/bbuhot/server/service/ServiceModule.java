@@ -20,10 +20,17 @@ public class ServiceModule {
   }
 
   @Provides
+  @IntoMap
+  @StringKey("/api/auth")
+  HttpHandler authorityProtobufService(AuthorityProtobufService authorityProtobufService) {
+    return authorityProtobufService;
+  }
+
+  @Provides
   @Singleton
-  Undertow undertow(Flags flags, UndertowHttpHandler undertowHttpHandler) {
+  Undertow undertow(UndertowHttpHandler undertowHttpHandler) {
     return Undertow.builder()
-        .addHttpListener(flags.getPort(), "127.0.0.1")
+        .addHttpListener(Flags.getInstance().getPort(), "0.0.0.0")
         .setHandler(undertowHttpHandler)
         .build();
   }

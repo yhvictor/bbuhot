@@ -1,37 +1,35 @@
 package com.bbuhot.server.service;
 
-import com.bbuhot.server.domain.Authority;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.MoreExecutors;
+import com.bbuhot.server.app.Flags;
+import com.bbuhot.server.entity.User;
+import com.bbuhot.server.persistence.UserQueries;
 import java.util.Deque;
 import java.util.Map;
 import javax.inject.Inject;
 
-public class UserProtobufService extends ProtobufService<UserDto> {
+/**
+ * A test server for test using.
+ */
+class UserProtobufService extends ProtobufService<UserDto, UserDto> {
 
-  private final Authority authority;
+  private final UserQueries userQueries;
 
   @Inject
-  UserProtobufService(Authority authority) {
-    this.authority = authority;
+  UserProtobufService(UserQueries userQueries) {
+    this.userQueries = userQueries;
   }
 
   @Override
-  protected ListenableFuture<UserDto> generateResponseMessage(
-      Map<String, Deque<String>> urlParams) {
-    return MoreExecutors.newDirectExecutorService()
-        .submit(
-            () -> {
-              int uid = getParam(urlParams, "uid");
-              return authority.testWorkflow(uid);
-            });
+  UserDto parseUrlParams(Map<String, Deque<String>> urlParams) {
+    return UserDto.newBuilder().setUid(getIntParam(urlParams, "uid")).build();
   }
 
-  private int getParam(Map<String, Deque<String>> urlParams, String param) {
-    Deque<String> deque = urlParams.get(param);
-    if (deque == null) {
-      throw new IllegalStateException("Param not in url param map: " + param);
+  @Override
+  UserDto generateResponseMessage(UserDto userDto) {
+    if (!Flags.getInstance().isDebug()) {
+      throw new IllegalStateException("Debug only service.");
     }
-    return Integer.parseInt(deque.getFirst());
+    User user = userQueries.queryUserById(userDto.getUid());
+    return UserDto.newBuilder().setUid(user.getUid()).setName(user.getUsername()).build();
   }
 }

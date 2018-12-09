@@ -19,14 +19,13 @@ public class PhysicalNamingStrategyImpl extends PhysicalNamingStrategyStandardIm
 
   private final Map<String, Identifier> tableMapping;
   @Inject
-  Flags flags;
-  @Inject
   Set<Class<?>> annotatedClasses;
 
   public PhysicalNamingStrategyImpl() {
     EntryPoint.appComponent.inject(this);
 
-    tableMapping = generateMapping(flags.getDatabase().getTablePrefix(), annotatedClasses);
+    tableMapping =
+        generateMapping(Flags.getInstance().getDatabase().getTablePrefix(), annotatedClasses);
   }
 
   private static Map<String, Identifier> generateMapping(

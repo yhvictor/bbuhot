@@ -15,7 +15,10 @@ public class User {
   private int uid;
 
   @Column(name = "username", nullable = false)
-  private String userName;
+  private String username;
+
+  @Column(name = "password", nullable = false)
+  private String password;
 
   User() {
   }
@@ -24,7 +27,11 @@ public class User {
     return uid;
   }
 
-  public String getUserName() {
-    return userName;
+  public String getUsername() {
+    return username;
+  }
+
+  public String getPassword() {
+    return password;
   }
 }
