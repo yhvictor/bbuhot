@@ -7,7 +7,7 @@ import javax.inject.Inject;
 public class FallbackService implements HttpHandler {
 
   @Inject
-  public FallbackService() {
+  FallbackService() {
   }
 
   @Override

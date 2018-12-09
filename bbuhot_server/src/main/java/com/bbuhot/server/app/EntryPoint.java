@@ -6,7 +6,6 @@ import javax.inject.Inject;
 public class EntryPoint {
 
   public static AppComponent appComponent;
-
   private final Undertow undertow;
 
   @Inject
@@ -16,7 +15,6 @@ public class EntryPoint {
 
   public static void main(final String[] args) {
     appComponent = DaggerAppComponent.create();
-
     appComponent.entryPoint().startServer();
   }
 

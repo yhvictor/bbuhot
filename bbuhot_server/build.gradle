@@ -14,7 +14,8 @@ idea {
             addAptDependencies = true
 
             // the dependency scope used for apt and/or compileOnly dependencies (when enabled above)
-            mainDependenciesScope = "PROVIDED" // defaults to "COMPILE" when using the Gradle integration in IntelliJ IDEA
+            // defaults to "COMPILE" when using the Gradle integration in IntelliJ IDEA
+            mainDependenciesScope = "PROVIDED"
         }
     }
 }
