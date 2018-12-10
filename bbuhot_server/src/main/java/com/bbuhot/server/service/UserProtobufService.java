@@ -10,7 +10,7 @@ import javax.inject.Inject;
 /**
  * A test server for test using.
  */
-class UserProtobufService extends ProtobufService<UserDto, UserDto> {
+class UserProtobufService extends AbstractProtobufService<UserDto, UserDto> {
 
   private final UserQueries userQueries;
 
@@ -30,6 +30,9 @@ class UserProtobufService extends ProtobufService<UserDto, UserDto> {
       throw new IllegalStateException("Debug only service.");
     }
     User user = userQueries.queryUserById(userDto.getUid());
+    if (user == null) {
+      throw new IllegalStateException("No such user.");
+    }
     return UserDto.newBuilder().setUid(user.getUid()).setName(user.getUsername()).build();
   }
 }

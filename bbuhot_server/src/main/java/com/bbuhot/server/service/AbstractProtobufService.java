@@ -6,6 +6,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
+import com.google.protobuf.TextFormat;
 import com.google.protobuf.util.JsonFormat;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
@@ -18,11 +19,8 @@ import java.util.Deque;
 import java.util.Map;
 import javax.annotation.Nullable;
 
-abstract class ProtobufService<InputMessage extends Message, OutputMessage extends Message>
+abstract class AbstractProtobufService<InputMessage extends Message, OutputMessage extends Message>
     implements HttpHandler {
-
-  private static final String CONTENT_TYPE_PROTOBUF = "application/protobuf";
-  private static final String CONTENT_TYPE_JSON = "application/json";
 
   abstract InputMessage parseUrlParams(Map<String, Deque<String>> urlParams);
 
@@ -30,14 +28,13 @@ abstract class ProtobufService<InputMessage extends Message, OutputMessage exten
 
   @Override
   public void handleRequest(HttpServerExchange exchange) {
-    // TODO(yh_victor): consider whether we should limit this to debug only.
-    boolean useJson = exchange.getQueryParameters().containsKey("json");
+    ContentType contentType = ContentType.getContentType(exchange.getQueryParameters());
 
     FluentFuture.from(Futures.immediateFuture(exchange.getQueryParameters()))
         .transform(
             urlParams -> {
               assert urlParams != null;
-              return generateResponse(urlParams, useJson);
+              return generateResponse(urlParams, contentType);
             },
             MoreExecutors.directExecutor())
         .addCallback(
@@ -45,9 +42,7 @@ abstract class ProtobufService<InputMessage extends Message, OutputMessage exten
               @Override
               public void onSuccess(@Nullable byte[] bytes) {
                 assert bytes != null;
-                exchange
-                    .getResponseHeaders()
-                    .put(Headers.CONTENT_TYPE, useJson ? CONTENT_TYPE_JSON : CONTENT_TYPE_PROTOBUF);
+                exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, contentType.typeString);
                 exchange.getResponseSender().send(ByteBuffer.wrap(bytes));
               }
 
@@ -64,18 +59,24 @@ abstract class ProtobufService<InputMessage extends Message, OutputMessage exten
             MoreExecutors.directExecutor());
   }
 
-  private byte[] generateResponse(Map<String, Deque<String>> urlParams, boolean useJson) {
+  private byte[] generateResponse(Map<String, Deque<String>> urlParams, ContentType contentType) {
     InputMessage inputMessage = parseUrlParams(urlParams);
     OutputMessage outputMessage = generateResponseMessage(inputMessage);
-    if (useJson) {
-      try {
-        return JsonFormat.printer().print(outputMessage).getBytes(StandardCharsets.UTF_8);
-      } catch (InvalidProtocolBufferException e) {
-        throw new IllegalStateException(e);
-      }
-    } else {
-      return outputMessage.toByteArray();
+
+    switch (contentType) {
+      case CONTENT_TYPE_PROTO:
+        return outputMessage.toByteArray();
+      case CONTENT_TYPE_JSON:
+        try {
+          return JsonFormat.printer().print(outputMessage).getBytes(StandardCharsets.UTF_8);
+        } catch (InvalidProtocolBufferException e) {
+          throw new IllegalStateException(e);
+        }
+      case CONTENT_TYPE_TEXT_PROTO:
+        return TextFormat.printToString(outputMessage).getBytes(StandardCharsets.UTF_8);
     }
+
+    throw new IllegalStateException("Not reachable code.");
   }
 
   int getIntParam(Map<String, Deque<String>> urlParams, String param) {
@@ -92,5 +93,32 @@ abstract class ProtobufService<InputMessage extends Message, OutputMessage exten
       throw new IllegalStateException("Param not in url param map: " + param);
     }
     return deque.getFirst();
+  }
+
+  private enum ContentType {
+    CONTENT_TYPE_PROTO("application/protobuf"),
+    CONTENT_TYPE_JSON("application/json"),
+    CONTENT_TYPE_TEXT_PROTO("text/plain"),
+    ;
+
+    public final String typeString;
+
+    ContentType(String typeString) {
+      this.typeString = typeString;
+    }
+
+    private static ContentType getContentType(Map<String, Deque<String>> urlParams) {
+      // TODO(yh_victor): consider whether we should limit this to debug only.
+      if (urlParams.containsKey("deb")) {
+        for (String value : urlParams.get("deb")) {
+          if ("json".equals(value)) {
+            return ContentType.CONTENT_TYPE_JSON;
+          } else if ("textproto".equals(value)) {
+            return ContentType.CONTENT_TYPE_TEXT_PROTO;
+          }
+        }
+      }
+      return ContentType.CONTENT_TYPE_PROTO;
+    }
   }
 }

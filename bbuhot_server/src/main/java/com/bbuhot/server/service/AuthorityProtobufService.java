@@ -5,7 +5,7 @@ import java.util.Deque;
 import java.util.Map;
 import javax.inject.Inject;
 
-class AuthorityProtobufService extends ProtobufService<AuthRequest, AuthDto> {
+class AuthorityProtobufService extends AbstractProtobufService<AuthRequest, AuthDto> {
 
   private final Authority authority;
 

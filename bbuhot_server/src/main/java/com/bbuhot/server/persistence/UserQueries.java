@@ -2,9 +2,9 @@ package com.bbuhot.server.persistence;
 
 import com.bbuhot.server.entity.User;
 import java.util.List;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.persistence.EntityManagerFactory;
-import jdk.internal.jline.internal.Nullable;
 
 public class UserQueries {
 
