@@ -55,7 +55,7 @@ public class AuthorityUtilTest {
             "R4nzBENB",
             "168fo5rEPmPh2+Cf/zxw9wIcEhSRNuwWSMhKvX1TZVsM+Ng8xPZ03LFQb+rHmS8H/PGG6ZUjXdFKPKrPuvlG",
             2,
-            "b1b29e4862ffe7a5d1388d1722a9aae5"));
+            "b2b29e4862ffe7a5d1388d1722a9aae5"));
   }
 
   @Test
@@ -65,7 +65,7 @@ public class AuthorityUtilTest {
             "76fce85ae9cf5ceeee99c014615ee215qfDf49F0YXdxHuEkru",
             "R4nzBENA",
             "168fo5rEPmPh2+Cf/zxw9wIcEhSRNuwWSMhKvX1TZVsM+Ng8xPZ03LFQb+rHmS8H/PGG6ZUjXdFKPKrPuvlG",
-            2,
-            "b1b29e4862ffe7a5d1388d1722a9aae5"));
+            1,
+            "b2b29e4862ffe7a5d1388d1722a9aae5"));
   }
 }
