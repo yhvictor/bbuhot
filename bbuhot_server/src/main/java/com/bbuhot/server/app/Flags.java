@@ -9,8 +9,7 @@ public class Flags {
   private final int port = 8080;
   private final boolean isDebug = true;
 
-  private Flags() {
-  }
+  private Flags() {}
 
   public static Flags getInstance() {
     return flags;

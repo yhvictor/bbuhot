@@ -12,14 +12,11 @@ import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
 import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 
-/**
- * This class is created by reflecting.
- */
+/** This class is created by reflecting. */
 public class PhysicalNamingStrategyImpl extends PhysicalNamingStrategyStandardImpl {
 
   private final Map<String, Identifier> tableMapping;
-  @Inject
-  Set<Class<?>> annotatedClasses;
+  @Inject Set<Class<?>> annotatedClasses;
 
   public PhysicalNamingStrategyImpl() {
     EntryPoint.appComponent.inject(this);

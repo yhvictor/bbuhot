@@ -10,9 +10,9 @@ import javax.inject.Singleton;
 @Singleton
 @Component(
     modules = {
-        EntityMappingModule.class,
-        PersistenceModule.class,
-        ServiceModule.class,
+      EntityMappingModule.class,
+      PersistenceModule.class,
+      ServiceModule.class,
     })
 public interface AppComponent {
 

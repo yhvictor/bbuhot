@@ -1,11 +1,9 @@
 package com.bbuhot.server.service;
 
 import com.bbuhot.server.domain.Authority;
-import java.util.Deque;
-import java.util.Map;
 import javax.inject.Inject;
 
-class AuthorityProtobufService extends AbstractProtobufService<AuthRequest, AuthDto> {
+class AuthorityProtobufService extends AbstractProtobufService<AuthRequest, AuthReply> {
 
   private final Authority authority;
 
@@ -15,16 +13,12 @@ class AuthorityProtobufService extends AbstractProtobufService<AuthRequest, Auth
   }
 
   @Override
-  AuthRequest parseUrlParams(Map<String, Deque<String>> urlParams) {
-    return AuthRequest.newBuilder()
-        .setAuth(getStringParam(urlParams, "auth"))
-        .setSaltKey(getStringParam(urlParams, "saltKey"))
-        .setUid(getIntParam(urlParams, "uid"))
-        .build();
+  AuthRequest getInputMessageDefaultInstance() {
+    return AuthRequest.getDefaultInstance();
   }
 
   @Override
-  AuthDto generateResponseMessage(AuthRequest authRequest) {
+  AuthReply callProtobufServiceImpl(AuthRequest authRequest) {
     return authority.auth(authRequest);
   }
 }

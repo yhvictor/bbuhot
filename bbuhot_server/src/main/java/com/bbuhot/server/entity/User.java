@@ -20,8 +20,7 @@ public class User {
   @Column(name = "password", nullable = false)
   private String password;
 
-  User() {
-  }
+  User() {}
 
   public int getUid() {
     return uid;

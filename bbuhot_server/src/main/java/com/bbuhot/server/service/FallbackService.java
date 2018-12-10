@@ -7,8 +7,7 @@ import javax.inject.Inject;
 public class FallbackService implements HttpHandler {
 
   @Inject
-  FallbackService() {
-  }
+  FallbackService() {}
 
   @Override
   public void handleRequest(HttpServerExchange exchange) {

@@ -1,9 +1,6 @@
 package com.bbuhot.server.service;
 
-import com.google.common.util.concurrent.FluentFuture;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.MoreExecutors;
+import com.google.protobuf.Descriptors;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.TextFormat;
@@ -15,16 +12,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.List;
 import java.util.Map;
-import javax.annotation.Nullable;
 
 abstract class AbstractProtobufService<InputMessage extends Message, OutputMessage extends Message>
     implements HttpHandler {
 
-  abstract InputMessage parseUrlParams(Map<String, Deque<String>> urlParams);
+  abstract InputMessage getInputMessageDefaultInstance();
 
-  abstract OutputMessage generateResponseMessage(InputMessage inputMessage);
+  abstract OutputMessage callProtobufServiceImpl(InputMessage inputMessage);
 
   @Override
   public void handleRequest(HttpServerExchange exchange) {
@@ -39,54 +37,78 @@ abstract class AbstractProtobufService<InputMessage extends Message, OutputMessa
       exchange.setStatusCode(400);
       ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
       t.printStackTrace(new PrintStream(byteArrayOutputStream));
-      exchange
-          .getResponseSender()
-          .send(ByteBuffer.wrap(byteArrayOutputStream.toByteArray()));
+      exchange.getResponseSender().send(ByteBuffer.wrap(byteArrayOutputStream.toByteArray()));
     }
   }
 
   private void handleRequestWithoutException(HttpServerExchange exchange) {
-    ContentType contentType = ContentType.getContentType(exchange.getQueryParameters());
+    Map<String, Deque<String>> urlParams = exchange.getQueryParameters();
+    ContentType contentType = ContentType.getContentType(urlParams);
+    urlParams.remove("deb");
 
-    byte[] bytes = generateResponse(exchange.getQueryParameters(), contentType);
+    InputMessage inputMessage = generateRequest(urlParams, getInputMessageDefaultInstance());
+    OutputMessage outputMessage = callProtobufServiceImpl(inputMessage);
+
+    final byte[] bytes;
+    switch (contentType) {
+      case CONTENT_TYPE_PROTO:
+        bytes = outputMessage.toByteArray();
+        break;
+      case CONTENT_TYPE_JSON:
+        try {
+          bytes = JsonFormat.printer().print(outputMessage).getBytes(StandardCharsets.UTF_8);
+        } catch (InvalidProtocolBufferException e) {
+          throw new IllegalStateException(e);
+        }
+        break;
+      case CONTENT_TYPE_TEXT_PROTO:
+        bytes = TextFormat.printToString(outputMessage).getBytes(StandardCharsets.UTF_8);
+        break;
+      default:
+        throw new IllegalStateException("Not reachable code.");
+    }
+
     exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, contentType.typeString);
     exchange.getResponseSender().send(ByteBuffer.wrap(bytes));
   }
 
-  private byte[] generateResponse(Map<String, Deque<String>> urlParams, ContentType contentType) {
-    InputMessage inputMessage = parseUrlParams(urlParams);
-    OutputMessage outputMessage = generateResponseMessage(inputMessage);
+  private InputMessage generateRequest(
+      Map<String, Deque<String>> urlParams, InputMessage defaultInstance) {
+    List<String> unsentParams = new ArrayList<>();
+    Message.Builder builder = defaultInstance.toBuilder();
+    for (Descriptors.FieldDescriptor fieldDescriptor :
+        defaultInstance.getDescriptorForType().getFields()) {
+      String fullName = fieldDescriptor.getName();
+      Deque<String> deque = urlParams.get(fullName);
+      if (deque == null) {
+        unsentParams.add(fullName);
+        continue;
+      }
 
-    switch (contentType) {
-      case CONTENT_TYPE_PROTO:
-        return outputMessage.toByteArray();
-      case CONTENT_TYPE_JSON:
-        try {
-          return JsonFormat.printer().print(outputMessage).getBytes(StandardCharsets.UTF_8);
-        } catch (InvalidProtocolBufferException e) {
-          throw new IllegalStateException(e);
-        }
-      case CONTENT_TYPE_TEXT_PROTO:
-        return TextFormat.printToString(outputMessage).getBytes(StandardCharsets.UTF_8);
+      String rawValue = deque.getFirst();
+
+      switch (fieldDescriptor.getJavaType()) {
+        case INT:
+          builder.setField(fieldDescriptor, Integer.parseInt(rawValue));
+          break;
+        case LONG:
+          builder.setField(fieldDescriptor, Long.parseLong(rawValue));
+          break;
+        case STRING:
+          builder.setField(fieldDescriptor, rawValue);
+          break;
+        default:
+          throw new IllegalStateException("Non supported type of param: " + fullName);
+      }
     }
 
-    throw new IllegalStateException("Not reachable code.");
-  }
-
-  int getIntParam(Map<String, Deque<String>> urlParams, String param) {
-    Deque<String> deque = urlParams.get(param);
-    if (deque == null) {
-      throw new IllegalStateException("Param not in url param map: " + param);
+    if (!unsentParams.isEmpty()) {
+      throw new IllegalStateException("Required param is not sent to server: " + unsentParams);
     }
-    return Integer.parseInt(deque.getFirst());
-  }
 
-  String getStringParam(Map<String, Deque<String>> urlParams, String param) {
-    Deque<String> deque = urlParams.get(param);
-    if (deque == null) {
-      throw new IllegalStateException("Param not in url param map: " + param);
-    }
-    return deque.getFirst();
+    @SuppressWarnings("unchecked")
+    InputMessage inputMessage = (InputMessage) builder.build();
+    return inputMessage;
   }
 
   private enum ContentType {

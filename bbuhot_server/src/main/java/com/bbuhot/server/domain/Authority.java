@@ -3,10 +3,10 @@ package com.bbuhot.server.domain;
 import com.bbuhot.server.app.Flags;
 import com.bbuhot.server.entity.User;
 import com.bbuhot.server.persistence.UserQueries;
-import com.bbuhot.server.service.AuthDto;
+import com.bbuhot.server.service.AuthReply;
 import com.bbuhot.server.service.AuthRequest;
 import com.bbuhot.server.service.ErrorCode;
-import com.bbuhot.server.service.UserDto;
+import com.bbuhot.server.service.UserReply;
 import java.util.Optional;
 import javax.inject.Inject;
 
@@ -19,10 +19,10 @@ public class Authority {
     this.userQueries = userQueries;
   }
 
-  public AuthDto auth(AuthRequest authRequest) {
+  public AuthReply auth(AuthRequest authRequest) {
     Optional<User> optionalUser = userQueries.queryUserById(authRequest.getUid());
     if (optionalUser.isEmpty()) {
-      return AuthDto.newBuilder().setErrorCode(ErrorCode.NO_SUCH_USER).build();
+      return AuthReply.newBuilder().setErrorCode(ErrorCode.NO_SUCH_USER).build();
     }
 
     User user = optionalUser.get();
@@ -32,12 +32,12 @@ public class Authority {
         authRequest.getAuth(),
         user.getUid(),
         user.getPassword())) {
-      return AuthDto.newBuilder().setErrorCode(ErrorCode.KEY_NOT_MATCHING).build();
+      return AuthReply.newBuilder().setErrorCode(ErrorCode.KEY_NOT_MATCHING).build();
     }
 
-    return AuthDto.newBuilder()
+    return AuthReply.newBuilder()
         .setErrorCode(ErrorCode.NO_ERROR)
-        .setUser(UserDto.newBuilder().setUid(user.getUid()).setName(user.getUsername()))
+        .setUser(UserReply.newBuilder().setUid(user.getUid()).setName(user.getUsername()))
         .build();
   }
 }
