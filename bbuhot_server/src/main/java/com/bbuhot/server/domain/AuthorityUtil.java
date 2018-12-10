@@ -1,13 +1,12 @@
 package com.bbuhot.server.domain;
 
-import java.nio.charset.StandardCharsets;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 class AuthorityUtil {
-
-  private static final char[] hexArray = "0123456789abcdef".toCharArray();
 
   static String authKeyWithSaltAfterMd5(String authKey, String saltKey) {
     return md5(authKey + saltKey);
@@ -71,33 +70,19 @@ class AuthorityUtil {
   }
 
   private static String md5(String text) {
+    String hashtext="";
     try {
-      MessageDigest digester = MessageDigest.getInstance("MD5");
-      digester.update(text.getBytes(StandardCharsets.ISO_8859_1));
-      byte[] md5Bytes = digester.digest();
-      return bytesToHex(md5Bytes);
-
-    } catch (NoSuchAlgorithmException e) {
+      MessageDigest md = MessageDigest.getInstance("MD5");
+      md.update(new String(text).getBytes("UTF-8"));
+      BigInteger no = new BigInteger(1, md.digest());
+      hashtext = no.toString(16);
+      while (hashtext.length() < 32) {
+        hashtext = "0" + hashtext;
+      }
+    } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
       throw new IllegalStateException(e);
     }
-  }
-
-  private static String bytesToHex(byte[] bytes) {
-    char[] hexChars = new char[bytes.length * 2];
-    for (int j = 0; j < bytes.length; j++) {
-      int v = bytes[j] & 0xFF;
-      hexChars[j * 2] = hexArray[v >>> 4];
-      hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-    }
-    return new String(hexChars);
-  }
-
-  private static byte[] hexStringToByteArray(String string) {
-    byte[] ret = new byte[string.length()];
-    for (int i = 0; i < string.length(); i++) {
-      ret[i] = (byte) string.charAt(i);
-    }
-    return ret;
+    return hashtext;
   }
 
   private static String byteArrayToHexString(byte[] bytes) {
