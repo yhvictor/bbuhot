@@ -1,6 +1,5 @@
 package com.bbuhot.server.domain;
 
-import com.bbuhot.server.app.Flags;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -14,10 +13,10 @@ class AuthorityUtil {
     return md5(authKey + saltKey);
   }
 
-  static boolean isValid(String auth, String saltKey, int uid, String password) {
-    String authKey =
-        authKeyWithSaltAfterMd5(Flags.getInstance().getDiscuzConfig().getAuthkey(), saltKey);
-    return decode(auth, authKey).equals(password + "\t" + uid);
+  static boolean isValid(
+      String authKey, String saltKey, String mixedInput, int uid, String password) {
+    authKey = authKeyWithSaltAfterMd5(authKey, saltKey);
+    return decode(mixedInput, authKey).equals(password + "\t" + uid);
   }
 
   static String decode(String mixedInput, String authKey) {

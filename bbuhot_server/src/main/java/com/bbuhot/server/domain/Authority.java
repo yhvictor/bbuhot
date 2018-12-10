@@ -1,5 +1,6 @@
 package com.bbuhot.server.domain;
 
+import com.bbuhot.server.app.Flags;
 import com.bbuhot.server.entity.User;
 import com.bbuhot.server.persistence.UserQueries;
 import com.bbuhot.server.service.AuthDto;
@@ -25,7 +26,11 @@ public class Authority {
     }
 
     if (!AuthorityUtil.isValid(
-        authRequest.getAuth(), authRequest.getSaltKey(), user.getUid(), user.getPassword())) {
+        Flags.getInstance().getDiscuzConfig().getAuthkey(),
+        authRequest.getSaltKey(),
+        authRequest.getAuth(),
+        user.getUid(),
+        user.getPassword())) {
       return AuthDto.newBuilder().setErrorCode(ErrorCode.KEY_NOT_MATCHING).build();
     }
 
