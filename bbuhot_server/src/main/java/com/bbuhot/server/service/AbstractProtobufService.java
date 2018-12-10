@@ -28,35 +28,29 @@ abstract class AbstractProtobufService<InputMessage extends Message, OutputMessa
 
   @Override
   public void handleRequest(HttpServerExchange exchange) {
+    // TODO(yh_victor): consider thread limit control.
+    handleRequestInternal(exchange);
+  }
+
+  private void handleRequestInternal(HttpServerExchange exchange) {
+    try {
+      handleRequestWithoutException(exchange);
+    } catch (Throwable t) {
+      exchange.setStatusCode(400);
+      ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+      t.printStackTrace(new PrintStream(byteArrayOutputStream));
+      exchange
+          .getResponseSender()
+          .send(ByteBuffer.wrap(byteArrayOutputStream.toByteArray()));
+    }
+  }
+
+  private void handleRequestWithoutException(HttpServerExchange exchange) {
     ContentType contentType = ContentType.getContentType(exchange.getQueryParameters());
 
-    FluentFuture.from(Futures.immediateFuture(exchange.getQueryParameters()))
-        .transform(
-            urlParams -> {
-              assert urlParams != null;
-              return generateResponse(urlParams, contentType);
-            },
-            MoreExecutors.directExecutor())
-        .addCallback(
-            new FutureCallback<byte[]>() {
-              @Override
-              public void onSuccess(@Nullable byte[] bytes) {
-                assert bytes != null;
-                exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, contentType.typeString);
-                exchange.getResponseSender().send(ByteBuffer.wrap(bytes));
-              }
-
-              @Override
-              public void onFailure(Throwable t) {
-                exchange.setStatusCode(400);
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                t.printStackTrace(new PrintStream(byteArrayOutputStream));
-                exchange
-                    .getResponseSender()
-                    .send(ByteBuffer.wrap(byteArrayOutputStream.toByteArray()));
-              }
-            },
-            MoreExecutors.directExecutor());
+    byte[] bytes = generateResponse(exchange.getQueryParameters(), contentType);
+    exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, contentType.typeString);
+    exchange.getResponseSender().send(ByteBuffer.wrap(bytes));
   }
 
   private byte[] generateResponse(Map<String, Deque<String>> urlParams, ContentType contentType) {

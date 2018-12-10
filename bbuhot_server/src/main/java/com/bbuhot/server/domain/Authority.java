@@ -7,6 +7,7 @@ import com.bbuhot.server.service.AuthDto;
 import com.bbuhot.server.service.AuthRequest;
 import com.bbuhot.server.service.ErrorCode;
 import com.bbuhot.server.service.UserDto;
+import java.util.Optional;
 import javax.inject.Inject;
 
 public class Authority {
@@ -19,12 +20,12 @@ public class Authority {
   }
 
   public AuthDto auth(AuthRequest authRequest) {
-    User user = userQueries.queryUserById(authRequest.getUid());
-
-    if (user == null) {
+    Optional<User> optionalUser = userQueries.queryUserById(authRequest.getUid());
+    if (optionalUser.isEmpty()) {
       return AuthDto.newBuilder().setErrorCode(ErrorCode.NO_SUCH_USER).build();
     }
 
+    User user = optionalUser.get();
     if (!AuthorityUtil.isValid(
         Flags.getInstance().getDiscuzConfig().getAuthkey(),
         authRequest.getSaltKey(),

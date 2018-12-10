@@ -5,11 +5,10 @@ import com.bbuhot.server.entity.User;
 import com.bbuhot.server.persistence.UserQueries;
 import java.util.Deque;
 import java.util.Map;
+import java.util.Optional;
 import javax.inject.Inject;
 
-/**
- * A test server for test using.
- */
+/** A test server for test using. */
 class UserProtobufService extends AbstractProtobufService<UserDto, UserDto> {
 
   private final UserQueries userQueries;
@@ -29,10 +28,11 @@ class UserProtobufService extends AbstractProtobufService<UserDto, UserDto> {
     if (!Flags.getInstance().isDebug()) {
       throw new IllegalStateException("Debug only service.");
     }
-    User user = userQueries.queryUserById(userDto.getUid());
-    if (user == null) {
+    Optional<User> optionalUser = userQueries.queryUserById(userDto.getUid());
+    if (optionalUser.isEmpty()) {
       throw new IllegalStateException("No such user.");
     }
+    User user = optionalUser.get();
     return UserDto.newBuilder().setUid(user.getUid()).setName(user.getUsername()).build();
   }
 }
