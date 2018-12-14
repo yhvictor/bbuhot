@@ -158,7 +158,7 @@ message AdminGameStatusReply {
   Game game = 3;
 }
 
-// List games.
+// Lists games.
 // URL: /api/bet/list_game
 // protobuf: ListGameRequest -> ListGameReply
 
@@ -182,7 +182,7 @@ message ListGameReply {
   repeated Game games = 2;
 }
 
-// Bet on game.
+// Bets on game.
 // URL: /api/bet/bet
 // protobuf: BetRequest -> BetReply
 message BetRequest {
