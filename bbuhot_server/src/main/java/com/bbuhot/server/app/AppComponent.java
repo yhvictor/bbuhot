@@ -1,6 +1,6 @@
 package com.bbuhot.server.app;
 
-import com.bbuhot.server.entity.EntityMappingModule;
+import com.bbuhot.server.entity.EntityModule;
 import com.bbuhot.server.persistence.PersistenceModule;
 import com.bbuhot.server.persistence.PhysicalNamingStrategyImpl;
 import com.bbuhot.server.service.ServiceModule;
@@ -10,7 +10,7 @@ import javax.inject.Singleton;
 @Singleton
 @Component(
     modules = {
-      EntityMappingModule.class,
+        EntityModule.class,
       PersistenceModule.class,
       ServiceModule.class,
     })

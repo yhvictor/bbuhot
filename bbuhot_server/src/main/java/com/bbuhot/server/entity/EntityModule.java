@@ -7,7 +7,7 @@ import java.util.Set;
 import javax.inject.Singleton;
 
 @Module
-public class EntityMappingModule {
+public class EntityModule {
 
   @Provides
   @Singleton

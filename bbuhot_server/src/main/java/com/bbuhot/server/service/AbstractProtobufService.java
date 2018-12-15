@@ -46,7 +46,7 @@ abstract class AbstractProtobufService<InputMessage extends Message, OutputMessa
     ContentType contentType = ContentType.getContentType(urlParams);
     urlParams.remove("deb");
 
-    InputMessage inputMessage = generateRequest(urlParams, getInputMessageDefaultInstance());
+    InputMessage inputMessage = parseRequest(urlParams, getInputMessageDefaultInstance());
     OutputMessage outputMessage = callProtobufServiceImpl(inputMessage);
 
     final byte[] bytes;
@@ -72,7 +72,7 @@ abstract class AbstractProtobufService<InputMessage extends Message, OutputMessa
     exchange.getResponseSender().send(ByteBuffer.wrap(bytes));
   }
 
-  private InputMessage generateRequest(
+  private InputMessage parseRequest(
       Map<String, Deque<String>> urlParams, InputMessage defaultInstance) {
     List<String> unsentParams = new ArrayList<>();
     Message.Builder builder = defaultInstance.toBuilder();
