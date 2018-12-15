@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.inject.Inject;
 
 /** A test server for test using. */
-class UserProtobufService extends AbstractProtobufService<UserReply, UserReply> {
+class UserProtobufService extends AbstractProtobufService<AuthReply.User, AuthReply.User> {
 
   private final UserQueries userQueries;
 
@@ -17,12 +17,12 @@ class UserProtobufService extends AbstractProtobufService<UserReply, UserReply> 
   }
 
   @Override
-  UserReply getInputMessageDefaultInstance() {
-    return UserReply.getDefaultInstance();
+  AuthReply.User getInputMessageDefaultInstance() {
+    return AuthReply.User.getDefaultInstance();
   }
 
   @Override
-  UserReply callProtobufServiceImpl(UserReply userDto) {
+  AuthReply.User callProtobufServiceImpl(AuthReply.User userDto) {
     if (!Flags.getInstance().isDebug()) {
       throw new IllegalStateException("Debug only service.");
     }
@@ -31,6 +31,6 @@ class UserProtobufService extends AbstractProtobufService<UserReply, UserReply> 
       throw new IllegalStateException("No such user.");
     }
     User user = optionalUser.get();
-    return UserReply.newBuilder().setUid(user.getUid()).setName(user.getUsername()).build();
+    return AuthReply.User.newBuilder().setUid(user.getUid()).setName(user.getUsername()).build();
   }
 }

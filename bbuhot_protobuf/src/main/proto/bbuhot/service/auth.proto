@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "bbuhot/service/error_code.proto";
+package bhuhot.service;
 
 option java_package = "com.bbuhot.server.service";
 option java_multiple_files = true;
@@ -12,11 +12,28 @@ message AuthRequest {
 }
 
 message AuthReply {
-  ErrorCode error_code = 1;
-  UserReply user = 2;
-}
+  enum ErrorCode {
+    // No error.
+    NO_ERROR = 0;
 
-message UserReply {
-  int32 uid = 1;
-  string name = 2;
+    // There's no user with such user id.
+    NO_SUCH_USER = 1;
+
+    // The user's auth and saltKey doesn't match the record.
+    KEY_NOT_MATCHING = 2;
+
+    // The user doesn't have the right permission to do so.
+    PERMISSION_DENY = 3;
+  }
+
+  // The error code.
+  ErrorCode error_code = 1;
+
+  message User {
+    int32 uid = 1;
+    string name = 2;
+  }
+
+  // Information of the user.
+  User user = 2;
 }
