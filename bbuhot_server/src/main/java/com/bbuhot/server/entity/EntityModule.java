@@ -14,6 +14,6 @@ public class EntityModule {
   Set<Class<?>> annotatedClasses() {
     return Sets.newHashSet(
         // Keep alphabetical order.
-        User.class);
+        UserEntity.class);
   }
 }

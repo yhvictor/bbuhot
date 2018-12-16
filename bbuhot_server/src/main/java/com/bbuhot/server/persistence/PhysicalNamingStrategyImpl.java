@@ -38,7 +38,10 @@ public class PhysicalNamingStrategyImpl extends PhysicalNamingStrategyStandardIm
       String entityMappingName = prefix + entityMapping.tableName();
 
       Entity entity = annotatedClass.getAnnotation(Entity.class);
-      String entityName = entity == null ? annotatedClass.getSimpleName() : entity.name();
+      String annotatedName = entity == null ? "" : entity.name();
+      String entityName = annotatedName.isEmpty() ? annotatedClass.getSimpleName() : annotatedName;
+
+      System.out.println(entityMappingName + "  -> " + entityName);
 
       tableMapping.put(entityName, Identifier.toIdentifier(entityMappingName));
     }

@@ -1,7 +1,7 @@
 package com.bbuhot.server.service;
 
 import com.bbuhot.server.app.Flags;
-import com.bbuhot.server.entity.User;
+import com.bbuhot.server.entity.UserEntity;
 import com.bbuhot.server.persistence.UserQueries;
 import java.util.Optional;
 import javax.inject.Inject;
@@ -26,11 +26,14 @@ class UserProtobufService extends AbstractProtobufService<AuthReply.User, AuthRe
     if (!Flags.getInstance().isDebug()) {
       throw new IllegalStateException("Debug only service.");
     }
-    Optional<User> optionalUser = userQueries.queryUserById(userDto.getUid());
+    Optional<UserEntity> optionalUser = userQueries.queryUserById(userDto.getUid());
     if (optionalUser.isEmpty()) {
-      throw new IllegalStateException("No such user.");
+      throw new IllegalStateException("No such userEntity.");
     }
-    User user = optionalUser.get();
-    return AuthReply.User.newBuilder().setUid(user.getUid()).setName(user.getUsername()).build();
+    UserEntity userEntity = optionalUser.get();
+    return AuthReply.User.newBuilder()
+        .setUid(userEntity.getUid())
+        .setName(userEntity.getUsername())
+        .build();
   }
 }

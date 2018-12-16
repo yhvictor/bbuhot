@@ -6,21 +6,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @EntityMapping(tableName = "common_member", hasPrefix = true)
-@Entity(name = "User")
-public class User {
+@Entity()
+public class UserEntity {
 
   @Id
   @GeneratedValue
-  @Column(unique = true, nullable = false)
+  @Column(unique = true, updatable = false, nullable = false)
   private int uid;
 
-  @Column(name = "username", nullable = false)
+  @Column(nullable = false)
   private String username;
 
-  @Column(name = "password", nullable = false)
+  @Column(nullable = false)
   private String password;
 
-  User() {}
+  UserEntity() {
+  }
 
   public int getUid() {
     return uid;

@@ -41,6 +41,7 @@ dependencies {
 }
 
 application {
+    applicationDefaultJvmArgs = ["-Dgreeting.language=en"]
     mainClassName = "com.bbuhot.server.app.EntryPoint"
 }
 
