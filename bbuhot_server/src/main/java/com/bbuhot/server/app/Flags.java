@@ -33,7 +33,7 @@ public class Flags {
 
   public static class Database {
 
-    private final String url = "jdbc:mysql://192.168.31.23:3306/ultrax";
+    private final String url = "jdbc:mysql://192.168.1.101:3306/ultrax";
     private final String user = "root";
     private final String password = "bbuhot";
     private final String tablePrefix = "pre_";
