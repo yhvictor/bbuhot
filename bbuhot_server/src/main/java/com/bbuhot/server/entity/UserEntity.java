@@ -3,14 +3,16 @@ package com.bbuhot.server.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
-@EntityMapping(tableName = "common_member", hasPrefix = true)
+@Table(name = "{pre}_common_member")
 @Entity()
 public class UserEntity {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(unique = true, updatable = false, nullable = false)
   private int uid;
 

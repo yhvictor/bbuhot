@@ -2,12 +2,11 @@ package com.bbuhot.server.persistence;
 
 import com.bbuhot.server.app.EntryPoint;
 import com.bbuhot.server.app.Flags;
-import com.bbuhot.server.entity.EntityMapping;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
-import javax.persistence.Entity;
+import javax.persistence.Table;
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
 import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
@@ -30,20 +29,20 @@ public class PhysicalNamingStrategyImpl extends PhysicalNamingStrategyStandardIm
     Map<String, Identifier> tableMapping = new HashMap<>();
 
     for (Class<?> annotatedClass : annotatedClasses) {
-      EntityMapping entityMapping = annotatedClass.getAnnotation(EntityMapping.class);
-      if (entityMapping == null) {
+      Table table = annotatedClass.getAnnotation(Table.class);
+      String tableName = table.name();
+      String modifiedTableName =
+          tableName.replace("{pre}", Flags.getInstance().getDatabase().getTablePrefix());
+
+      if (tableName.equals(modifiedTableName)) {
         continue;
       }
-      String prefix = entityMapping.hasPrefix() ? tablePrefix : "";
-      String entityMappingName = prefix + entityMapping.tableName();
 
-      Entity entity = annotatedClass.getAnnotation(Entity.class);
-      String annotatedName = entity == null ? "" : entity.name();
-      String entityName = annotatedName.isEmpty() ? annotatedClass.getSimpleName() : annotatedName;
+      if (Flags.getInstance().isDebug()) {
+        System.out.println(tableName + " -> " + modifiedTableName);
+      }
 
-      System.out.println(entityMappingName + "  -> " + entityName);
-
-      tableMapping.put(entityName, Identifier.toIdentifier(entityMappingName));
+      tableMapping.put(tableName, Identifier.toIdentifier(modifiedTableName));
     }
 
     return tableMapping;
