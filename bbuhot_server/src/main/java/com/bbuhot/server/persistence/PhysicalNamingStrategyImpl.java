@@ -1,11 +1,9 @@
 package com.bbuhot.server.persistence;
 
-import com.bbuhot.server.app.EntryPoint;
 import com.bbuhot.server.app.Flags;
+import com.bbuhot.server.entity.EntityModule;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import javax.inject.Inject;
 import javax.persistence.Table;
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
@@ -14,25 +12,16 @@ import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 /** This class is created by reflecting. */
 public class PhysicalNamingStrategyImpl extends PhysicalNamingStrategyStandardImpl {
 
-  private final Map<String, Identifier> tableMapping;
-  @Inject Set<Class<?>> annotatedClasses;
+  private static final Map<String, Identifier> tableMapping =
+      generateMapping(Flags.getInstance().getDatabase().getTablePrefix());
 
-  public PhysicalNamingStrategyImpl() {
-    EntryPoint.appComponent.inject(this);
-
-    tableMapping =
-        generateMapping(Flags.getInstance().getDatabase().getTablePrefix(), annotatedClasses);
-  }
-
-  private static Map<String, Identifier> generateMapping(
-      String tablePrefix, Set<Class<?>> annotatedClasses) {
+  private static Map<String, Identifier> generateMapping(String tablePrefix) {
     Map<String, Identifier> tableMapping = new HashMap<>();
 
-    for (Class<?> annotatedClass : annotatedClasses) {
+    for (Class<?> annotatedClass : EntityModule.annotatedClasses) {
       Table table = annotatedClass.getAnnotation(Table.class);
       String tableName = table.name();
-      String modifiedTableName =
-          tableName.replace("{pre}", Flags.getInstance().getDatabase().getTablePrefix());
+      String modifiedTableName = tableName.replace("{pre}", tablePrefix);
 
       if (tableName.equals(modifiedTableName)) {
         continue;
