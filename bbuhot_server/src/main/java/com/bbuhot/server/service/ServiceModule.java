@@ -32,6 +32,7 @@ public class ServiceModule {
     return Undertow.builder()
         .addHttpListener(Flags.getInstance().getPort(), "0.0.0.0")
         .setHandler(undertowHttpHandler)
+        .setWorkerThreads(1) // We are not using undertow work thread pool.
         .build();
   }
 }
