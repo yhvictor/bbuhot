@@ -1,4 +1,4 @@
-syntax = "proto3";
+syntax = "proto2";
 
 package bhuhot.service;
 
@@ -6,9 +6,9 @@ option java_package = "com.bbuhot.server.service";
 option java_multiple_files = true;
 
 message AuthRequest {
-  int32 uid = 1;
-  string auth = 2;
-  string saltKey = 3;
+  required int32 uid = 1;
+  required string auth = 2;
+  required string saltKey = 3;
 }
 
 message AuthReply {
@@ -27,13 +27,13 @@ message AuthReply {
   }
 
   // The error code.
-  ErrorCode error_code = 1;
+  required ErrorCode error_code = 1;
 
   message User {
-    int32 uid = 1;
-    string name = 2;
+    required int32 uid = 1;
+    required string name = 2;
   }
 
   // Information of the user.
-  User user = 2;
+  optional User user = 2;
 }
