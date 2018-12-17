@@ -1,7 +1,7 @@
 package com.bbuhot.server.app;
 
 import com.bbuhot.server.entity.GameEntity;
-import com.bbuhot.server.entity.GameEntity.BetEntity;
+import com.bbuhot.server.entity.GameEntity.BettingOptionEntity;
 import com.bbuhot.server.persistence.GameQueries;
 import com.bbuhot.server.persistence.GameQueries.GameStatus;
 import java.util.List;
@@ -28,25 +28,25 @@ public class TestingEntryPoint {
     GameEntity gameEntity = new GameEntity();
     gameEntity.setDescription("asdfasdfasdf");
     gameEntity.setName("123123asdfasdfasdf");
-    BetEntity betEntity = new BetEntity();
-    betEntity.setName("123123");
-    betEntity.setOdds(123123);
+    BettingOptionEntity bettingOptionEntity = new BettingOptionEntity();
+    bettingOptionEntity.setName("123123");
+    bettingOptionEntity.setOdds(123123);
 
-    BetEntity betEntity2 = new BetEntity();
-    betEntity2.setName("2123123");
-    betEntity2.setOdds(2123123);
-    gameEntity.getBetEntities().add(betEntity);
-    gameEntity.getBetEntities().add(betEntity2);
+    BettingOptionEntity bettingOptionEntity2 = new BettingOptionEntity();
+    bettingOptionEntity2.setName("2123123");
+    bettingOptionEntity2.setOdds(2123123);
+    gameEntity.getBetEntities().add(bettingOptionEntity);
+    gameEntity.getBetEntities().add(bettingOptionEntity2);
 
     gameQueries.create(gameEntity);
     System.out.println("adfasdfasdfsdaf" + gameEntity.getId());
     gameEntity.setName("yyyhhhh");
 
     gameEntity.getBetEntities().remove(1);
-    BetEntity betEntity3 = new BetEntity();
-    betEntity3.setName("gsdfgaef");
-    betEntity3.setOdds(231251234);
-    gameEntity.getBetEntities().add(betEntity3);
+    BettingOptionEntity bettingOptionEntity3 = new BettingOptionEntity();
+    bettingOptionEntity3.setName("gsdfgaef");
+    bettingOptionEntity3.setOdds(231251234);
+    gameEntity.getBetEntities().add(bettingOptionEntity3);
 
     gameQueries.update(gameEntity);
 
@@ -55,7 +55,7 @@ public class TestingEntryPoint {
       System.out.println(game.getId());
       System.out.println(game.getName());
       System.out.println(game.getDescription());
-      for (BetEntity bet : game.getBetEntities()) {
+      for (BettingOptionEntity bet : game.getBetEntities()) {
         System.out.println("Bets: " + bet.getName() + " " + bet.getOdds());
       }
     }

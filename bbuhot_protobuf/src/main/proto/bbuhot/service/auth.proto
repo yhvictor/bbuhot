@@ -12,7 +12,7 @@ message AuthRequest {
 }
 
 message AuthReply {
-  enum ErrorCode {
+  enum AuthErrorCode {
     // No error.
     NO_ERROR = 0;
 
@@ -27,7 +27,7 @@ message AuthReply {
   }
 
   // The error code.
-  required ErrorCode error_code = 1;
+  required AuthErrorCode error_code = 1;
 
   message User {
     required int32 uid = 1;

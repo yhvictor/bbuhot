@@ -20,7 +20,7 @@ message Game {
   required string description = 3;
 
   // If true, normal user can see and bet on it.
-  required bool normal_user_visible = 4;
+  optional bool normal_user_visible = 4 [default = false];
 
   enum Status {
     // The game is draft.
@@ -68,25 +68,25 @@ message Game {
 
   // Maximum number of bets one can made.
   // In most cases, this should be 1.
-  required uint32 maximum_bet_options = 6;
+  required int32 bet_option_limit = 6;
 
   // The least money one need to make a bet.
-  required int32 bet_money_least = 7;
+  required int32 bet_amount_lowest = 7;
 
   // The highest money one can bet.
-  required int32 bet_money_highest = 8;
+  required int32 bet_amount_highest = 8;
 
   // The end time of the game in ms. Only before that, one can bet.
   required int64 end_time_ms = 9;
 
   message BettingOption {
+    // The name of the betting option.
+    required string name = 1;
+
     // The odds of the betting option.
     // If the user payed 100 units on this bet options and wins,
-    // the user will be rewarded with 100 * odds.
-    required float odds = 1;
-
-    // The name of the betting option.
-    required string name = 2;
+    // the user will be rewarded with 100 * (odds / 1000000).
+    required int32 odds = 2;
   }
 
   // All the betting options.
@@ -110,7 +110,6 @@ message Game {
 }
 
 // Changes properties of a game.
-// URL: /api/bet/admin_game
 // protobuf: GameRequest -> GameReply
 
 message AdminGameRequest {
@@ -119,8 +118,16 @@ message AdminGameRequest {
 }
 
 message AdminGameReply {
-  required AuthReply.ErrorCode error_code = 1;
-  optional Game game = 2;
+  required AuthReply.AuthErrorCode auth_error_code = 1;
+
+  enum GameErrorCode {
+    NO_ERROR = 0;
+    NO_SUCH_GAME = 1;
+  }
+
+  optional GameErrorCode game_error_code = 2;
+
+  optional Game game = 3;
 }
 
 // Changes status of a game.
@@ -141,7 +148,7 @@ message AdminGameStatusRequest {
 }
 
 message AdminGameStatusReply {
-  required AuthReply.ErrorCode error_code = 1;
+  required AuthReply.AuthErrorCode auth_error_code = 1;
 
   enum ErrorCode {
     // No error.
@@ -183,7 +190,7 @@ message ListGameRequest {
 }
 
 message ListGameReply {
-  required AuthReply.ErrorCode error_code = 1;
+  required AuthReply.AuthErrorCode auth_error_code = 1;
 
   // The games.
   repeated Game games = 2;
@@ -203,7 +210,7 @@ message BetRequest {
 }
 
 message BetReply {
-  required AuthReply.ErrorCode error_code = 1;
+  required AuthReply.AuthErrorCode auth_error_code = 1;
 
   enum BetErrorCode {
     NO_ERROR = 0;

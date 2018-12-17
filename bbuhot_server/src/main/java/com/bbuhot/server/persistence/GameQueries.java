@@ -4,6 +4,7 @@ import com.bbuhot.server.entity.GameEntity;
 import com.bbuhot.server.service.Game;
 import com.bbuhot.server.service.Game.Status;
 import java.util.List;
+import java.util.Optional;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -31,6 +32,20 @@ public class GameQueries {
     entityManager.merge(gameEntity);
     entityManager.flush();
     entityManager.getTransaction().commit();
+  }
+
+  public Optional<GameEntity> queryById(int id) {
+    List<?> gameList =
+        entityManagerFactory
+            .createEntityManager()
+            .createQuery("From GameEntity g where g.id = ?1")
+            .setParameter(1, id)
+            .getResultList();
+
+    if (gameList.size() > 1) {
+      throw new IllegalStateException("Too many results.");
+    }
+    return gameList.stream().findFirst().map(object -> (GameEntity) object);
   }
 
   public List<GameEntity> queryByStatus(GameStatus gameStatus) {

@@ -1,5 +1,6 @@
 package com.bbuhot.server.entity;
 
+import com.bbuhot.server.entity.GameEntity.BettingOptionEntity;
 import com.google.common.collect.Sets;
 import dagger.Module;
 import dagger.Provides;
@@ -12,7 +13,7 @@ public class EntityModule {
   public static final Set<Class<?>> annotatedClasses =
       Sets.newHashSet(
           // Keep alphabetical order.
-          GameEntity.BetEntity.class, GameEntity.class, UserEntity.class);
+          BettingOptionEntity.class, GameEntity.class, UserEntity.class);
 
   @Provides
   @Singleton

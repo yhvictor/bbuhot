@@ -35,14 +35,14 @@ public class GameEntity {
   @Column(nullable = false)
   private int status = 0;
 
-  @Column(name = "maximum_bet_options")
-  private int maximumBetOptions = 1;
+  @Column(name = "bet_option_limit")
+  private int betOptionLimit = 1;
 
-  @Column(name = "bet_money_lowest")
-  private int betMoneyLowest = 0;
+  @Column(name = "bet_amount_lowest")
+  private int betAmountLowest = 0;
 
-  @Column(name = "bet_money_highest")
-  private int betMoneyLeast = 0;
+  @Column(name = "bet_amount_highest")
+  private int betAmountHighest = 0;
 
   @Column(name = "end_time_ms")
   private Timestamp endTimeMs;
@@ -50,13 +50,17 @@ public class GameEntity {
   @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
   @JoinColumn(name = "game_id", referencedColumnName = "id")
   @OrderBy("id")
-  private List<BetEntity> betEntities;
+  private List<BettingOptionEntity> betEntities;
 
   public GameEntity() {
   }
 
   public int getId() {
     return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
   }
 
   public String getName() {
@@ -91,28 +95,28 @@ public class GameEntity {
     this.status = status;
   }
 
-  public int getMaximumBetOptions() {
-    return maximumBetOptions;
+  public int getBetOptionLimit() {
+    return betOptionLimit;
   }
 
-  public void setMaximumBetOptions(int maximumBetOptions) {
-    this.maximumBetOptions = maximumBetOptions;
+  public void setBetOptionLimit(int betOptionLimit) {
+    this.betOptionLimit = betOptionLimit;
   }
 
-  public int getBetMoneyLowest() {
-    return betMoneyLowest;
+  public int getBetAmountLowest() {
+    return betAmountLowest;
   }
 
-  public void setBetMoneyLowest(int betMoneyLowest) {
-    this.betMoneyLowest = betMoneyLowest;
+  public void setBetAmountLowest(int betAmountLowest) {
+    this.betAmountLowest = betAmountLowest;
   }
 
-  public int getBetMoneyLeast() {
-    return betMoneyLeast;
+  public int getBetAmountHighest() {
+    return betAmountHighest;
   }
 
-  public void setBetMoneyLeast(int betMoneyLeast) {
-    this.betMoneyLeast = betMoneyLeast;
+  public void setBetAmountHighest(int betAmountHighest) {
+    this.betAmountHighest = betAmountHighest;
   }
 
   public Timestamp getEndTimeMs() {
@@ -123,20 +127,20 @@ public class GameEntity {
     this.endTimeMs = endTimeMs;
   }
 
-  public List<BetEntity> getBetEntities() {
+  public List<BettingOptionEntity> getBetEntities() {
     if (betEntities == null) {
       betEntities = new ArrayList<>();
     }
     return betEntities;
   }
 
-  public void setBetEntities(List<BetEntity> betEntities) {
+  public void setBetEntities(List<BettingOptionEntity> betEntities) {
     this.betEntities = betEntities;
   }
 
   @Table(name = "bbuhot_betting_options")
   @Entity()
-  public static class BetEntity {
+  public static class BettingOptionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -149,7 +153,7 @@ public class GameEntity {
     @Column(nullable = false)
     private int odds = 1000000;
 
-    public BetEntity() {
+    public BettingOptionEntity() {
     }
 
     public String getName() {

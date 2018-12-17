@@ -27,6 +27,13 @@ public class ServiceModule {
   }
 
   @Provides
+  @IntoMap
+  @StringKey("/api/bet/admin_game")
+  HttpHandler gameUpdatingService(GameUpdatingService gameUpdatingService) {
+    return gameUpdatingService;
+  }
+
+  @Provides
   @Singleton
   Undertow undertow(UndertowHttpHandler undertowHttpHandler) {
     return Undertow.builder()

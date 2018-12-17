@@ -20,7 +20,7 @@ public class Authority {
   public AuthReply auth(AuthRequest authRequest) {
     Optional<UserEntity> optionalUser = userQueries.queryUserById(authRequest.getUid());
     if (optionalUser.isEmpty()) {
-      return AuthReply.newBuilder().setErrorCode(AuthReply.ErrorCode.NO_SUCH_USER).build();
+      return AuthReply.newBuilder().setErrorCode(AuthReply.AuthErrorCode.NO_SUCH_USER).build();
     }
 
     UserEntity userEntity = optionalUser.get();
@@ -30,11 +30,11 @@ public class Authority {
         authRequest.getAuth(),
         userEntity.getUid(),
         userEntity.getPassword())) {
-      return AuthReply.newBuilder().setErrorCode(AuthReply.ErrorCode.KEY_NOT_MATCHING).build();
+      return AuthReply.newBuilder().setErrorCode(AuthReply.AuthErrorCode.KEY_NOT_MATCHING).build();
     }
 
     return AuthReply.newBuilder()
-        .setErrorCode(AuthReply.ErrorCode.NO_ERROR)
+        .setErrorCode(AuthReply.AuthErrorCode.NO_ERROR)
         .setUser(
             AuthReply.User.newBuilder()
                 .setUid(userEntity.getUid())
