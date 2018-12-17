@@ -23,8 +23,8 @@ message Game {
   required bool normal_user_visible = 4;
 
   enum Status {
-    // The game is draft or **cancelled**.
-    // This is also one of the final status of the game.
+    // The game is draft.
+    // After the game became published, it can never go back.
     DRAFT = 0;
 
     // The game is published.
@@ -35,6 +35,10 @@ message Game {
     // The game result is published and all money is settled.
     // This is one of the final status of the game.
     SETTLED = 2;
+
+    // The game is cancelled.
+    // This is also one of the final status of the game.
+    CANCELLED = 3;
   }
 
   // Status of the game.
@@ -44,19 +48,20 @@ message Game {
   // The valid status changes:
   // DRAFT -> PUBLISHED:
   //   This will set game.normal_user_visible to true.
-  // PUBLISHED -> DRAFT:
-  //   This will kick off worker to reimburse all the pending bets.
   // PUBLISHED -> SETTLED:
   //   If end_time_stamp_ms is in future, this will set it to be a time in the past.
   //   This will kick of worker to pay the rewards.
+  // PUBLISHED -> CANCELLED:
+  //   If end_time_stamp_ms is in future, this will set it to be a time in the past.
+  //   This will kick off worker to reimburse all the pending bets.
   // SETTLED -> PUBLISHED:
   //   This will kick of worker to revoke all the rewards.
   //
   // Special cases to trigger worker (to recover bad data):
-  // DRAFT -> DRAFT:
-  //   This will kick off worker to reimburse all the pending bets.
   // PUBLISHED -> PUBLISHED:
   //   This will kick of worker to revoke all the rewards.
+  // CANCELLED -> CANCELLED:
+  //   This will kick off worker to reimburse all the pending bets.
   // SETTLED -> SETTLED:
   //   This will kick of worker to pay the rewards.
   optional Status status = 5;
@@ -85,12 +90,14 @@ message Game {
   }
 
   // All the betting options.
+  // Betting options are only editable when game status is draft.
   repeated BettingOption betting_options = 10;
 
   // The zero-based winning option of the game.
+  // In request, this value is ignored.
   // The corresponding BettingOption is betting_options[winning_option].
   // The value is only available when the game status is SETTLED.
-  required int32 winning_option = 11;
+  optional int32 winning_option = 11;
 
   message Bet {
     required int32 betting_option_id = 1;
@@ -99,7 +106,7 @@ message Game {
 
   // In request, this will be ignored.
   // In response, this will contain bets of requesting user.
-  required Bet bets = 12;
+  repeated Bet bets = 12;
 }
 
 // Changes properties of a game.
@@ -130,7 +137,7 @@ message AdminGameStatusRequest {
   required Game.Status game_status = 3;
 
   // Sets the winning_option of the game. This is only needed if game_status is set to settled.
-  required int32 winning_option = 4;
+  optional int32 winning_option = 4;
 }
 
 message AdminGameStatusReply {
@@ -209,6 +216,9 @@ message BetReply {
 
     // More options than the limit is chosen.
     OPTION_TOO_MANY = 3;
+
+    // No enough money to bet.
+    NO_ENOUGH_MONEY = 4;
   }
 
   optional BetErrorCode bet_error_code = 2;

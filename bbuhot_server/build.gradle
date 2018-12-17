@@ -34,9 +34,10 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.13'
     implementation 'javax.xml.bind:jaxb-api:2.3.0'
     implementation 'io.undertow:undertow-core:2.0.1.Final'
-    implementation 'org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final'
+    implementation 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'
     implementation 'org.hibernate:hibernate-core:5.3.7.Final'
 
+    testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.19'
     testImplementation group: 'junit', name: 'junit', version: '4.12'
 }
 

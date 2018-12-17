@@ -36,7 +36,7 @@ public class Flags {
     private final String url = "jdbc:mysql://192.168.1.101:3306/ultrax";
     private final String user = "root";
     private final String password = "bbuhot";
-    private final String tablePrefix = "pre_";
+    private final String tablePrefix = "pre";
 
     public String getUrl() {
       return url;

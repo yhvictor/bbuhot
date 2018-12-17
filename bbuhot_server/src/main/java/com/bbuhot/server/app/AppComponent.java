@@ -18,5 +18,7 @@ public interface AppComponent {
 
   EntryPoint entryPoint();
 
+  TestingEntryPoint testingEntryPoint();
+
   void inject(PhysicalNamingStrategyImpl physicalNamingStrategy);
 }
