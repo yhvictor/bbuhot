@@ -6,6 +6,7 @@ public class Flags {
 
   private final Database database = new Database();
   private final DiscuzConfig discuzConfig = new DiscuzConfig();
+  private final String host = "0.0.0.0";
   private final int port = 8080;
   private final boolean isDebug = true;
 
@@ -21,6 +22,10 @@ public class Flags {
 
   public DiscuzConfig getDiscuzConfig() {
     return discuzConfig;
+  }
+
+  public String getHost() {
+    return host;
   }
 
   public int getPort() {

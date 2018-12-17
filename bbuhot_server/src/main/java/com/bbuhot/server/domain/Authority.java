@@ -17,7 +17,8 @@ public class Authority {
     this.userQueries = userQueries;
   }
 
-  public AuthReply auth(AuthRequest authRequest) {
+  public AuthReply auth(AuthRequest authRequest, boolean checkIsAdmin) {
+    // TODO(yhvictor): checkIsAdmin
     Optional<UserEntity> optionalUser = userQueries.queryUserById(authRequest.getUid());
     if (optionalUser.isEmpty()) {
       return AuthReply.newBuilder().setErrorCode(AuthReply.AuthErrorCode.NO_SUCH_USER).build();

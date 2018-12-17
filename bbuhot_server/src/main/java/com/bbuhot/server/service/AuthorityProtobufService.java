@@ -19,6 +19,6 @@ class AuthorityProtobufService extends AbstractProtobufService<AuthRequest, Auth
 
   @Override
   AuthReply callProtobufServiceImpl(AuthRequest authRequest) {
-    return authority.auth(authRequest);
+    return authority.auth(authRequest, /* checkIsAdmin= */ false);
   }
 }

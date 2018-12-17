@@ -28,7 +28,7 @@ class UserProtobufService extends AbstractProtobufService<AuthReply.User, AuthRe
     }
     Optional<UserEntity> optionalUser = userQueries.queryUserById(userDto.getUid());
     if (optionalUser.isEmpty()) {
-      throw new IllegalStateException("No such userEntity.");
+      throw new IllegalStateException("No such user.");
     }
     UserEntity userEntity = optionalUser.get();
     return AuthReply.User.newBuilder()

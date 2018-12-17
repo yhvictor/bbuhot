@@ -1,5 +1,6 @@
 package com.bbuhot.server.service;
 
+import com.bbuhot.server.app.Flags;
 import com.bbuhot.server.util.BbuhotThreadPool;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -76,7 +77,7 @@ class HttpServerExchangeMessageWrapper<InputMessage extends Message> {
     return message;
   }
 
-  void writeOutputMessage(ListenableFuture<? extends Message> outputMessageFuture) {
+  void writeOutputMessage(ListenableFuture<? extends Message> outputMessageFuture, long startTime) {
     Futures.addCallback(
         outputMessageFuture,
         new FutureCallback<Message>() {
@@ -84,11 +85,21 @@ class HttpServerExchangeMessageWrapper<InputMessage extends Message> {
           public void onSuccess(@Nullable Message result) {
             assert result != null;
             writeOutputMessageInternal(result);
+
+            if (Flags.getInstance().isDebug()) {
+              long endTime = System.nanoTime();
+              System.out.println("Round time consume: " + (endTime - startTime));
+            }
           }
 
           @Override
           public void onFailure(Throwable t) {
             writeErrorMessage(t);
+
+            if (Flags.getInstance().isDebug()) {
+              long endTime = System.nanoTime();
+              System.out.println("Round time consume: " + (endTime - startTime));
+            }
           }
         },
         BbuhotThreadPool.workerThreadPool);

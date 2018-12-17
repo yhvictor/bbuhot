@@ -16,6 +16,7 @@ abstract class AbstractProtobufService<InputMessage extends Message, OutputMessa
 
   @Override
   public void handleRequest(HttpServerExchange httpServerExchange) {
+    long start = System.nanoTime();
     HttpServerExchangeMessageWrapper<InputMessage> exchange =
         new HttpServerExchangeMessageWrapper<>(
             getInputMessageDefaultInstance(), httpServerExchange);
@@ -24,6 +25,7 @@ abstract class AbstractProtobufService<InputMessage extends Message, OutputMessa
     ListenableFuture<OutputMessage> output =
         Futures.transform(
             inputMessage, this::callProtobufServiceImpl, BbuhotThreadPool.limitedThreadPool);
-    exchange.writeOutputMessage(output);
+
+    exchange.writeOutputMessage(output, start);
   }
 }

@@ -34,10 +34,17 @@ public class ServiceModule {
   }
 
   @Provides
+  @IntoMap
+  @StringKey("/api/bet/list_game")
+  HttpHandler listGameService(ListGameService listGameService) {
+    return listGameService;
+  }
+
+  @Provides
   @Singleton
   Undertow undertow(UndertowHttpHandler undertowHttpHandler) {
     return Undertow.builder()
-        .addHttpListener(Flags.getInstance().getPort(), "0.0.0.0")
+        .addHttpListener(Flags.getInstance().getPort(), Flags.getInstance().getHost())
         .setHandler(undertowHttpHandler)
         .setWorkerThreads(1) // We are not using undertow work thread pool.
         .build();

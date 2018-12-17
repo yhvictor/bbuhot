@@ -119,15 +119,7 @@ message AdminGameRequest {
 
 message AdminGameReply {
   required AuthReply.AuthErrorCode auth_error_code = 1;
-
-  enum GameErrorCode {
-    NO_ERROR = 0;
-    NO_SUCH_GAME = 1;
-  }
-
-  optional GameErrorCode game_error_code = 2;
-
-  optional Game game = 3;
+  optional Game game = 2;
 }
 
 // Changes status of a game.
@@ -173,7 +165,6 @@ message AdminGameStatusReply {
 }
 
 // Lists games.
-// URL: /api/bet/list_game
 // protobuf: ListGameRequest -> ListGameReply
 
 message ListGameRequest {

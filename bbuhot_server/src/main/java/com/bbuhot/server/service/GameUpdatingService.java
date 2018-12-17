@@ -5,7 +5,6 @@ import com.bbuhot.server.entity.GameEntity;
 import com.bbuhot.server.entity.GameEntity.BettingOptionEntity;
 import com.bbuhot.server.persistence.GameQueries;
 import com.bbuhot.server.persistence.GameQueries.GameStatus;
-import com.bbuhot.server.service.AdminGameReply.GameErrorCode;
 import com.bbuhot.server.service.AuthReply.AuthErrorCode;
 import com.bbuhot.server.service.Game.BettingOption;
 import java.sql.Timestamp;
@@ -24,7 +23,13 @@ class GameUpdatingService extends AbstractProtobufService<AdminGameRequest, Admi
     this.gameQueries = gameQueries;
   }
 
-  private static Game toGame(GameEntity gameEntity) {
+  @Override
+  AdminGameRequest getInputMessageDefaultInstance() {
+    return AdminGameRequest.getDefaultInstance();
+  }
+
+  // TODO(yh_victor): move to util?
+  static Game.Builder toGame(GameEntity gameEntity) {
     Game.Builder gameBuild = Game.newBuilder();
 
     gameBuild.setId(gameEntity.getId());
@@ -42,48 +47,7 @@ class GameUpdatingService extends AbstractProtobufService<AdminGameRequest, Admi
           BettingOption.newBuilder().setName(betOption.getName()).setOdds(betOption.getOdds()));
     }
 
-    return gameBuild.build();
-  }
-
-  @Override
-  AdminGameRequest getInputMessageDefaultInstance() {
-    return AdminGameRequest.getDefaultInstance();
-  }
-
-  @Override
-  AdminGameReply callProtobufServiceImpl(AdminGameRequest adminGameRequest) {
-    AuthErrorCode errorCode = authority.auth(adminGameRequest.getAuth()).getErrorCode();
-    if (errorCode != AuthErrorCode.NO_ERROR) {
-      // Failed to auth.
-      return AdminGameReply.newBuilder().setAuthErrorCode(errorCode).build();
-    }
-
-    AdminGameReply.Builder reply = AdminGameReply.newBuilder().setAuthErrorCode(errorCode);
-
-    int id = adminGameRequest.getGame().getId();
-
-    GameEntity gameEntity;
-    if (id != -1) { // update
-      Optional<GameEntity> optionalGame = gameQueries.queryById(id);
-      if (optionalGame.isEmpty()) {
-        return reply.setGameErrorCode(GameErrorCode.NO_SUCH_GAME).build();
-      }
-      gameEntity = optionalGame.get();
-    } else { // create
-      gameEntity = new GameEntity();
-    }
-
-    reply.setGameErrorCode(GameErrorCode.NO_ERROR);
-    mergeToEntity(gameEntity, adminGameRequest.getGame());
-
-    if (id != -1) {
-      gameQueries.update(gameEntity);
-    } else {
-      gameQueries.create(gameEntity);
-    }
-
-    Game game = toGame(gameEntity);
-    return reply.setGame(game).build();
+    return gameBuild;
   }
 
   private void mergeToEntity(GameEntity gameEntity, Game game) {
@@ -111,5 +75,41 @@ class GameUpdatingService extends AbstractProtobufService<AdminGameRequest, Admi
       bettingOptionEntity.setName(bettingOption.getName());
       bettingOptionEntity.setOdds(bettingOption.getOdds());
     }
+  }
+
+  @Override
+  AdminGameReply callProtobufServiceImpl(AdminGameRequest adminGameRequest) {
+    AuthReply authReply = authority.auth(adminGameRequest.getAuth(), /* checkIsAdmin= */ true);
+    if (authReply.getErrorCode() != AuthErrorCode.NO_ERROR) {
+      // Failed to auth.
+      return AdminGameReply.newBuilder().setAuthErrorCode(authReply.getErrorCode()).build();
+    }
+
+    AdminGameReply.Builder reply =
+        AdminGameReply.newBuilder().setAuthErrorCode(authReply.getErrorCode());
+
+    int id = adminGameRequest.getGame().getId();
+
+    GameEntity gameEntity;
+    if (id != -1) { // update
+      Optional<GameEntity> optionalGame = gameQueries.queryById(id);
+      if (optionalGame.isEmpty()) {
+        throw new IllegalStateException("No such game.");
+      }
+      gameEntity = optionalGame.get();
+    } else { // create
+      gameEntity = new GameEntity();
+    }
+
+    mergeToEntity(gameEntity, adminGameRequest.getGame());
+
+    if (id != -1) {
+      gameQueries.update(gameEntity);
+    } else {
+      gameQueries.create(gameEntity);
+    }
+
+    Game.Builder game = toGame(gameEntity);
+    return reply.setGame(game).build();
   }
 }
