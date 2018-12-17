@@ -1,6 +1,8 @@
 package com.bbuhot.server.persistence;
 
 import com.bbuhot.server.entity.GameEntity;
+import com.bbuhot.server.service.Game;
+import com.bbuhot.server.service.Game.Status;
 import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -31,15 +33,50 @@ public class GameQueries {
     entityManager.getTransaction().commit();
   }
 
-  public List<GameEntity> queryByStatus(int gameStatus) {
+  public List<GameEntity> queryByStatus(GameStatus gameStatus) {
     @SuppressWarnings("unchecked")
     List<GameEntity> gameList =
         entityManagerFactory
             .createEntityManager()
             .createQuery("From GameEntity g where g.status = ?1")
-            .setParameter(1, gameStatus)
+            .setParameter(1, gameStatus.value)
             .getResultList();
 
     return gameList;
+  }
+
+  public enum GameStatus {
+    DRAFT(0, Game.Status.DRAFT),
+    PUBLISHED(1, Status.PUBLISHED),
+    SETTLED(2, Status.SETTLED),
+    CANCELLED(3, Status.CANCELLED),
+    ;
+    public int value;
+    public Game.Status serviceStatus;
+
+    GameStatus(int value, Game.Status serviceStatus) {
+      this.value = value;
+      this.serviceStatus = serviceStatus;
+    }
+
+    public static GameStatus valueOf(int value) {
+      for (GameStatus status : GameStatus.values()) {
+        if (status.value == value) {
+          return status;
+        }
+      }
+
+      throw new IllegalStateException("Wrong mapping value");
+    }
+
+    public static GameStatus valueOf(Game.Status value) {
+      for (GameStatus status : GameStatus.values()) {
+        if (status.serviceStatus == value) {
+          return status;
+        }
+      }
+
+      throw new IllegalStateException("Wrong mapping value");
+    }
   }
 }

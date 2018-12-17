@@ -3,6 +3,7 @@ package com.bbuhot.server.app;
 import com.bbuhot.server.entity.GameEntity;
 import com.bbuhot.server.entity.GameEntity.BetEntity;
 import com.bbuhot.server.persistence.GameQueries;
+import com.bbuhot.server.persistence.GameQueries.GameStatus;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -49,7 +50,7 @@ public class TestingEntryPoint {
 
     gameQueries.update(gameEntity);
 
-    List<GameEntity> games = gameQueries.queryByStatus(0);
+    List<GameEntity> games = gameQueries.queryByStatus(GameStatus.DRAFT);
     for (GameEntity game : games) {
       System.out.println(game.getId());
       System.out.println(game.getName());
