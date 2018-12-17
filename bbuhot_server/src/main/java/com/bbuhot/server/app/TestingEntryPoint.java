@@ -3,6 +3,7 @@ package com.bbuhot.server.app;
 import com.bbuhot.server.entity.GameEntity;
 import com.bbuhot.server.entity.GameEntity.BetEntity;
 import com.bbuhot.server.persistence.GameQueries;
+import java.util.List;
 import javax.inject.Inject;
 
 /**
@@ -41,7 +42,21 @@ public class TestingEntryPoint {
     gameEntity.setName("yyyhhhh");
 
     gameEntity.getBetEntities().remove(1);
+    BetEntity betEntity3 = new BetEntity();
+    betEntity3.setName("gsdfgaef");
+    betEntity3.setOdds(231251234);
+    gameEntity.getBetEntities().add(betEntity3);
 
     gameQueries.update(gameEntity);
+
+    List<GameEntity> games = gameQueries.queryByStatus(0);
+    for (GameEntity game : games) {
+      System.out.println(game.getId());
+      System.out.println(game.getName());
+      System.out.println(game.getDescription());
+      for (BetEntity bet : game.getBetEntities()) {
+        System.out.println("Bets: " + bet.getName() + " " + bet.getOdds());
+      }
+    }
   }
 }

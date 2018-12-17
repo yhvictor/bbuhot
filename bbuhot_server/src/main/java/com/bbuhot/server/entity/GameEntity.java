@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 @Table(name = "bbuhot_game")
@@ -48,6 +49,7 @@ public class GameEntity {
 
   @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
   @JoinColumn(name = "game_id", referencedColumnName = "id")
+  @OrderBy("id")
   private List<BetEntity> betEntities;
 
   public GameEntity() {
@@ -141,8 +143,10 @@ public class GameEntity {
     @Column(unique = true, updatable = false, nullable = false)
     private int id;
 
+    @Column(nullable = false)
     private String name = "";
 
+    @Column(nullable = false)
     private int odds = 1000000;
 
     public BetEntity() {
