@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="5b5ab7f3-32c7-4f1f-a74e-5d3c76429526" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../bbuh_sql/fresh_start.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_legency/php_docker_build/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_protobuf/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_protobuf/src/main/proto/bbuhot/service/auth.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_protobuf/src/main/proto/bbuhot/service/game.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/app/AppComponent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/app/EntryPoint.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/app/Flags.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/app/TestingEntryPoint.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/domain/Authority.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/domain/AuthorityUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/entity/EntityModule.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/entity/GameEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/entity/UserEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/persistence/GameQueries.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/persistence/HibernateFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/persistence/PersistenceModule.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/persistence/PhysicalNamingStrategyImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/persistence/UserQueries.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/service/AbstractProtobufService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/service/AuthorityProtobufService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/service/FallbackService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/service/GameUpdatingService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/service/HttpServerExchangeMessageWrapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/service/ListGameService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/service/ServiceModule.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/service/UndertowHttpHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/service/UserProtobufService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/service/package-info.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/main/java/com/bbuhot/server/util/BbuhotThreadPool.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bbuhot_server/src/test/java/com/bbuhot/server/domain/AuthorityUtilTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../settings.gradle" beforeDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/dist/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-505061456">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.2" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER">
+    <package-json value="$PROJECT_DIR$/package.json" />
+  </component>
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodeModulesDirectoryManager">
+    <handled-path value="$PROJECT_DIR$/node_modules" />
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths>
+      <path value="$PROJECT_DIR$/package.json" />
+    </packageJsonPaths>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="476" />
+    <option name="y" value="41" />
+    <option name="width" value="1350" />
+    <option name="height" value="1020" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane" />
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs.protractor.protractor_package" value="$PROJECT_DIR$/node_modules/protractor" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="npm.Angular CLI Server">
+    <configuration name="Tests" type="JavaScriptTestRunnerKarma" factoryName="Karma">
+      <config-file value="$PROJECT_DIR$/src/karma.conf.js" />
+      <karma-package-dir value="$PROJECT_DIR$/node_modules/@angular/cli" />
+      <working-directory value="$PROJECT_DIR$" />
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="E2E Tests" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="$PROJECT_DIR$/e2e/protractor.conf.js" />
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="Angular Application" type="JavascriptDebugType" factoryName="JavaScript Debug" uri="http://localhost:4200">
+      <method v="2" />
+    </configuration>
+    <configuration name="Angular CLI Server" type="js.build_tools.npm" factoryName="npm">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="JavaScript Debug.Angular Application" />
+      <item itemvalue="Karma.Tests" />
+      <item itemvalue="Protractor.E2E Tests" />
+      <item itemvalue="npm.Angular CLI Server" />
+    </list>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5b5ab7f3-32c7-4f1f-a74e-5d3c76429526" name="Default Changelist" comment="" />
+      <created>1545055808556</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1545055808556</updated>
+      <workItem from="1545055810713" duration="28000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="28000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="67" y="27" width="1853" height="1053" extended-state="6" />
+    <layout>
+      <window_info id="npm" side_tool="true" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24972618" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" visible="true" weight="0.32925472" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+</project>
