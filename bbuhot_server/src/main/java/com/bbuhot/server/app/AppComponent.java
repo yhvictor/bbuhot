@@ -9,8 +9,7 @@ import javax.inject.Singleton;
 
 @Singleton
 @Component(
-    modules = {
-        EntityModule.class,
+    modules = {EntityModule.class,
       PersistenceModule.class,
       ServiceModule.class,
     })

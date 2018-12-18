@@ -22,8 +22,7 @@ public class UserEntity {
   @Column(nullable = false)
   private String password;
 
-  UserEntity() {
-  }
+  UserEntity() {}
 
   public int getUid() {
     return uid;

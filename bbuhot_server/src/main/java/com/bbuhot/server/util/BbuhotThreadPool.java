@@ -16,8 +16,7 @@ public class BbuhotThreadPool {
       MoreExecutors.listeningDecorator(
           Executors.newCachedThreadPool(new BbuhotThreadFactory("bbuhot-worker")));
 
-  private BbuhotThreadPool() {
-  }
+  private BbuhotThreadPool() {}
 
   private static class BbuhotThreadFactory implements ThreadFactory {
 

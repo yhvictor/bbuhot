@@ -11,8 +11,7 @@ import javax.persistence.EntityManagerFactory;
 
 public class GameQueries {
 
-  private static final String LIST_SQL = "Select g From GameEntity g join fetch g.betEntities b "
-      + "where ";
+  private static final String LIST_SQL = "Select g From GameEntity g join fetch g.betEntities b where ";
 
   private final EntityManagerFactory entityManagerFactory;
 
