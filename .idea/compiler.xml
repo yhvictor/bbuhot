@@ -4,5 +4,11 @@
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="bbuhot_protobuf_main" target="1.8" />
+      <module name="bbuhot_protobuf_test" target="1.8" />
+      <module name="bbuhot_server_main" target="1.8" />
+      <module name="bbuhot_server_test" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
