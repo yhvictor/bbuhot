@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Table(name = "bbuhot_game")
 @Entity()
@@ -49,6 +51,7 @@ public class GameEntity {
 
   @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
   @JoinColumn(name = "game_id", referencedColumnName = "id")
+  @Fetch(FetchMode.JOIN)
   @OrderBy("id")
   private List<BettingOptionEntity> betEntities;
 
