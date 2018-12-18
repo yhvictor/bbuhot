@@ -1,9 +1,13 @@
 .item {
   display: flex;
+  height: 100%;
 }
+
 .item-detail {
   display: flex;
+  width: 20%;
 }
+
 .item-detail img {
   width: 70px;
   height: 70px;
@@ -18,9 +22,11 @@
 
 .item-player {
    display: block;
-  margin-left: 150px;
-   margin-top: 50px;
+   margin: 0 25px;
+   /* margin-left: 150px;
+   margin-top: 50px; */
 }
+
 .item .item-player-name {
   position: relative;
   width:106px;
@@ -34,10 +40,27 @@
 
 .item .item-player-ratio {
   position: relative;
-  margin: auto;
   font-size:18px;
   font-family:PingFangSC-Medium;
   font-weight:500;
   color:rgba(251,13,13,1);
   line-height:25px;
+}
+
+.item-guess {
+  width: 80%;
+}
+
+.team-pic {
+  margin: 0 20px;
+}
+
+.center-button {
+  margin: 8px 0;
+}
+
+.red-font {
+  color: red;
+  font-weight: 600;
+  font-size: 20px;
 }
