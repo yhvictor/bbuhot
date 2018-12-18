@@ -11,6 +11,9 @@ import javax.persistence.EntityManagerFactory;
 
 public class GameQueries {
 
+  private static final String LIST_SQL = "Select g From GameEntity g join fetch g.betEntities b "
+      + "where ";
+
   private final EntityManagerFactory entityManagerFactory;
 
   @Inject
@@ -38,7 +41,7 @@ public class GameQueries {
     List<?> gameList =
         entityManagerFactory
             .createEntityManager()
-            .createQuery("From GameEntity g where g.id = ?1")
+            .createQuery(LIST_SQL + "g.id = ?1")
             .setParameter(1, id)
             .getResultList();
 
@@ -53,7 +56,7 @@ public class GameQueries {
     List<GameEntity> gameList =
         entityManagerFactory
             .createEntityManager()
-            .createQuery("From GameEntity g where g.status = ?1")
+            .createQuery(LIST_SQL + "g.status = ?1")
             .setParameter(1, gameStatus.value)
             .getResultList();
 

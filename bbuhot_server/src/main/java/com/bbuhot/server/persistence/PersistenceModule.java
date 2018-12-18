@@ -35,7 +35,10 @@ public class PersistenceModule {
     // properties.put(AvailableSettings.JPA_JDBC_PASSWORD, flags.getDatabase().getPassword());
 
     if (Flags.getInstance().isDebug()) {
-      properties.put(AvailableSettings.SHOW_SQL, "True");
+      properties.put(AvailableSettings.SHOW_SQL, true);
+      properties.put(AvailableSettings.FORMAT_SQL, true);
+    } else {
+      properties.put(AvailableSettings.USE_QUERY_CACHE, true);
     }
 
     return properties;
