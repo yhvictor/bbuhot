@@ -1,0 +1,28 @@
+plugins {
+    id 'com.moowork.node'
+}
+
+node {
+    version = '10.14.2'
+    download = true
+    nodeModulesDir = file(".")
+}
+
+task build (type: NpmTask, dependsOn: 'npmInstall') {
+    group = 'build'
+    args = ['run', 'build']
+}
+
+task cleanProtoJsFolder(type: Delete) {
+    group 'gen-proto'
+    delete "${projectDir}/src/proto"
+}
+
+task copyProtoJsToClient(type: Copy) {
+    group 'gen-proto'
+    dependsOn ':bbuhot_protobuf:build'
+    dependsOn 'cleanProtoJsFolder'
+    from "${project(':bbuhot_protobuf').buildDir}/generated/source/proto/main/js"
+    include "**/*.js"
+    into "${projectDir}/src/proto"
+}
