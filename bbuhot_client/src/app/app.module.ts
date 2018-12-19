@@ -11,20 +11,25 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 
+import { AppRoutingModule } from './app-routing.module';
+import { CompetitionComponent } from './competition/competition.component';
+
 registerLocaleData(zh);
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
-    SpinachItemsComponent
+    SpinachItemsComponent,
+    CompetitionComponent,
   ],
   imports: [
     BrowserModule,
     NgZorroAntdModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    AppRoutingModule
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent]
