@@ -1,7 +1,9 @@
+* {
+    margin: 0;
+    padding: 0;
+}
 .layout-bg {
-    margin: auto;
     text-align: center;
-    width: 1110px;
 }
 :host ::ng-deep .ant-layout-header,
 :host ::ng-deep .ant-layout-footer {
@@ -11,16 +13,27 @@
 }
 
 :host ::ng-deep .ant-layout-content {
-    background: rgba(16, 142, 233, 1);
     color: #fff;
     text-align: center;
-    min-height: 120px;
-    line-height: 120px;
-    margin: auto;
     margin-top: 33px;
 }
 
+.content-bg {
+    display: flex;
+    margin: auto;
+    justify-content: center;
+    align-items: flex-end;
+    width: 1110px;
+}
+
 .player {
-    max-width: 360px;
-    max-width: 500px;
+    padding: 0;
+    width: 360px;
+    height: 500px;
+}
+.detail {
+    width: 320px;
+    height: 486px;
+    margin-left: 35px;
+    margin-right: 35px;
 }

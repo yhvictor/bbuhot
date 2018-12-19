@@ -20,6 +20,7 @@
     font-weight:900;
     color:rgba(255,255,255,1);
     line-height:51px;
+    margin-top: 21px;
 }
 
 .player-ratio {
@@ -30,5 +31,6 @@
     font-weight:600;
     color:rgba(255,255,255,1);
     line-height:78px;
+    margin-top: 24px;
 }
 

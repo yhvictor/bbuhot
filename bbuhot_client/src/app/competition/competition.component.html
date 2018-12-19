@@ -7,17 +7,19 @@
 		</div>
 	</nz-header>
 	<nz-content>
-		<div nz-row nzGutter="16" nzType="flex" nzJustify="center" nzAlign="middle">
-			<div class="player" nz-col nzSpan="6">
+		<!--<div nz-row nzGutter="16" nzType="flex" nzJustify="center" nzAlign="bottom">-->
+        <div class="content-bg">
+            <div class="player">
 				<app-competition-player></app-competition-player>
 			</div>
-			<div class="div2" nz-col nzSpan="4">
+            <div class="detail">
 				<app-competition-detail></app-competition-detail>
 			</div>
-			<div class="player" nz-col nzSpan="6">
+			<div class="player">
 				<app-competition-player></app-competition-player>
 			</div>
 		</div>
+		<!--</div>-->
 	</nz-content>
 	<nz-footer>预留footer</nz-footer>
 	</div>
