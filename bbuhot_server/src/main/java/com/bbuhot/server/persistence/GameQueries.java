@@ -11,7 +11,7 @@ import javax.persistence.EntityManagerFactory;
 
 public class GameQueries {
 
-  private static final String LIST_SQL = "Select g From GameEntity g join fetch g.betEntities b where ";
+  private static final String LIST_SQL = "Select g From GameEntity g where ";
 
   private final EntityManagerFactory entityManagerFactory;
 
@@ -37,17 +37,9 @@ public class GameQueries {
   }
 
   public Optional<GameEntity> queryById(int id) {
-    List<?> gameList =
-        entityManagerFactory
-            .createEntityManager()
-            .createQuery(LIST_SQL + "g.id = ?1")
-            .setParameter(1, id)
-            .getResultList();
-
-    if (gameList.size() > 1) {
-      throw new IllegalStateException("Too many results.");
-    }
-    return gameList.stream().findFirst().map(object -> (GameEntity) object);
+    GameEntity gameEntity =
+        entityManagerFactory.createEntityManager().find(GameEntity.class, id);
+    return Optional.of(gameEntity);
   }
 
   public List<GameEntity> queryByStatus(GameStatus gameStatus) {

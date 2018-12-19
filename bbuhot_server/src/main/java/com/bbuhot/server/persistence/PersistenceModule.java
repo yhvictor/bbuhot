@@ -28,6 +28,14 @@ public class PersistenceModule {
     properties.put(AvailableSettings.USER, Flags.getInstance().getDatabase().getUser());
     properties.put(AvailableSettings.PASS, Flags.getInstance().getDatabase().getPassword());
 
+    // Optimize
+    properties.put(AvailableSettings.ORDER_INSERTS, true);
+    properties.put(AvailableSettings.ORDER_UPDATES, true);
+    properties.put(AvailableSettings.C3P0_MIN_SIZE, 5);
+    properties.put(AvailableSettings.C3P0_MAX_SIZE, 20);
+    properties.put(AvailableSettings.C3P0_TIMEOUT, 1800);
+    properties.put(AvailableSettings.C3P0_MAX_STATEMENTS, 50);
+
     // Standard JPA connection properties
     // properties.put(AvailableSettings.JPA_JDBC_DRIVER, Driver.class.getName());
     // properties.put(AvailableSettings.JPA_JDBC_URL, flags.getDatabase().getUrl());
@@ -37,8 +45,10 @@ public class PersistenceModule {
     if (Flags.getInstance().isDebug()) {
       properties.put(AvailableSettings.SHOW_SQL, true);
       properties.put(AvailableSettings.FORMAT_SQL, true);
+      // properties.put(AvailableSettings.GENERATE_STATISTICS, true);
     } else {
-      properties.put(AvailableSettings.USE_QUERY_CACHE, true);
+      // TODO(yhvictor): enable.
+      // properties.put(AvailableSettings.USE_QUERY_CACHE, true);
     }
 
     return properties;
