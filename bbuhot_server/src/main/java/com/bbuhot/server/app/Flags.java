@@ -1,5 +1,8 @@
 package com.bbuhot.server.app;
 
+import com.google.common.collect.ImmutableSet;
+import java.util.Set;
+
 public class Flags {
 
   private static Flags flags = new Flags();
@@ -9,6 +12,7 @@ public class Flags {
   private final String host = "0.0.0.0";
   private final int port = 8080;
   private final boolean isDebug = true;
+  private final Set<Integer> adminGroups = ImmutableSet.of(1, 2, 3);
 
   private Flags() {}
 
@@ -34,6 +38,10 @@ public class Flags {
 
   public boolean isDebug() {
     return isDebug;
+  }
+
+  public Set<Integer> getAdminGroups() {
+    return adminGroups;
   }
 
   public static class Database {

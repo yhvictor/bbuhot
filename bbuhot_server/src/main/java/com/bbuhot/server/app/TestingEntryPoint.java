@@ -3,7 +3,7 @@ package com.bbuhot.server.app;
 import com.bbuhot.server.entity.GameEntity;
 import com.bbuhot.server.entity.GameEntity.BettingOptionEntity;
 import com.bbuhot.server.persistence.GameQueries;
-import com.bbuhot.server.persistence.GameQueries.GameStatus;
+import com.bbuhot.server.persistence.GameQueries.GameEntityStatus;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -35,27 +35,27 @@ public class TestingEntryPoint {
     BettingOptionEntity bettingOptionEntity2 = new BettingOptionEntity();
     bettingOptionEntity2.setName("2123123");
     bettingOptionEntity2.setOdds(2123123);
-    gameEntity.getBetEntities().add(bettingOptionEntity);
-    gameEntity.getBetEntities().add(bettingOptionEntity2);
+    gameEntity.getBettingOptionEntities().add(bettingOptionEntity);
+    gameEntity.getBettingOptionEntities().add(bettingOptionEntity2);
 
     gameQueries.create(gameEntity);
     System.out.println("adfasdfasdfsdaf" + gameEntity.getId());
     gameEntity.setName("yyyhhhh");
 
-    gameEntity.getBetEntities().remove(1);
+    gameEntity.getBettingOptionEntities().remove(1);
     BettingOptionEntity bettingOptionEntity3 = new BettingOptionEntity();
     bettingOptionEntity3.setName("gsdfgaef");
     bettingOptionEntity3.setOdds(231251234);
-    gameEntity.getBetEntities().add(bettingOptionEntity3);
+    gameEntity.getBettingOptionEntities().add(bettingOptionEntity3);
 
     gameQueries.update(gameEntity);
 
-    List<GameEntity> games = gameQueries.queryByStatus(GameStatus.DRAFT);
+    List<GameEntity> games = gameQueries.queryByStatus(GameEntityStatus.DRAFT);
     for (GameEntity game : games) {
       System.out.println(game.getId());
       System.out.println(game.getName());
       System.out.println(game.getDescription());
-      for (BettingOptionEntity bet : game.getBetEntities()) {
+      for (BettingOptionEntity bet : game.getBettingOptionEntities()) {
         System.out.println("Bets: " + bet.getName() + " " + bet.getOdds());
       }
     }

@@ -4,7 +4,7 @@ import com.bbuhot.server.domain.Authority;
 import com.bbuhot.server.entity.GameEntity;
 import com.bbuhot.server.entity.GameEntity.BettingOptionEntity;
 import com.bbuhot.server.persistence.GameQueries;
-import com.bbuhot.server.persistence.GameQueries.GameStatus;
+import com.bbuhot.server.persistence.GameQueries.GameEntityStatus;
 import com.bbuhot.server.service.AuthReply.AuthErrorCode;
 import com.bbuhot.server.service.Game.BettingOption;
 import java.sql.Timestamp;
@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
 
-class GameUpdatingService extends AbstractProtobufService<AdminGameRequest, AdminGameReply> {
+class AdminGameUpdatingService extends AbstractProtobufService<AdminGameRequest, AdminGameReply> {
 
   private final Authority authority;
   private final GameQueries gameQueries;
 
   @Inject
-  GameUpdatingService(Authority authority, GameQueries gameQueries) {
+  AdminGameUpdatingService(Authority authority, GameQueries gameQueries) {
     this.authority = authority;
     this.gameQueries = gameQueries;
   }
@@ -34,15 +34,16 @@ class GameUpdatingService extends AbstractProtobufService<AdminGameRequest, Admi
 
     gameBuild.setId(gameEntity.getId());
     gameBuild.setName(gameEntity.getName());
-    gameBuild.setStatus(GameStatus.valueOf(gameEntity.getStatus()).serviceStatus);
+    gameBuild.setStatus(GameEntityStatus.valueOf(gameEntity.getStatus()).serviceStatus);
     gameBuild.setDescription(gameEntity.getDescription());
     gameBuild.setNormalUserVisible(gameEntity.isNormalUserVisible());
     gameBuild.setBetOptionLimit(gameEntity.getBetOptionLimit());
     gameBuild.setBetAmountLowest(gameEntity.getBetAmountLowest());
     gameBuild.setBetAmountHighest(gameEntity.getBetAmountHighest());
     gameBuild.setEndTimeMs(gameEntity.getEndTimeMs().getTime());
+    gameBuild.setWinningOption(gameEntity.getWinningBetOption());
 
-    for (BettingOptionEntity betOption : gameEntity.getBetEntities()) {
+    for (BettingOptionEntity betOption : gameEntity.getBettingOptionEntities()) {
       gameBuild.addBettingOptions(
           BettingOption.newBuilder().setName(betOption.getName()).setOdds(betOption.getOdds()));
     }
@@ -59,7 +60,7 @@ class GameUpdatingService extends AbstractProtobufService<AdminGameRequest, Admi
     gameEntity.setEndTimeMs(new Timestamp(game.getEndTimeMs()));
     gameEntity.setNormalUserVisible(game.getNormalUserVisible());
 
-    List<BettingOptionEntity> betOptionEntities = gameEntity.getBetEntities();
+    List<BettingOptionEntity> betOptionEntities = gameEntity.getBettingOptionEntities();
 
     while (betOptionEntities.size() > game.getBettingOptionsCount()) {
       betOptionEntities.remove(betOptionEntities.size() - 1);

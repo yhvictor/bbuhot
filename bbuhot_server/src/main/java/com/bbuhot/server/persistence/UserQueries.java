@@ -15,8 +15,7 @@ public class UserQueries {
   }
 
   public Optional<UserEntity> queryUserById(int uid) {
-    UserEntity user =
-        entityManagerFactory.createEntityManager().find(UserEntity.class, uid);
-    return Optional.of(user);
+    UserEntity user = entityManagerFactory.createEntityManager().find(UserEntity.class, uid);
+    return Optional.ofNullable(user);
   }
 }

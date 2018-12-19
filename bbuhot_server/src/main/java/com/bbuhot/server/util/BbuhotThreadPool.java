@@ -1,6 +1,7 @@
 package com.bbuhot.server.util;
 
 import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -15,6 +16,8 @@ public class BbuhotThreadPool {
   public static final ListeningExecutorService workerThreadPool =
       MoreExecutors.listeningDecorator(
           Executors.newCachedThreadPool(new BbuhotThreadFactory("bbuhot-worker")));
+  public static final ListeningScheduledExecutorService scheduleExecutor = MoreExecutors
+      .listeningDecorator(Executors.newScheduledThreadPool(1));
 
   private BbuhotThreadPool() {}
 

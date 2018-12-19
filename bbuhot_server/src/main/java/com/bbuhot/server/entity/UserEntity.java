@@ -22,6 +22,9 @@ public class UserEntity {
   @Column(nullable = false)
   private String password;
 
+  @Column(nullable = false)
+  private int groupId;
+
   UserEntity() {}
 
   public int getUid() {
@@ -34,5 +37,9 @@ public class UserEntity {
 
   public String getPassword() {
     return password;
+  }
+
+  public int getGroupId() {
+    return groupId;
   }
 }

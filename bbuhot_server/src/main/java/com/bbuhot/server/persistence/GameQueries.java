@@ -37,39 +37,36 @@ public class GameQueries {
   }
 
   public Optional<GameEntity> queryById(int id) {
-    GameEntity gameEntity =
-        entityManagerFactory.createEntityManager().find(GameEntity.class, id);
-    return Optional.of(gameEntity);
+    GameEntity gameEntity = entityManagerFactory.createEntityManager().find(GameEntity.class, id);
+    return Optional.ofNullable(gameEntity);
   }
 
-  public List<GameEntity> queryByStatus(GameStatus gameStatus) {
+  public List<GameEntity> queryByStatus(GameEntityStatus gameEntityStatus) {
     @SuppressWarnings("unchecked")
     List<GameEntity> gameList =
         entityManagerFactory
             .createEntityManager()
-            .createQuery(LIST_SQL + "g.status = ?1")
-            .setParameter(1, gameStatus.value)
+            .createQuery(LIST_SQL + "g.status = ?1").setParameter(1, gameEntityStatus.value)
             .getResultList();
 
     return gameList;
   }
 
-  public enum GameStatus {
+  public enum GameEntityStatus {
     DRAFT(0, Game.Status.DRAFT),
     PUBLISHED(1, Status.PUBLISHED),
     SETTLED(2, Status.SETTLED),
-    CANCELLED(3, Status.CANCELLED),
     ;
     public int value;
     public Game.Status serviceStatus;
 
-    GameStatus(int value, Game.Status serviceStatus) {
+    GameEntityStatus(int value, Game.Status serviceStatus) {
       this.value = value;
       this.serviceStatus = serviceStatus;
     }
 
-    public static GameStatus valueOf(int value) {
-      for (GameStatus status : GameStatus.values()) {
+    public static GameEntityStatus valueOf(int value) {
+      for (GameEntityStatus status : GameEntityStatus.values()) {
         if (status.value == value) {
           return status;
         }
@@ -78,8 +75,8 @@ public class GameQueries {
       throw new IllegalStateException("Wrong mapping value");
     }
 
-    public static GameStatus valueOf(Game.Status value) {
-      for (GameStatus status : GameStatus.values()) {
+    public static GameEntityStatus valueOf(Game.Status value) {
+      for (GameEntityStatus status : GameEntityStatus.values()) {
         if (status.serviceStatus == value) {
           return status;
         }

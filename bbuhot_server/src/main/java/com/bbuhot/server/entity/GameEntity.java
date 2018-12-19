@@ -49,11 +49,14 @@ public class GameEntity {
   @Column(name = "end_time_ms")
   private Timestamp endTimeMs;
 
+  @Column(name = "winning_bet_option")
+  private int winningBetOption = -2;
+
   @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
   @JoinColumn(name = "game_id", referencedColumnName = "id")
   @OrderBy("id")
   @Fetch(FetchMode.SUBSELECT)
-  private List<BettingOptionEntity> betEntities;
+  private List<BettingOptionEntity> bettingOptionEntities = new ArrayList<>();
 
   public GameEntity() {}
 
@@ -129,15 +132,16 @@ public class GameEntity {
     this.endTimeMs = endTimeMs;
   }
 
-  public List<BettingOptionEntity> getBetEntities() {
-    if (betEntities == null) {
-      betEntities = new ArrayList<>();
-    }
-    return betEntities;
+  public List<BettingOptionEntity> getBettingOptionEntities() {
+    return bettingOptionEntities;
   }
 
-  public void setBetEntities(List<BettingOptionEntity> betEntities) {
-    this.betEntities = betEntities;
+  public int getWinningBetOption() {
+    return winningBetOption;
+  }
+
+  public void setWinningBetOption(int winningBetOption) {
+    this.winningBetOption = winningBetOption;
   }
 
   @Table(name = "bbuhot_betting_options")
