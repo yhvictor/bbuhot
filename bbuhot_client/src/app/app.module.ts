@@ -13,6 +13,8 @@ import zh from '@angular/common/locales/zh';
 
 import { AppRoutingModule } from './app-routing.module';
 import { CompetitionComponent } from './competition/competition.component';
+import { CompetitionPlayerComponent } from './competition-player/competition-player.component';
+import { CompetitionDetailComponent } from './competition-detail/competition-detail.component';
 
 registerLocaleData(zh);
 
@@ -22,6 +24,8 @@ registerLocaleData(zh);
     HomepageComponent,
     SpinachItemsComponent,
     CompetitionComponent,
+    CompetitionPlayerComponent,
+    CompetitionDetailComponent,
   ],
   imports: [
     BrowserModule,

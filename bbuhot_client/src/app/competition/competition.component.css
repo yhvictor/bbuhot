@@ -1,0 +1,26 @@
+.layout-bg {
+    margin: auto;
+    text-align: center;
+    width: 1110px;
+}
+:host ::ng-deep .ant-layout-header,
+:host ::ng-deep .ant-layout-footer {
+    background: #7dbcea;
+    color: #fff;
+    text-align: center;
+}
+
+:host ::ng-deep .ant-layout-content {
+    background: rgba(16, 142, 233, 1);
+    color: #fff;
+    text-align: center;
+    min-height: 120px;
+    line-height: 120px;
+    margin: auto;
+    margin-top: 33px;
+}
+
+.player {
+    max-width: 360px;
+    max-width: 500px;
+}
