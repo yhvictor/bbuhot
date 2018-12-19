@@ -4,8 +4,8 @@
 }
 .layout-bg {
     text-align: center;
+    background-color: white;
 }
-:host ::ng-deep .ant-layout-header,
 :host ::ng-deep .ant-layout-footer {
     background: #7dbcea;
     color: #fff;
@@ -24,6 +24,7 @@
     justify-content: center;
     align-items: flex-end;
     width: 1110px;
+    padding-bottom: 47px;
 }
 
 .player {
@@ -37,3 +38,4 @@
     margin-left: 35px;
     margin-right: 35px;
 }
+

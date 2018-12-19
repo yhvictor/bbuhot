@@ -69,6 +69,8 @@
     border-radius:50px;
     display: inline-block;
     vertical-align: middle;
+    line-height: 28px;
+
 }
 
 .match-dead-line-time {
