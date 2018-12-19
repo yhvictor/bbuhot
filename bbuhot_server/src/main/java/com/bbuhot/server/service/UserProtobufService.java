@@ -23,7 +23,7 @@ class UserProtobufService extends AbstractProtobufService<AuthReply.User, AuthRe
 
   @Override
   AuthReply.User callProtobufServiceImpl(AuthReply.User userDto) {
-    if (!Flags.getInstance().isDebug()) {
+    if (!Flags.isDebug()) {
       throw new IllegalStateException("Debug only service.");
     }
     Optional<UserEntity> optionalUser = userQueries.queryUserById(userDto.getUid());

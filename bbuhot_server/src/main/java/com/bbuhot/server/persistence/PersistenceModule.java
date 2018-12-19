@@ -24,7 +24,7 @@ public class PersistenceModule {
 
     // Hibernate connection properties
     properties.put(AvailableSettings.DRIVER, Driver.class.getName());
-    properties.put(AvailableSettings.URL, Flags.getInstance().getDatabase().getUrl());
+    properties.put(AvailableSettings.URL, Flags.getInstance().getDatabase().getConnectionUrl());
     properties.put(AvailableSettings.USER, Flags.getInstance().getDatabase().getUser());
     properties.put(AvailableSettings.PASS, Flags.getInstance().getDatabase().getPassword());
 
@@ -42,7 +42,7 @@ public class PersistenceModule {
     // properties.put(AvailableSettings.JPA_JDBC_USER, flags.getDatabase().getUser());
     // properties.put(AvailableSettings.JPA_JDBC_PASSWORD, flags.getDatabase().getPassword());
 
-    if (Flags.getInstance().isDebug()) {
+    if (Flags.isDebug()) {
       properties.put(AvailableSettings.SHOW_SQL, true);
       properties.put(AvailableSettings.FORMAT_SQL, true);
       // properties.put(AvailableSettings.GENERATE_STATISTICS, true);

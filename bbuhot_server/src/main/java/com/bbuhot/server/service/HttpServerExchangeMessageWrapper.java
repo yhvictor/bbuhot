@@ -86,7 +86,7 @@ class HttpServerExchangeMessageWrapper<InputMessage extends Message> {
             assert result != null;
             writeOutputMessageInternal(result);
 
-            if (Flags.getInstance().isDebug()) {
+            if (Flags.isDebug()) {
               long endTime = System.nanoTime();
               System.out.println("Round time consume: " + (endTime - startTime));
             }
@@ -96,7 +96,7 @@ class HttpServerExchangeMessageWrapper<InputMessage extends Message> {
           public void onFailure(Throwable t) {
             writeErrorMessage(t);
 
-            if (Flags.getInstance().isDebug()) {
+            if (Flags.isDebug()) {
               long endTime = System.nanoTime();
               System.out.println("Round time consume: " + (endTime - startTime));
             }

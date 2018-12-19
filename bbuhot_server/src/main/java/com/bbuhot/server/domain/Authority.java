@@ -22,8 +22,7 @@ public class Authority {
       throw new IllegalStateException("No user with such uid: " + authRequest.getUid());
     });
 
-    if (!AuthorityUtil.isValid(
-        Flags.getInstance().getDiscuzConfig().getAuthkey(),
+    if (!AuthorityUtil.isValid(Flags.getInstance().getDiscuzConfig().getAuthKey(),
         authRequest.getSaltKey(),
         authRequest.getAuth(),
         userEntity.getUid(),
@@ -48,6 +47,6 @@ public class Authority {
    * Very simplify admin group check. We might need to support more in future.
    */
   private boolean isAdminGroup(UserEntity userEntity) {
-    return Flags.getInstance().getAdminGroups().contains(userEntity.getGroupId());
+    return Flags.getAdminGroups().contains(userEntity.getGroupId());
   }
 }

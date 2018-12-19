@@ -27,7 +27,7 @@ public class PhysicalNamingStrategyImpl extends PhysicalNamingStrategyStandardIm
         continue;
       }
 
-      if (Flags.getInstance().isDebug()) {
+      if (Flags.isDebug()) {
         System.out.println(tableName + " -> " + modifiedTableName);
       }
 

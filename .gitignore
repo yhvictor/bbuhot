@@ -57,3 +57,6 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
+
+# Don't upload local configuration.
+bbuhot_server/configuration.json
