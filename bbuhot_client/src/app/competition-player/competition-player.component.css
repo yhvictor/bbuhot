@@ -5,12 +5,19 @@
     background-image: url("../../assets/image/competition/card-bg-batman@2x.png");
     background-size:100% 100%;
     background-repeat: no-repeat;
+    box-shadow: 5px 5px 5px #888888;
 }
 
-.player-logo img{
+.player-logo-bg {
     width: 200px;
     height: 200px;
+    background-color: rgba(255, 255, 255, 0.1);
     margin-top: 63px;
+}
+.player-logo img{
+    width: 103px;
+    height: 160px;
+    margin-top: 20px;
 }
 .player-name {
     width:176px;
