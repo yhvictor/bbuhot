@@ -2,14 +2,12 @@ package com.bbuhot.server.app;
 
 import com.bbuhot.server.config.Configuration;
 import com.google.common.collect.ImmutableSet;
-import com.google.errorprone.annotations.RestrictedApi;
 import com.google.protobuf.util.JsonFormat;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
-import org.jetbrains.annotations.TestOnly;
 
 public class Flags {
 
@@ -37,7 +35,6 @@ public class Flags {
     initializeWithConfiguration(configurationBuilder.build());
   }
 
-  @RestrictedApi(explanation = "Test only", link = "", whitelistAnnotations = {TestOnly.class})
   public static void initializeWithConfiguration(Configuration configuration) {
     Flags.configuration = configuration;
     adminGroups = ImmutableSet.copyOf(configuration.getDiscuzConfig().getAdminGroupList());
