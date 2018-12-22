@@ -5,15 +5,15 @@ import static junit.framework.TestCase.assertEquals;
 import com.bbuhot.server.entity.UserEntity;
 import com.bbuhot.server.persistence.UserQueries;
 import com.bbuhot.server.util.TestMessageUtil;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import org.jetbrains.annotations.TestOnly;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-@TestOnly
 public class AdminGameServicesTest {
 
   @Inject
@@ -30,6 +30,7 @@ public class AdminGameServicesTest {
 
   @Before
   public void setUp() {
+    Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
     TestServiceComponent.getInstance().inject(this);
 
     UserEntity user = new UserEntity();

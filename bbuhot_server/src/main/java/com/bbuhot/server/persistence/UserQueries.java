@@ -1,12 +1,11 @@
 package com.bbuhot.server.persistence;
 
+import com.bbuhot.errorprone.TestOnly;
 import com.bbuhot.server.entity.UserEntity;
-import com.google.errorprone.annotations.RestrictedApi;
 import java.util.Optional;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import org.jetbrains.annotations.TestOnly;
 
 public class UserQueries {
 
@@ -22,7 +21,7 @@ public class UserQueries {
     return Optional.ofNullable(user);
   }
 
-  @RestrictedApi(explanation = "Test only", link = "", whitelistAnnotations = {TestOnly.class})
+  @TestOnly
   public void save(UserEntity userEntity) {
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     entityManager.getTransaction().begin();

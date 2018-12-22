@@ -1,13 +1,12 @@
 package com.bbuhot.server.entity;
 
-import com.google.errorprone.annotations.RestrictedApi;
+import com.bbuhot.errorprone.TestOnly;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import org.jetbrains.annotations.TestOnly;
 
 // TODO(yh_victor): we should not need to support custom prefix.
 @Table(name = "pre_common_member")
@@ -34,7 +33,7 @@ public class UserEntity {
     return uid;
   }
 
-  @RestrictedApi(explanation = "Test only", link = "", whitelistAnnotations = {TestOnly.class})
+  @TestOnly
   public void setUid(int uid) {
     this.uid = uid;
   }
@@ -43,7 +42,7 @@ public class UserEntity {
     return username;
   }
 
-  @RestrictedApi(explanation = "Test only", link = "", whitelistAnnotations = {TestOnly.class})
+  @TestOnly
   public void setUsername(String username) {
     this.username = username;
   }
@@ -52,7 +51,7 @@ public class UserEntity {
     return password;
   }
 
-  @RestrictedApi(explanation = "Test only", link = "", whitelistAnnotations = {TestOnly.class})
+  @TestOnly
   public void setPassword(String password) {
     this.password = password;
   }
@@ -61,7 +60,7 @@ public class UserEntity {
     return groupId;
   }
 
-  @RestrictedApi(explanation = "Test only", link = "", whitelistAnnotations = {TestOnly.class})
+  @TestOnly
   public void setGroupId(int groupId) {
     this.groupId = groupId;
   }

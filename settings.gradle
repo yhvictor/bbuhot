@@ -1,3 +1,5 @@
-include ':bbuhot_client'
-include ':bbuhot_server'
-include ':bbuhot_protobuf'
+include 'bbuhot_client'
+include 'bbuhot_custom_error_prone'
+include 'bbuhot_protobuf'
+include 'bbuhot_server'
+

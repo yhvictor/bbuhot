@@ -26,9 +26,13 @@ idea {
 sourceCompatibility = 1.8
 
 dependencies {
-    errorprone("com.google.errorprone:error_prone_core:2.3.2")
+    errorproneJavac 'com.google.errorprone:error_prone_core:2.3.2'
+
+    errorproneJavac project(':bbuhot_custom_error_prone')
+    implementation project(':bbuhot_custom_error_prone')
+
     implementation project(':bbuhot_protobuf')
-    implementation 'org.jetbrains:annotations:16.0.3'
+
     implementation 'com.google.dagger:dagger:2.19'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.19'
 
@@ -40,7 +44,7 @@ dependencies {
     implementation 'io.undertow:undertow-core:2.0.1.Final'
     implementation 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'
     implementation 'org.hibernate:hibernate-core:5.4.0.Final'
-    implementation 'org.hibernate:hibernate-c3p0:5.4.0.Final'
+    //implementation 'org.hibernate:hibernate-c3p0:5.4.0.Final'
 
     testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.19'
     testImplementation group: 'junit', name: 'junit', version: '4.12'

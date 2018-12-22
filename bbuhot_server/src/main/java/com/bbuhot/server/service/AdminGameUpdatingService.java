@@ -94,7 +94,7 @@ class AdminGameUpdatingService extends AbstractProtobufService<AdminGameRequest,
     GameEntity gameEntity;
     if (id > 0) { // update
       Optional<GameEntity> optionalGame = gameQueries.queryById(id);
-      if (optionalGame.isEmpty()) {
+      if (!optionalGame.isPresent()) {
         throw new IllegalStateException("No such game.");
       }
       gameEntity = optionalGame.get();
