@@ -40,8 +40,8 @@ class ListGameService extends AbstractProtobufService<ListGameRequest, ListGameR
       return reply.build();
     }
 
-    List<GameEntity> gameEntities = gameQueries
-        .queryByStatus(GameEntityStatus.valueOf(listGameRequest.getGameStatus()));
+    List<GameEntity> gameEntities =
+        gameQueries.queryByStatus(GameEntityStatus.valueOf(listGameRequest.getGameStatus()));
 
     for (GameEntity gameEntity : gameEntities) {
       if (!listGameRequest.getIsAdminRequest() && !gameEntity.isNormalUserVisible()) {

@@ -9,9 +9,7 @@ import org.hibernate.tool.schema.Action;
 @Module
 public class TestPersistenceModule extends PersistenceModule {
 
-  /**
-   * Creates connection for in memory DB.
-   */
+  /** Creates connection for in memory DB. */
   @Override
   protected Map<String, Object> generateConnectionProperties() {
     Map<String, Object> properties = new HashMap<>();

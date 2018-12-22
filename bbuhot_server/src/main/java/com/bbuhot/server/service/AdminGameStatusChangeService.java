@@ -8,8 +8,8 @@ import com.bbuhot.server.persistence.GameQueries.GameEntityStatus;
 import com.bbuhot.server.service.AuthReply.AuthErrorCode;
 import javax.inject.Inject;
 
-class AdminGameStatusChangeService extends
-    AbstractProtobufService<AdminGameStatusRequest, AdminGameStatusReply> {
+class AdminGameStatusChangeService
+    extends AbstractProtobufService<AdminGameStatusRequest, AdminGameStatusReply> {
 
   private final Authority authority;
   private final GameStatusChanging gameStatusChanging;
@@ -34,17 +34,22 @@ class AdminGameStatusChangeService extends
       return reply.build();
     }
 
-    if (gameStatusRequest.getGameStatus() == Game.Status.SETTLED && !gameStatusRequest
-        .hasWinningOption()) {
+    if (gameStatusRequest.getGameStatus() == Game.Status.SETTLED
+        && !gameStatusRequest.hasWinningOption()) {
       throw new IllegalStateException("Game.Status is SETTLED, but winning_option is not set.");
     }
 
-    int winningOption = gameStatusRequest.getGameStatus() == Game.Status.SETTLED ? gameStatusRequest
-        .getWinningOption() : -2;
+    int winningOption =
+        gameStatusRequest.getGameStatus() == Game.Status.SETTLED
+            ? gameStatusRequest.getWinningOption()
+            : -2;
 
     try {
-      GameEntity gameEntity = gameStatusChanging.changeGameStatus(gameStatusRequest.getGameId(),
-          GameEntityStatus.valueOf(gameStatusRequest.getGameStatus()), winningOption);
+      GameEntity gameEntity =
+          gameStatusChanging.changeGameStatus(
+              gameStatusRequest.getGameId(),
+              GameEntityStatus.valueOf(gameStatusRequest.getGameStatus()),
+              winningOption);
       reply.setGame(AdminGameUpdatingService.toGame(gameEntity));
     } catch (GameStatusChangingException e) {
       reply.setGameStatusErrorCode(e.getErrorCode());

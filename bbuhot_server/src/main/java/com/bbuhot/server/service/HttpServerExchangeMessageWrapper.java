@@ -58,12 +58,14 @@ class HttpServerExchangeMessageWrapper<InputMessage extends Message> {
       switch (getInputContentType()) {
         case JSON:
           JsonFormat.parser()
-              .merge(new InputStreamReader(new ByteArrayInputStream(bytes), StandardCharsets.UTF_8),
+              .merge(
+                  new InputStreamReader(new ByteArrayInputStream(bytes), StandardCharsets.UTF_8),
                   builder);
           break;
         case TEXT_PROTO:
           TextFormat.getParser()
-              .merge(new InputStreamReader(new ByteArrayInputStream(bytes), StandardCharsets.UTF_8),
+              .merge(
+                  new InputStreamReader(new ByteArrayInputStream(bytes), StandardCharsets.UTF_8),
                   builder);
           break;
         case PROTO:

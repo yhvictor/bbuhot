@@ -40,7 +40,9 @@ public class GameQueries {
   public List<GameEntity> queryByStatus(GameEntityStatus gameEntityStatus) {
     @SuppressWarnings("unchecked")
     List<GameEntity> gameList =
-        entityManagerFactory.createEntityManager().createQuery(LIST_SQL + "g.status = ?1")
+        entityManagerFactory
+            .createEntityManager()
+            .createQuery(LIST_SQL + "g.status = ?1")
             .setParameter(1, gameEntityStatus.value)
             .getResultList();
 

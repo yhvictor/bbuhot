@@ -16,8 +16,8 @@ public class BbuhotThreadPool {
   public static final ListeningExecutorService workerThreadPool =
       MoreExecutors.listeningDecorator(
           Executors.newCachedThreadPool(new BbuhotThreadFactory("bbuhot-worker")));
-  public static final ListeningScheduledExecutorService scheduleExecutor = MoreExecutors
-      .listeningDecorator(Executors.newScheduledThreadPool(1));
+  public static final ListeningScheduledExecutorService scheduleExecutor =
+      MoreExecutors.listeningDecorator(Executors.newScheduledThreadPool(1));
 
   private BbuhotThreadPool() {}
 

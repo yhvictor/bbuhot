@@ -16,14 +16,19 @@ import javax.inject.Inject;
 
 public class GameStatusChanging {
 
-  private static final ImmutableMap<GameEntityStatus, Set<GameEntityStatus>> ALLOWED_STATUS_CHANGE = new ImmutableMap.Builder<GameEntityStatus, Set<GameEntityStatus>>()
-      .put(GameEntityStatus.DRAFT, ImmutableSet.of(GameEntityStatus.PUBLISHED))
-      .put(GameEntityStatus.PUBLISHED,
-          ImmutableSet.of(GameEntityStatus.PUBLISHED, GameEntityStatus.SETTLED))
-      .put(GameEntityStatus.SETTLED,
-          ImmutableSet.of(GameEntityStatus.PUBLISHED, GameEntityStatus.SETTLED)).build();
+  private static final ImmutableMap<GameEntityStatus, Set<GameEntityStatus>> ALLOWED_STATUS_CHANGE =
+      new ImmutableMap.Builder<GameEntityStatus, Set<GameEntityStatus>>()
+          .put(GameEntityStatus.DRAFT, ImmutableSet.of(GameEntityStatus.PUBLISHED))
+          .put(
+              GameEntityStatus.PUBLISHED,
+              ImmutableSet.of(GameEntityStatus.PUBLISHED, GameEntityStatus.SETTLED))
+          .put(
+              GameEntityStatus.SETTLED,
+              ImmutableSet.of(GameEntityStatus.PUBLISHED, GameEntityStatus.SETTLED))
+          .build();
 
-  private static final ConcurrentHashMap<Integer, AtomicBoolean> LOCK_MAP = new ConcurrentHashMap<>();
+  private static final ConcurrentHashMap<Integer, AtomicBoolean> LOCK_MAP =
+      new ConcurrentHashMap<>();
 
   private final GameQueries gameQueries;
 
@@ -34,9 +39,13 @@ public class GameStatusChanging {
 
   public GameEntity changeGameStatus(int gameId, GameEntityStatus newStatus, int winningOption)
       throws GameStatusChangingException {
-    GameEntity gameEntity = gameQueries.queryById(gameId).orElseGet(() -> {
-      throw new IllegalStateException("No game with such id: " + gameId);
-    });
+    GameEntity gameEntity =
+        gameQueries
+            .queryById(gameId)
+            .orElseGet(
+                () -> {
+                  throw new IllegalStateException("No game with such id: " + gameId);
+                });
 
     GameEntityStatus oldStatus = GameEntityStatus.valueOf(gameEntity.getStatus());
 
@@ -47,8 +56,10 @@ public class GameStatusChanging {
     if (newStatus == GameEntityStatus.SETTLED) {
       if (winningOption >= gameEntity.getBettingOptionEntities().size()) {
         throw new IllegalStateException(
-            "Winning option too large: " + winningOption + " / " + gameEntity
-                .getBettingOptionEntities().size());
+            "Winning option too large: "
+                + winningOption
+                + " / "
+                + gameEntity.getBettingOptionEntities().size());
       }
       if (winningOption < -1) {
         throw new IllegalStateException("Winning option too small: " + winningOption);
@@ -65,11 +76,12 @@ public class GameStatusChanging {
     }
 
     AtomicBoolean releasingLock = new AtomicBoolean();
-    Runnable releaseLock = () -> {
-      if (releasingLock.compareAndSet(false, true)) {
-        gameLock.set(false);
-      }
-    };
+    Runnable releaseLock =
+        () -> {
+          if (releasingLock.compareAndSet(false, true)) {
+            gameLock.set(false);
+          }
+        };
 
     try {
       gameEntity.setStatus(newStatus.value);
@@ -91,7 +103,8 @@ public class GameStatusChanging {
 
   private void updateBets(GameEntity gameEntity, Runnable releaseLock) {
     // TODO(yhvictor): update this.
-    BbuhotThreadPool.scheduleExecutor.schedule(() -> {}, 3000, TimeUnit.MILLISECONDS)
+    BbuhotThreadPool.scheduleExecutor
+        .schedule(() -> {}, 3000, TimeUnit.MILLISECONDS)
         .addListener(releaseLock, MoreExecutors.directExecutor());
   }
 

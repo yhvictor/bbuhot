@@ -7,7 +7,9 @@ import dagger.Component;
 import javax.inject.Singleton;
 
 @Singleton
-@Component(modules = {EntityModule.class,
+@Component(
+    modules = {
+      EntityModule.class,
       PersistenceModule.class,
       ServiceModule.class,
     })

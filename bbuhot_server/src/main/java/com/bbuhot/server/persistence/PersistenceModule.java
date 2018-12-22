@@ -30,8 +30,8 @@ public class PersistenceModule {
   private Map<String, Object> generatePersistenceProperties() {
     Map<String, Object> properties = new HashMap<>(generateConnectionProperties());
 
-    properties.put(AvailableSettings.PHYSICAL_NAMING_STRATEGY,
-        PhysicalNamingStrategyImpl.class.getName());
+    properties.put(
+        AvailableSettings.PHYSICAL_NAMING_STRATEGY, PhysicalNamingStrategyImpl.class.getName());
 
     // Optimize
     if (false) {

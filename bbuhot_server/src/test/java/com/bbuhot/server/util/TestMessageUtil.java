@@ -14,9 +14,12 @@ public class TestMessageUtil {
   public static <T extends Message> T getResourcesAsMessage(T instance, String resourceName) {
     Message.Builder builder = instance.toBuilder();
     try {
-      JsonFormat.parser().merge(new InputStreamReader(
-          TestMessageUtil.class.getClassLoader().getResourceAsStream(resourceName),
-          StandardCharsets.UTF_8), builder);
+      JsonFormat.parser()
+          .merge(
+              new InputStreamReader(
+                  TestMessageUtil.class.getClassLoader().getResourceAsStream(resourceName),
+                  StandardCharsets.UTF_8),
+              builder);
     } catch (IOException e) {
       throw new IllegalStateException(e);
     }

@@ -21,9 +21,14 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 @AutoService(BugChecker.class)
-@BugPattern(name = "TestOnlyCheck", category = Category.JDK, summary = "Test only methods are only allowed to be used in tests.", severity = SeverityLevel.ERROR, linkType = LinkType.NONE)
-public class TestOnlyCheck extends BugChecker implements MethodInvocationTreeMatcher,
-    NewClassTreeMatcher {
+@BugPattern(
+    name = "TestOnlyCheck",
+    category = Category.JDK,
+    summary = "Test only methods are only allowed to be used in tests.",
+    severity = SeverityLevel.ERROR,
+    linkType = LinkType.NONE)
+public class TestOnlyCheck extends BugChecker
+    implements MethodInvocationTreeMatcher, NewClassTreeMatcher {
 
   @Override
   public Description matchMethodInvocation(MethodInvocationTree tree, VisitorState state) {
@@ -34,15 +39,17 @@ public class TestOnlyCheck extends BugChecker implements MethodInvocationTreeMat
 
     MethodSymbol methSymbol = ASTHelpers.getSymbol(tree);
 
-    Optional<MethodSymbol> superWithTestOnly = ASTHelpers
-        .findSuperMethods(methSymbol, state.getTypes()).stream()
-        .filter((t) -> ASTHelpers.hasAnnotation(t, TestOnly.class, state)).findFirst();
+    Optional<MethodSymbol> superWithTestOnly =
+        ASTHelpers.findSuperMethods(methSymbol, state.getTypes())
+            .stream()
+            .filter((t) -> ASTHelpers.hasAnnotation(t, TestOnly.class, state))
+            .findFirst();
 
     if (!superWithTestOnly.isPresent()) {
       return Description.NO_MATCH;
     }
-    return checkRestriction(ASTHelpers.getAnnotation(superWithTestOnly.get(), TestOnly.class), tree,
-        state);
+    return checkRestriction(
+        ASTHelpers.getAnnotation(superWithTestOnly.get(), TestOnly.class), tree, state);
   }
 
   @Override
@@ -50,8 +57,8 @@ public class TestOnlyCheck extends BugChecker implements MethodInvocationTreeMat
     return checkRestriction(ASTHelpers.getAnnotation(tree, TestOnly.class), tree, state);
   }
 
-  private Description checkRestriction(@Nullable TestOnly testOnly, Tree where,
-      VisitorState state) {
+  private Description checkRestriction(
+      @Nullable TestOnly testOnly, Tree where, VisitorState state) {
     if (testOnly == null) {
       return Description.NO_MATCH;
     }

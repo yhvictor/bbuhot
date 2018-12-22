@@ -16,17 +16,12 @@ import org.junit.Test;
 
 public class AdminGameServicesTest {
 
-  @Inject
-  AdminGameUpdatingService adminGameUpdatingService;
-  @Inject
-  AdminGameStatusChangeService adminGameStatusChangeService;
-  @Inject
-  ListGameService listGameService;
+  @Inject AdminGameUpdatingService adminGameUpdatingService;
+  @Inject AdminGameStatusChangeService adminGameStatusChangeService;
+  @Inject ListGameService listGameService;
 
-  @Inject
-  UserQueries userQueries;
-  @Inject
-  EntityManagerFactory entityManagerFactory;
+  @Inject UserQueries userQueries;
+  @Inject EntityManagerFactory entityManagerFactory;
 
   @Before
   public void setUp() {
@@ -52,49 +47,58 @@ public class AdminGameServicesTest {
   @Test
   public void testAdminWorkflow() {
     // Create game.
-    AdminGameRequest adminGameRequest = TestMessageUtil
-        .getResourcesAsMessage(AdminGameRequest.getDefaultInstance(),
+    AdminGameRequest adminGameRequest =
+        TestMessageUtil.getResourcesAsMessage(
+            AdminGameRequest.getDefaultInstance(),
             "com/bbuhot/server/service/create_game_request.json");
-    AdminGameReply adminGameReplyExpected = TestMessageUtil
-        .getResourcesAsMessage(AdminGameReply.getDefaultInstance(),
+    AdminGameReply adminGameReplyExpected =
+        TestMessageUtil.getResourcesAsMessage(
+            AdminGameReply.getDefaultInstance(),
             "com/bbuhot/server/service/create_game_reply.json");
 
-    AdminGameReply adminGameReply = adminGameUpdatingService
-        .callProtobufServiceImpl(adminGameRequest);
+    AdminGameReply adminGameReply =
+        adminGameUpdatingService.callProtobufServiceImpl(adminGameRequest);
     assertEquals(adminGameReplyExpected, adminGameReply);
 
     // Update game.
-    adminGameRequest = TestMessageUtil.getResourcesAsMessage(AdminGameRequest.getDefaultInstance(),
-        "com/bbuhot/server/service/update_game_request.json");
-    adminGameReplyExpected = TestMessageUtil
-        .getResourcesAsMessage(AdminGameReply.getDefaultInstance(),
+    adminGameRequest =
+        TestMessageUtil.getResourcesAsMessage(
+            AdminGameRequest.getDefaultInstance(),
+            "com/bbuhot/server/service/update_game_request.json");
+    adminGameReplyExpected =
+        TestMessageUtil.getResourcesAsMessage(
+            AdminGameReply.getDefaultInstance(),
             "com/bbuhot/server/service/update_game_reply.json");
 
     adminGameReply = adminGameUpdatingService.callProtobufServiceImpl(adminGameRequest);
     assertEquals(adminGameReplyExpected, adminGameReply);
 
     // Publish game.
-    AdminGameStatusRequest adminGameStatusRequest = TestMessageUtil
-        .getResourcesAsMessage(AdminGameStatusRequest.getDefaultInstance(),
+    AdminGameStatusRequest adminGameStatusRequest =
+        TestMessageUtil.getResourcesAsMessage(
+            AdminGameStatusRequest.getDefaultInstance(),
             "com/bbuhot/server/service/publish_game_request.json");
-    AdminGameStatusReply adminGameStatusReplyExpected = TestMessageUtil
-        .getResourcesAsMessage(AdminGameStatusReply.getDefaultInstance(),
+    AdminGameStatusReply adminGameStatusReplyExpected =
+        TestMessageUtil.getResourcesAsMessage(
+            AdminGameStatusReply.getDefaultInstance(),
             "com/bbuhot/server/service/publish_game_reply.json");
 
-    AdminGameStatusReply adminGameStatusReply = adminGameStatusChangeService
-        .callProtobufServiceImpl(adminGameStatusRequest);
+    AdminGameStatusReply adminGameStatusReply =
+        adminGameStatusChangeService.callProtobufServiceImpl(adminGameStatusRequest);
     assertEquals(adminGameStatusReplyExpected, adminGameStatusReply);
 
     // Settle game.
-    adminGameStatusRequest = TestMessageUtil
-        .getResourcesAsMessage(AdminGameStatusRequest.getDefaultInstance(),
+    adminGameStatusRequest =
+        TestMessageUtil.getResourcesAsMessage(
+            AdminGameStatusRequest.getDefaultInstance(),
             "com/bbuhot/server/service/settle_game_request.json");
-    adminGameStatusReplyExpected = TestMessageUtil
-        .getResourcesAsMessage(AdminGameStatusReply.getDefaultInstance(),
+    adminGameStatusReplyExpected =
+        TestMessageUtil.getResourcesAsMessage(
+            AdminGameStatusReply.getDefaultInstance(),
             "com/bbuhot/server/service/settle_game_reply.json");
 
-    adminGameStatusReply = adminGameStatusChangeService
-        .callProtobufServiceImpl(adminGameStatusRequest);
+    adminGameStatusReply =
+        adminGameStatusChangeService.callProtobufServiceImpl(adminGameStatusRequest);
     assertEquals(adminGameStatusReplyExpected, adminGameStatusReply);
   }
 }

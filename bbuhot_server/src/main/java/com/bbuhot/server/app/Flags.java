@@ -28,9 +28,10 @@ public class Flags {
 
     Configuration.Builder configurationBuilder = Configuration.newBuilder();
     try {
-      JsonFormat.parser().merge(
-          Files.newBufferedReader(new File(configurationFile).toPath(), StandardCharsets.UTF_8),
-          configurationBuilder);
+      JsonFormat.parser()
+          .merge(
+              Files.newBufferedReader(new File(configurationFile).toPath(), StandardCharsets.UTF_8),
+              configurationBuilder);
     } catch (IOException e) {
       throw new IllegalStateException(e);
     }

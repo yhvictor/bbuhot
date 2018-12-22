@@ -150,12 +150,9 @@
       </indentOptions>
     </codeStyleSettings>
     <codeStyleSettings language="JAVA">
-      <option name="KEEP_LINE_BREAKS" value="false" />
-      <option name="KEEP_FIRST_COLUMN_COMMENT" value="false" />
       <option name="KEEP_CONTROL_STATEMENT_IN_ONE_LINE" value="false" />
       <option name="KEEP_BLANK_LINES_IN_CODE" value="1" />
       <option name="BLANK_LINES_AFTER_CLASS_HEADER" value="1" />
-      <option name="SPECIAL_ELSE_IF_TREATMENT" value="false" />
       <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
       <option name="ALIGN_MULTILINE_RESOURCES" value="false" />
       <option name="ALIGN_MULTILINE_FOR" value="false" />
@@ -168,9 +165,6 @@
       <option name="BINARY_OPERATION_SIGN_ON_NEXT_LINE" value="true" />
       <option name="TERNARY_OPERATION_WRAP" value="1" />
       <option name="TERNARY_OPERATION_SIGNS_ON_NEXT_LINE" value="true" />
-      <option name="KEEP_SIMPLE_METHODS_IN_ONE_LINE" value="true" />
-      <option name="KEEP_SIMPLE_LAMBDAS_IN_ONE_LINE" value="true" />
-      <option name="KEEP_SIMPLE_CLASSES_IN_ONE_LINE" value="true" />
       <option name="FOR_STATEMENT_WRAP" value="1" />
       <option name="ARRAY_INITIALIZER_WRAP" value="1" />
       <option name="WRAP_COMMENTS" value="true" />
@@ -178,7 +172,6 @@
       <option name="DOWHILE_BRACE_FORCE" value="3" />
       <option name="WHILE_BRACE_FORCE" value="3" />
       <option name="FOR_BRACE_FORCE" value="3" />
-      <option name="ENUM_CONSTANTS_WRAP" value="2" />
       <indentOptions>
         <option name="INDENT_SIZE" value="2" />
         <option name="CONTINUATION_INDENT_SIZE" value="4" />
