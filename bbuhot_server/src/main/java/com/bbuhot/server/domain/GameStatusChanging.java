@@ -7,7 +7,7 @@ import com.bbuhot.server.service.AdminGameStatusReply.ErrorCode;
 import com.bbuhot.server.util.BbuhotThreadPool;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import java.util.Map;
+import com.google.common.util.concurrent.MoreExecutors;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -16,7 +16,7 @@ import javax.inject.Inject;
 
 public class GameStatusChanging {
 
-  private static final Map<GameEntityStatus, Set<GameEntityStatus>> ALLOWED_STATUS_CHANGE = new ImmutableMap.Builder<GameEntityStatus, Set<GameEntityStatus>>()
+  private static final ImmutableMap<GameEntityStatus, Set<GameEntityStatus>> ALLOWED_STATUS_CHANGE = new ImmutableMap.Builder<GameEntityStatus, Set<GameEntityStatus>>()
       .put(GameEntityStatus.DRAFT, ImmutableSet.of(GameEntityStatus.PUBLISHED))
       .put(GameEntityStatus.PUBLISHED,
           ImmutableSet.of(GameEntityStatus.PUBLISHED, GameEntityStatus.SETTLED))
@@ -74,7 +74,7 @@ public class GameStatusChanging {
     try {
       gameEntity.setStatus(newStatus.value);
       gameEntity.setWinningBetOption(winningOption);
-      gameQueries.update(gameEntity);
+      gameQueries.save(gameEntity);
     } catch (Throwable t) {
       releaseLock.run();
       throw t;
@@ -82,6 +82,8 @@ public class GameStatusChanging {
 
     if (oldStatus != GameEntityStatus.DRAFT) {
       updateBets(gameEntity, releaseLock);
+    } else {
+      releaseLock.run();
     }
 
     return gameEntity;
@@ -89,7 +91,8 @@ public class GameStatusChanging {
 
   private void updateBets(GameEntity gameEntity, Runnable releaseLock) {
     // TODO(yhvictor): update this.
-    BbuhotThreadPool.scheduleExecutor.schedule(releaseLock, 3000, TimeUnit.MILLISECONDS);
+    BbuhotThreadPool.scheduleExecutor.schedule(() -> {}, 3000, TimeUnit.MILLISECONDS)
+        .addListener(releaseLock, MoreExecutors.directExecutor());
   }
 
   public static final class GameStatusChangingException extends Exception {

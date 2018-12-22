@@ -44,7 +44,7 @@ public class Authority {
   }
 
   /**
-   * Very simplify admin group check. We might need to support more in future.
+   * Very simple admin group check. We might need to support more in future.
    */
   private boolean isAdminGroup(UserEntity userEntity) {
     return Flags.getAdminGroups().contains(userEntity.getGroupId());

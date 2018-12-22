@@ -1,0 +1,29 @@
+{
+  "authErrorCode": "NO_ERROR",
+  "game": {
+    "id": 1,
+    "name": "English name xxx",
+    "description": "23333 no xxx",
+    "normalUserVisible": false,
+    "status": "SETTLED",
+    "betOptionLimit": 2,
+    "betAmountLowest": 123,
+    "betAmountHighest": 123,
+    "endTimeMs": "987654321",
+    "bettingOptions": [
+      {
+        "name": "4th win",
+        "odds": 123456
+      },
+      {
+        "name": "2nd win",
+        "odds": 654321
+      },
+      {
+        "name": "3rd win",
+        "odds": 444444
+      }
+    ],
+    "winningOption": 2
+  }
+}

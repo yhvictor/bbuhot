@@ -44,7 +44,7 @@ class ListGameService extends AbstractProtobufService<ListGameRequest, ListGameR
         .queryByStatus(GameEntityStatus.valueOf(listGameRequest.getGameStatus()));
 
     for (GameEntity gameEntity : gameEntities) {
-      if ((!listGameRequest.getIsAdminRequest()) && !gameEntity.isNormalUserVisible()) {
+      if (!listGameRequest.getIsAdminRequest() && !gameEntity.isNormalUserVisible()) {
         // TODO(yhvictor): move this to db query.
         continue;
       }

@@ -9,7 +9,6 @@ import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
-import com.google.protobuf.Message.Builder;
 import com.google.protobuf.TextFormat;
 import com.google.protobuf.util.JsonFormat;
 import io.undertow.server.HttpServerExchange;
@@ -54,16 +53,19 @@ class HttpServerExchangeMessageWrapper<InputMessage extends Message> {
   }
 
   private InputMessage parseRequestBody(byte[] bytes) {
-    Builder builder = defaultMessage.toBuilder();
+    Message.Builder builder = defaultMessage.toBuilder();
     try {
       switch (getInputContentType()) {
         case JSON:
           JsonFormat.parser()
-              .merge(new InputStreamReader(new ByteArrayInputStream(bytes)), builder);
+              .merge(new InputStreamReader(new ByteArrayInputStream(bytes), StandardCharsets.UTF_8),
+                  builder);
           break;
         case TEXT_PROTO:
           TextFormat.getParser()
-              .merge(new InputStreamReader(new ByteArrayInputStream(bytes)), builder);
+              .merge(new InputStreamReader(new ByteArrayInputStream(bytes), StandardCharsets.UTF_8),
+                  builder);
+          break;
         case PROTO:
           builder.mergeFrom(bytes);
       }

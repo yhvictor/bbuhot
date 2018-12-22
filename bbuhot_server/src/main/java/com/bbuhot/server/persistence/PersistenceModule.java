@@ -15,32 +15,34 @@ import org.hibernate.dialect.MySQL55Dialect;
 @Module
 public class PersistenceModule {
 
-  private static Map<String, Object> generatePersistenceProperties() {
+  protected Map<String, Object> generateConnectionProperties() {
     Map<String, Object> properties = new HashMap<>();
-
-    properties.put(AvailableSettings.DIALECT, MySQL55Dialect.class.getName());
-    properties.put(
-        AvailableSettings.PHYSICAL_NAMING_STRATEGY, PhysicalNamingStrategyImpl.class.getName());
-
     // Hibernate connection properties
+    properties.put(AvailableSettings.DIALECT, MySQL55Dialect.class.getName());
     properties.put(AvailableSettings.DRIVER, Driver.class.getName());
     properties.put(AvailableSettings.URL, Flags.getInstance().getDatabase().getConnectionUrl());
     properties.put(AvailableSettings.USER, Flags.getInstance().getDatabase().getUser());
     properties.put(AvailableSettings.PASS, Flags.getInstance().getDatabase().getPassword());
 
-    // Optimize
-    properties.put(AvailableSettings.ORDER_INSERTS, true);
-    properties.put(AvailableSettings.ORDER_UPDATES, true);
-    properties.put(AvailableSettings.C3P0_MIN_SIZE, 5);
-    properties.put(AvailableSettings.C3P0_MAX_SIZE, 20);
-    properties.put(AvailableSettings.C3P0_TIMEOUT, 1800);
-    properties.put(AvailableSettings.C3P0_MAX_STATEMENTS, 50);
+    return properties;
+  }
 
-    // Standard JPA connection properties
-    // properties.put(AvailableSettings.JPA_JDBC_DRIVER, Driver.class.getName());
-    // properties.put(AvailableSettings.JPA_JDBC_URL, flags.getDatabase().getUrl());
-    // properties.put(AvailableSettings.JPA_JDBC_USER, flags.getDatabase().getUser());
-    // properties.put(AvailableSettings.JPA_JDBC_PASSWORD, flags.getDatabase().getPassword());
+  private Map<String, Object> generatePersistenceProperties() {
+    Map<String, Object> properties = new HashMap<>(generateConnectionProperties());
+
+    properties.put(AvailableSettings.PHYSICAL_NAMING_STRATEGY,
+        PhysicalNamingStrategyImpl.class.getName());
+
+    // Optimize
+    if (false) {
+      // TODO(yhvictor): consider we need thread pool or not.
+      properties.put(AvailableSettings.ORDER_INSERTS, true);
+      properties.put(AvailableSettings.ORDER_UPDATES, true);
+      properties.put(AvailableSettings.C3P0_MIN_SIZE, 5);
+      properties.put(AvailableSettings.C3P0_MAX_SIZE, 20);
+      properties.put(AvailableSettings.C3P0_TIMEOUT, 1800);
+      properties.put(AvailableSettings.C3P0_MAX_STATEMENTS, 50);
+    }
 
     if (Flags.isDebug()) {
       properties.put(AvailableSettings.SHOW_SQL, true);
