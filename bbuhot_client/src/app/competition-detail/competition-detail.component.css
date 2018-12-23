@@ -41,7 +41,7 @@
     margin-top: 10px;
 }
 .match-start-time label {
-    width:149px;
+    width:auto;
     height:25px;
     font-size:18px;
     font-family:PingFangSC-Semibold;
@@ -65,6 +65,7 @@
 .match-dead-line-label label {
     width:140px;
     height:28px;
+    line-height:28px;
     background:rgba(251,13,13,1);
     border-radius:50px;
     display: inline-block;
@@ -78,7 +79,7 @@
 }
 
 .match-dead-line-time label {
-    width:162px;
+    width:auto;
     height:25px;
     font-size:18px;
     font-family:PingFangSC-Semibold;

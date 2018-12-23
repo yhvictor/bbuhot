@@ -6,13 +6,14 @@
     background-size:100% 100%;
     background-repeat: no-repeat;
     box-shadow:4px 4px 12px 1px rgba(0,0,0,0.5);
+    overflow: hidden;
 }
 
 .player-logo-bg {
     width: 200px;
     height: 200px;
     background-color: rgba(255, 255, 255, 0.1);
-    margin-top: 63px;
+    margin: 63px auto 0 auto;
 }
 .player-logo img{
     width: 103px;
@@ -31,7 +32,7 @@
 }
 
 .player-ratio {
-    width:204px;
+    width:auto;
     height:78px;
     font-size:56px;
     font-family:PingFangSC-Semibold;
