@@ -1,0 +1,27 @@
+<nz-layout>
+	<div class="layout-bg">
+
+	<nz-header>
+		<!--<div nz-row nzGutter="16" nzType="flex" nzJustify="center" nzAlign="middle">-->
+			<!--这里应该是导航栏组件-->
+		<!--</div>-->
+        <app-navigation-bar></app-navigation-bar>
+	</nz-header>
+	<nz-content>
+		<!--<div nz-row nzGutter="16" nzType="flex" nzJustify="center" nzAlign="bottom">-->
+        <div class="content-bg">
+            <div class="player">
+				<app-competition-player></app-competition-player>
+			</div>
+            <div class="detail">
+				<app-competition-detail></app-competition-detail>
+			</div>
+			<div class="player">
+				<app-competition-player></app-competition-player>
+			</div>
+		</div>
+		<!--</div>-->
+	</nz-content>
+	<nz-footer>预留footer</nz-footer>
+	</div>
+</nz-layout>
