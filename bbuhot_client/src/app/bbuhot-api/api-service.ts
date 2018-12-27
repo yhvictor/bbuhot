@@ -35,7 +35,7 @@ export class ApiService {
         );
     }
 
-    public listGames(listGameRequest:ListGameRequest): Observable<ListGameReply> {
-        return this.callServiceImpl(listGameRequest, "/api/bet/list_game", ListGameReply.deserializeBinary);
+    public listGames(listGameRequest: ListGameRequest): Observable<ListGameReply> {
+        return this.callServiceImpl(listGameRequest, '/api/bet/list_game', ListGameReply.deserializeBinary);
     }
 }
