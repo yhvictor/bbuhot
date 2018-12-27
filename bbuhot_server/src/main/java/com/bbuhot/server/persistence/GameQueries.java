@@ -28,7 +28,6 @@ public class GameQueries {
     } else {
       entityManager.persist(gameEntity);
     }
-    entityManager.flush();
     entityManager.getTransaction().commit();
   }
 
