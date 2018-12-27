@@ -1,18 +1,9 @@
-.header-bg {
-    /*background-color: blue;*/
-}
-
 nz-header {
     padding: 0;
     margin: 0;
-    /*background-color: red;*/
-    height: 50px;
+    height: 59px;
 }
 
-nz-content {
+nz-footer {
     background-color: pink;
-}
-
-nz-footer  {
-    background-color: blue;
 }

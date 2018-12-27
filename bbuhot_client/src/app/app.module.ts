@@ -17,6 +17,8 @@ import {CompetitionComponent} from './competition/competition.component';
 import {CompetitionPlayerComponent} from './competition-player/competition-player.component';
 import {CompetitionDetailComponent} from './competition-detail/competition-detail.component';
 import {NavigationBarComponent} from './navigation-bar/navigation-bar.component';
+import { LeaderBoardComponent } from './leader-board/leader-board.component';
+import { WayneComponent } from './wayne/wayne.component';
 
 registerLocaleData(zh);
 
@@ -29,6 +31,8 @@ registerLocaleData(zh);
         CompetitionPlayerComponent,
         CompetitionDetailComponent,
         NavigationBarComponent,
+        LeaderBoardComponent,
+        WayneComponent,
     ],
     imports: [
         BrowserModule,

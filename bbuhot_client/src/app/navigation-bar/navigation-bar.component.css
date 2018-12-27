@@ -16,10 +16,12 @@
 }
 .ant-menu-item-selected {
     color: white;
+    background-color: red;
 }
 .ant-menu.ant-menu-dark .ant-menu-item-selected {
     background-color: rgba(0, 0, 0, .01);
 }
+
 ul {
     list-style-type: none;
     margin: 0;

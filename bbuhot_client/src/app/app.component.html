@@ -2,11 +2,8 @@
   <nz-header class="header-bg" >
     <app-navigation-bar></app-navigation-bar>
   </nz-header>
-  <nz-content>
     <router-outlet></router-outlet>
-  </nz-content>
-    <nz-footer>
-      <!--<router-outlet></router-outlet>-->
-        <!--备用 footer, 或者 footer 在 component中-->
-    </nz-footer>
+  <nz-footer>
+    如无需要footer删除. 所有component 布局在router-outlet中, 对应html在"/< nz-layout >/"下布局, 尽量使用阿里UI组件库
+  </nz-footer>
 </nz-layout>
