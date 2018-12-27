@@ -10,7 +10,7 @@ import { AuthRequest } from '../proto/bbuhot/service/auth_pb';
 })
 export class HomepageComponent implements OnInit {
 
-  constructor(private apiService:ApiService) { }
+  constructor(private apiService: ApiService) { }
 
   ngOnInit() {
   }
@@ -19,8 +19,8 @@ export class HomepageComponent implements OnInit {
     const listGameRequest = new ListGameRequest();
     listGameRequest.setAuth(new AuthRequest());
     listGameRequest.getAuth().setUid(1);
-    listGameRequest.getAuth().setAuth("986atk1/mbgC3AeOxeKBREp4eE8WbUpfDtKrliINd7DzV8nrAp1ZpM9KEJYT935EF5EwFlAidT7/4H19q3tc");
-    listGameRequest.getAuth().setSaltkey("RaIEjNbx");
+    listGameRequest.getAuth().setAuth('986atk1/mbgC3AeOxeKBREp4eE8WbUpfDtKrliINd7DzV8nrAp1ZpM9KEJYT935EF5EwFlAidT7/4H19q3tc');
+    listGameRequest.getAuth().setSaltkey('RaIEjNbx');
     listGameRequest.setIsAdminRequest(true);
     listGameRequest.setGameStatus(Game.Status.DRAFT);
 
