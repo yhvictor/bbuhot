@@ -6,8 +6,9 @@ import {CompetitionComponent} from './competition/competition.component';
 
 
 const routes: Routes = [
-    {path: '', component: HomepageComponent},
-    {path: '#competition', component: CompetitionComponent},
+    {path: '', redirectTo: 'home', pathMatch: 'full'},
+    {path: 'home', component: HomepageComponent},
+    {path: 'competition', component: CompetitionComponent},
 ];
 
 @NgModule({
