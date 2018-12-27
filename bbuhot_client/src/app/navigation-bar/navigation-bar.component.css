@@ -1,3 +1,8 @@
+.navigation-bar {
+    height: 59px;
+    padding: 0;
+    margin:0;
+}
 .navigation-bar,.second{
     margin: 0 10rem;
 }
@@ -9,7 +14,12 @@
     width: 165px;
     margin-top: 14px;
 }
-
+.ant-menu-item-selected {
+    color: white;
+}
+.ant-menu.ant-menu-dark .ant-menu-item-selected {
+    background-color: rgba(0, 0, 0, .01);
+}
 ul {
     list-style-type: none;
     margin: 0;
@@ -17,17 +27,17 @@ ul {
     overflow: hidden;
 }
 
-li {
-    float: left;
-}
+/*li {*/
+    /*float: left;*/
+/*}*/
 
-li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 0 0 3rem;
-    text-decoration: none;
-}
+/*li a {*/
+    /*display: block;*/
+    /*color: white;*/
+    /*text-align: center;*/
+    /*padding: 14px 0 0 3rem;*/
+    /*text-decoration: none;*/
+/*}*/
 
 li:hover{
     text-decoration: underline;
