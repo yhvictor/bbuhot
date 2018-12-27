@@ -24,6 +24,11 @@ public class PersistenceModule {
     properties.put(AvailableSettings.USER, Flags.getInstance().getDatabase().getUser());
     properties.put(AvailableSettings.PASS, Flags.getInstance().getDatabase().getPassword());
 
+    if (Flags.isDebug()) {
+      // A small pool size to reproduce database connection bugs easily.
+      properties.put(AvailableSettings.POOL_SIZE, 2);
+    }
+
     return properties;
   }
 
@@ -54,11 +59,6 @@ public class PersistenceModule {
     }
 
     return properties;
-  }
-
-  @Provides
-  EntityManager entityManager(EntityManagerFactory entityManagerFactory) {
-    return entityManagerFactory.createEntityManager();
   }
 
   @Provides

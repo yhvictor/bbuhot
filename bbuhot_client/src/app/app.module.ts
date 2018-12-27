@@ -1,4 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
@@ -17,9 +19,18 @@ import { CompetitionPlayerComponent } from './competition-player/competition-pla
 import { CompetitionDetailComponent } from './competition-detail/competition-detail.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 
+import { ApiService } from './bbuhot-api/api-service';
 registerLocaleData(zh);
 
 @NgModule({
+  imports: [
+    BrowserModule,
+    NgZorroAntdModule,
+    FormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+  ],
   declarations: [
     AppComponent,
     HomepageComponent,
@@ -29,15 +40,10 @@ registerLocaleData(zh);
     CompetitionDetailComponent,
     NavigationBarComponent,
   ],
-  imports: [
-    BrowserModule,
-    NgZorroAntdModule,
-    FormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    AppRoutingModule
+  providers: [
+    { provide: NZ_I18N, useValue: zh_CN },
+    ApiService,
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
