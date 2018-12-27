@@ -20,6 +20,7 @@ import { CompetitionComponent } from './competition/competition.component';
 import { LeaderBoardComponent } from './leader-board/leader-board.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import { WayneComponent } from './wayne/wayne.component';
+import { BbuhotCardComponent } from './bbuhot-card/bbuhot-card.component';
 
 registerLocaleData(zh);
 
@@ -34,6 +35,7 @@ registerLocaleData(zh);
     NavigationBarComponent,
     LeaderBoardComponent,
     WayneComponent
+    BbuhotCardComponent,
   ],
   imports: [BrowserModule, NgZorroAntdModule, FormsModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }, { provide: LocationStrategy, useClass: HashLocationStrategy }, ApiService],
