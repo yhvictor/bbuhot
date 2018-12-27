@@ -38,4 +38,12 @@
     margin-left: 35px;
     margin-right: 35px;
 }
-
+.footer-wrapper {
+    width: 1110px;
+    padding-top: 42px;
+    margin: 0 auto;
+}
+.footer-bg {
+    height: 100%;
+    background:rgba(245,245,245,1);
+}

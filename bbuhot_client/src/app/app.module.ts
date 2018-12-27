@@ -16,6 +16,7 @@ import { CompetitionComponent } from './competition/competition.component';
 import { CompetitionPlayerComponent } from './competition-player/competition-player.component';
 import { CompetitionDetailComponent } from './competition-detail/competition-detail.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
+import { BbuhotCardComponent } from './bbuhot-card/bbuhot-card.component';
 
 registerLocaleData(zh);
 
@@ -28,6 +29,7 @@ registerLocaleData(zh);
     CompetitionPlayerComponent,
     CompetitionDetailComponent,
     NavigationBarComponent,
+    BbuhotCardComponent,
   ],
   imports: [
     BrowserModule,
