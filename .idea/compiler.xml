@@ -5,6 +5,8 @@
       <profile default="true" name="Default" enabled="true" />
     </annotationProcessing>
     <bytecodeTargetLevel target="8">
+      <module name="bbuhot_client_main" target="1.8" />
+      <module name="bbuhot_client_test" target="1.8" />
       <module name="bbuhot_custom_error_prone_main" target="1.8" />
       <module name="bbuhot_custom_error_prone_test" target="1.8" />
       <module name="bbuhot_protobuf_main" target="1.8" />

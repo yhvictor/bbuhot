@@ -1,5 +1,7 @@
 plugins {
     id 'com.moowork.node'
+    id 'java'
+    id 'com.google.protobuf'
 }
 
 node {
@@ -8,21 +10,72 @@ node {
     nodeModulesDir = file(".")
 }
 
-task build (type: NpmTask, dependsOn: 'npmInstall') {
+task buildq (type: NpmTask, dependsOn: 'npmInstall') {
     group = 'build'
     args = ['run', 'build']
 }
 
-task cleanProtoJsFolder(type: Delete) {
+task cleanProtoFolder(type: Delete) {
     group 'gen-proto'
-    delete "${projectDir}/src/proto"
+    delete "${projectDir}/src/app/proto"
+}
+
+clean {
+    dependsOn 'cleanProtoFolder'
 }
 
 task copyProtoJsToClient(type: Copy) {
     group 'gen-proto'
-    dependsOn ':bbuhot_protobuf:build'
-    dependsOn 'cleanProtoJsFolder'
-    from "${project(':bbuhot_protobuf').buildDir}/generated/source/proto/main/js"
+    dependsOn 'generateProto'
+    dependsOn 'cleanProtoFolder'
+    from "${buildDir}/generated/source/proto/main/js"
     include "**/*.js"
-    into "${projectDir}/src/proto"
+    into "${projectDir}/src/app/proto"
+}
+
+task copyProtoTsToClient(type: Copy) {
+    group 'gen-proto'
+    dependsOn 'copyProtoJsToClient'
+    from "${buildDir}/generated/source/proto/main/ts"
+    include "**/*.ts"
+    into "${projectDir}/src/app/proto"
+}
+
+sourceSets {
+    main {
+        proto {
+            srcDir "${project(':bbuhot_protobuf').projectDir}/src/main/proto"
+        }
+    }
+}
+
+protobuf {
+    protoc {
+        // The artifact spec for the Protobuf Compiler
+        artifact = 'com.google.protobuf:protoc:3.6.1'
+    }
+    plugins {
+        ts {
+            path = "${projectDir}/node_modules/.bin/protoc-gen-ts.cmd"
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                js {
+                    option 'import_style=commonjs'
+                    option 'binary'
+                }
+                remove java
+            }
+            task.plugins {
+                ts { }
+            }
+        }
+    }
+}
+
+gradle.taskGraph.whenReady { graph ->
+    // Only enable the proto task when called explicitly
+    generateProto.dependsOn('npmInstall')
 }
