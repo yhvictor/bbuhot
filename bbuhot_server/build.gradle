@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'net.ltgt.apt-idea' version '0.19'
+    id 'net.ltgt.errorprone'
     id 'idea'
     id 'application'
 }
@@ -17,12 +18,19 @@ idea {
             // defaults to "COMPILE" when using the Gradle integration in IntelliJ IDEA
             mainDependenciesScope = "PROVIDED"
         }
+
+        //generatedSourceDirs += "${project(':bbuhot_client').projectDir}/dist/Gotham-Spinach/"
     }
 }
 
 sourceCompatibility = 1.8
 
 dependencies {
+    errorproneJavac 'com.google.errorprone:error_prone_core:2.3.2'
+
+    errorproneJavac project(':bbuhot_custom_error_prone')
+    implementation project(':bbuhot_custom_error_prone')
+
     implementation project(':bbuhot_protobuf')
 
     implementation 'com.google.dagger:dagger:2.19'
@@ -36,10 +44,11 @@ dependencies {
     implementation 'io.undertow:undertow-core:2.0.1.Final'
     implementation 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'
     implementation 'org.hibernate:hibernate-core:5.4.0.Final'
-    implementation 'org.hibernate:hibernate-c3p0:5.4.0.Final'
+    //implementation 'org.hibernate:hibernate-c3p0:5.4.0.Final'
 
     testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.19'
     testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation group: 'com.h2database', name: 'h2', version: '1.4.197'
 }
 
 application {

@@ -20,19 +20,14 @@ public class GameQueries {
     this.entityManagerFactory = entityManagerFactory;
   }
 
-  public void create(GameEntity gameEntity) {
+  public void save(GameEntity gameEntity) {
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     entityManager.getTransaction().begin();
-    entityManager.persist(gameEntity);
-    entityManager.flush();
-    entityManager.getTransaction().commit();
-  }
-
-  public void update(GameEntity gameEntity) {
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
-    entityManager.getTransaction().begin();
-    entityManager.merge(gameEntity);
-    entityManager.flush();
+    if (gameEntity.getId() > 0) {
+      entityManager.merge(gameEntity);
+    } else {
+      entityManager.persist(gameEntity);
+    }
     entityManager.getTransaction().commit();
   }
 
@@ -46,7 +41,8 @@ public class GameQueries {
     List<GameEntity> gameList =
         entityManagerFactory
             .createEntityManager()
-            .createQuery(LIST_SQL + "g.status = ?1").setParameter(1, gameEntityStatus.value)
+            .createQuery(LIST_SQL + "g.status = ?1")
+            .setParameter(1, gameEntityStatus.value)
             .getResultList();
 
     return gameList;
@@ -57,8 +53,8 @@ public class GameQueries {
     PUBLISHED(1, Status.PUBLISHED),
     SETTLED(2, Status.SETTLED),
     ;
-    public int value;
-    public Game.Status serviceStatus;
+    public final int value;
+    public final Game.Status serviceStatus;
 
     GameEntityStatus(int value, Game.Status serviceStatus) {
       this.value = value;

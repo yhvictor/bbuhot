@@ -92,23 +92,19 @@ class AdminGameUpdatingService extends AbstractProtobufService<AdminGameRequest,
     int id = adminGameRequest.getGame().getId();
 
     GameEntity gameEntity;
-    if (id != -1) { // update
+    if (id > 0) { // update
       Optional<GameEntity> optionalGame = gameQueries.queryById(id);
-      if (optionalGame.isEmpty()) {
+      if (!optionalGame.isPresent()) {
         throw new IllegalStateException("No such game.");
       }
       gameEntity = optionalGame.get();
     } else { // create
       gameEntity = new GameEntity();
+      gameEntity.setId(0);
     }
 
     mergeToEntity(gameEntity, adminGameRequest.getGame());
-
-    if (id != -1) {
-      gameQueries.update(gameEntity);
-    } else {
-      gameQueries.create(gameEntity);
-    }
+    gameQueries.save(gameEntity);
 
     Game.Builder game = toGame(gameEntity);
     return reply.setGame(game).build();

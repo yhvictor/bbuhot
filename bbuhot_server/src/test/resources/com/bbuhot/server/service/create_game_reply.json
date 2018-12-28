@@ -1,0 +1,15 @@
+{
+  "authErrorCode": "NO_ERROR",
+  "game": {
+    "id": 1,
+    "name": "English name only",
+    "description": "23333 no Chinese",
+    "normalUserVisible": false,
+    "status": "DRAFT",
+    "betOptionLimit": 2,
+    "betAmountLowest": 5,
+    "betAmountHighest": 15,
+    "endTimeMs": "111123",
+    "winningOption": -2
+  }
+}

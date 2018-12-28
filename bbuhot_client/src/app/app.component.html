@@ -1,3 +1,10 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<app-homepage></app-homepage>
+<nz-layout>
+  <nz-header class="header-bg" >
+    <app-navigation-bar></app-navigation-bar>
+  </nz-header>
+    <router-outlet></router-outlet>
+  <nz-footer>
+    如无需要footer删除. 所有component 布局在router-outlet中, 对应html在"/< nz-layout >/"下布局, 尽量使用阿里UI组件库
+  </nz-footer>
+</nz-layout>
 

@@ -16,8 +16,8 @@ public class BbuhotThreadPool {
   public static final ListeningExecutorService workerThreadPool =
       MoreExecutors.listeningDecorator(
           Executors.newCachedThreadPool(new BbuhotThreadFactory("bbuhot-worker")));
-  public static final ListeningScheduledExecutorService scheduleExecutor = MoreExecutors
-      .listeningDecorator(Executors.newScheduledThreadPool(1));
+  public static final ListeningScheduledExecutorService scheduleExecutor =
+      MoreExecutors.listeningDecorator(Executors.newScheduledThreadPool(1));
 
   private BbuhotThreadPool() {}
 
@@ -35,13 +35,11 @@ public class BbuhotThreadPool {
       this.namePrefix = namePrefix;
     }
 
+    @Override
     public Thread newThread(@Nonnull Runnable r) {
       Thread t = new Thread(group, r, namePrefix + threadNumber.getAndIncrement(), 0);
       if (t.isDaemon()) {
         t.setDaemon(false);
-      }
-      if (t.getPriority() != Thread.NORM_PRIORITY) {
-        t.setPriority(Thread.NORM_PRIORITY);
       }
       return t;
     }

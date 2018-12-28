@@ -1,0 +1,41 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+.layout-bg {
+    text-align: center;
+    background-color: white;
+}
+:host ::ng-deep .ant-layout-footer {
+    background: #7dbcea;
+    color: #fff;
+    text-align: center;
+}
+
+:host ::ng-deep .ant-layout-content {
+    color: #fff;
+    text-align: center;
+    margin-top: 33px;
+}
+
+.content-bg {
+    display: flex;
+    margin: auto;
+    justify-content: center;
+    align-items: flex-end;
+    width: 1110px;
+    padding-bottom: 47px;
+}
+
+.player {
+    padding: 0;
+    width: 360px;
+    height: 500px;
+}
+.detail {
+    width: 320px;
+    height: 486px;
+    margin-left: 35px;
+    margin-right: 35px;
+}
+

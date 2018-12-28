@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -52,10 +53,10 @@ public class GameEntity {
   @Column(name = "winning_bet_option")
   private int winningBetOption = -2;
 
-  @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+  // Use FetchType.EAGER to bypass a bug: https://hibernate.atlassian.net/browse/HHH-4808
+  @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinColumn(name = "game_id", referencedColumnName = "id")
   @OrderBy("id")
-  @Fetch(FetchMode.SUBSELECT)
   private List<BettingOptionEntity> bettingOptionEntities = new ArrayList<>();
 
   public GameEntity() {}

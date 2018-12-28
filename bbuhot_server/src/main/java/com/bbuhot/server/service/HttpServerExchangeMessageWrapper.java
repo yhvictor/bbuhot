@@ -9,12 +9,12 @@ import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
-import com.google.protobuf.Message.Builder;
 import com.google.protobuf.TextFormat;
 import com.google.protobuf.util.JsonFormat;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.HeaderValues;
 import io.undertow.util.Headers;
+import io.undertow.util.HttpString;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -54,16 +54,21 @@ class HttpServerExchangeMessageWrapper<InputMessage extends Message> {
   }
 
   private InputMessage parseRequestBody(byte[] bytes) {
-    Builder builder = defaultMessage.toBuilder();
+    Message.Builder builder = defaultMessage.toBuilder();
     try {
       switch (getInputContentType()) {
         case JSON:
           JsonFormat.parser()
-              .merge(new InputStreamReader(new ByteArrayInputStream(bytes)), builder);
+              .merge(
+                  new InputStreamReader(new ByteArrayInputStream(bytes), StandardCharsets.UTF_8),
+                  builder);
           break;
         case TEXT_PROTO:
           TextFormat.getParser()
-              .merge(new InputStreamReader(new ByteArrayInputStream(bytes)), builder);
+              .merge(
+                  new InputStreamReader(new ByteArrayInputStream(bytes), StandardCharsets.UTF_8),
+                  builder);
+          break;
         case PROTO:
           builder.mergeFrom(bytes);
       }
@@ -109,6 +114,7 @@ class HttpServerExchangeMessageWrapper<InputMessage extends Message> {
     final byte[] bytes;
     ContentType outputContentType = getOutputContentType();
     httpServerExchange.getResponseHeaders().put(Headers.CONTENT_TYPE, outputContentType.typeString);
+    httpServerExchange.getResponseHeaders().put(new HttpString("Access-Control-Allow-Origin"), "*");
 
     switch (outputContentType) {
       case PROTO:
@@ -133,6 +139,7 @@ class HttpServerExchangeMessageWrapper<InputMessage extends Message> {
 
   private void writeErrorMessage(Throwable t) {
     httpServerExchange.setStatusCode(400);
+    httpServerExchange.getResponseHeaders().put(new HttpString("Access-Control-Allow-Origin"), "*");
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
     t.printStackTrace(new PrintStream(byteArrayOutputStream));
     httpServerExchange
@@ -141,19 +148,16 @@ class HttpServerExchangeMessageWrapper<InputMessage extends Message> {
   }
 
   private ContentType getInputContentType() {
-    HeaderValues headerValues = httpServerExchange.getRequestHeaders().get(Headers.CONTENT_TYPE);
-    if (headerValues == null) {
-      return ContentType.PROTO;
-    }
-    String contentTypeString = headerValues.peek();
-    if (contentTypeString == null) {
-      return ContentType.PROTO;
-    }
-    if (ContentType.TEXT_PROTO.typeString.equalsIgnoreCase(contentTypeString)) {
-      return ContentType.TEXT_PROTO;
-    }
-    if (ContentType.JSON.typeString.equalsIgnoreCase(contentTypeString)) {
-      return ContentType.JSON;
+    Map<String, Deque<String>> urlParams = httpServerExchange.getQueryParameters();
+    // TODO(yh_victor): consider whether we should limit this to debug only.
+    if (urlParams.containsKey("in")) {
+      for (String value : urlParams.get("in")) {
+        if ("json".equals(value)) {
+          return ContentType.JSON;
+        } else if ("textproto".equals(value)) {
+          return ContentType.TEXT_PROTO;
+        }
+      }
     }
     return ContentType.PROTO;
   }

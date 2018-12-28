@@ -18,11 +18,16 @@ public class Authority {
   }
 
   public AuthReply auth(AuthRequest authRequest, boolean checkIsAdmin) {
-    UserEntity userEntity = userQueries.queryUserById(authRequest.getUid()).orElseGet(() -> {
-      throw new IllegalStateException("No user with such uid: " + authRequest.getUid());
-    });
+    UserEntity userEntity =
+        userQueries
+            .queryUserById(authRequest.getUid())
+            .orElseGet(
+                () -> {
+                  throw new IllegalStateException("No user with such uid: " + authRequest.getUid());
+                });
 
-    if (!AuthorityUtil.isValid(Flags.getInstance().getDiscuzConfig().getAuthKey(),
+    if (!AuthorityUtil.isValid(
+        Flags.getInstance().getDiscuzConfig().getAuthKey(),
         authRequest.getSaltKey(),
         authRequest.getAuth(),
         userEntity.getUid(),
@@ -43,9 +48,7 @@ public class Authority {
         .build();
   }
 
-  /**
-   * Very simplify admin group check. We might need to support more in future.
-   */
+  /** Very simple admin group check. We might need to support more in future. */
   private boolean isAdminGroup(UserEntity userEntity) {
     return Flags.getAdminGroups().contains(userEntity.getGroupId());
   }

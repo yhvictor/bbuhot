@@ -3,7 +3,7 @@
     "connection_url": "jdbc:mysql://192.168.1.101:3306/ultrax",
     "user": "root",
     "password": "bbuhot",
-    "tablePrefix": "pre"
+    "tablePrefix": "pre_"
   },
   "discuz_config": {
     "auth_key": "76fce85ae9cf5ceeee99c014615ee215qfDf49F0YXdxHuEkru",
