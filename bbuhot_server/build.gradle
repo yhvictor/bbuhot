@@ -4,6 +4,7 @@ plugins {
     id 'net.ltgt.errorprone'
     id 'idea'
     id 'application'
+    id 'com.palantir.docker' version '0.20.1'
 }
 
 idea {
@@ -58,4 +59,9 @@ application {
 
 compileJava {
     options.compilerArgs << '-Xlint:unchecked'
+}
+
+docker {
+	name 'bbuhot_server'
+    files tasks.distTar.outputs, 'configuration.json'
 }
