@@ -6,12 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./competition.component.css']
 })
 export class CompetitionComponent implements OnInit {
-
   constructor() {
-      console.log('competition');
+    console.log('competition');
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

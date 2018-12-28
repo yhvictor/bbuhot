@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../bbuhot-api/api-service';
-import { Game, ListGameRequest } from '../proto/bbuhot/service/game_pb';
 import { AuthRequest } from '../proto/bbuhot/service/auth_pb';
+import { Game, ListGameRequest } from '../proto/bbuhot/service/game_pb';
 
 @Component({
   selector: 'app-homepage',
@@ -9,11 +9,9 @@ import { AuthRequest } from '../proto/bbuhot/service/auth_pb';
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
+  constructor(private apiService: ApiService) {}
 
-  constructor(private apiService: ApiService) { }
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   onClickMe() {
     const listGameRequest = new ListGameRequest();
@@ -24,10 +22,13 @@ export class HomepageComponent implements OnInit {
     listGameRequest.setIsAdminRequest(true);
     listGameRequest.setGameStatus(Game.Status.DRAFT);
 
-    this.apiService.listGames(listGameRequest).subscribe((reply) => {
-      console.log(reply.toObject());
-    }, (error) => {
-      console.log(error);
-    });
+    this.apiService.listGames(listGameRequest).subscribe(
+      (reply) => {
+        console.log(reply.toObject());
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 }
