@@ -19,8 +19,8 @@ export class HomepageComponent implements OnInit {
     const listGameRequest = new ListGameRequest();
     listGameRequest.setAuth(new AuthRequest());
     listGameRequest.getAuth().setUid(1);
-    listGameRequest.getAuth().setAuth('986atk1/mbgC3AeOxeKBREp4eE8WbUpfDtKrliINd7DzV8nrAp1ZpM9KEJYT935EF5EwFlAidT7/4H19q3tc');
-    listGameRequest.getAuth().setSaltkey('RaIEjNbx');
+    listGameRequest.getAuth().setAuth('f864Wjt+ccE9euGuZQppnfu5aeSSuWkuVPt91ou9mcUAtMwHgvTfDoqX0nT2fgOb6ykQ22WzfOPZVxoHwT7I');
+    listGameRequest.getAuth().setSaltkey('T9Zz8d5b');
     listGameRequest.setIsAdminRequest(true);
     listGameRequest.setGameStatus(Game.Status.DRAFT);
 

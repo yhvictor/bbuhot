@@ -20,7 +20,7 @@ export class ApiService {
     constructor(private http: HttpClient) {}
 
      private callServiceImpl<I extends Message, O>(input: I, path: string, transform: (bytes: Uint8Array) => O): Observable<O> {
-        return this.http.request<Uint8Array>(new ApiService.MessageHttpRequest('http://localhost:8080' + path, input))
+        return this.http.request<Uint8Array>(new ApiService.MessageHttpRequest('http://165.227.17.140:8080' + path, input))
         .pipe(
             filter((httpEvent: HttpEvent<Uint8Array>) => {
                 return httpEvent.type === HttpEventType.Response;
