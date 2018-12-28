@@ -8,9 +8,8 @@ describe('SpinachItemsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SpinachItemsComponent ]
-    })
-    .compileComponents();
+      declarations: [SpinachItemsComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
