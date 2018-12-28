@@ -13,6 +13,7 @@ import {HomepageComponent} from './homepage/homepage.component';
 import {SpinachItemsComponent} from './spinach-items/spinach-items.component';
 
 import {AppRoutingModule} from './app-routing.module';
+import { ApiService } from './bbuhot-api/api-service';
 import {CompetitionDetailComponent} from './competition-detail/competition-detail.component';
 import {CompetitionPlayerComponent} from './competition-player/competition-player.component';
 import {CompetitionComponent} from './competition/competition.component';
@@ -42,7 +43,11 @@ registerLocaleData(zh);
         BrowserAnimationsModule,
         AppRoutingModule
     ],
-    providers: [{provide: NZ_I18N, useValue: zh_CN}, {provide: LocationStrategy, useClass: HashLocationStrategy}],
+    providers: [
+        {provide: NZ_I18N, useValue: zh_CN},
+        {provide: LocationStrategy, useClass: HashLocationStrategy},
+        ApiService
+    ],
     bootstrap: [AppComponent]
 
 })

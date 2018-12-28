@@ -33,19 +33,6 @@ ul {
     overflow: hidden;
 }
 
-<<<<<<< HEAD
-/*li {*/
-    /*float: left;*/
-/*}*/
-
-/*li a {*/
-    /*display: block;*/
-    /*color: white;*/
-    /*text-align: center;*/
-    /*padding: 14px 0 0 3rem;*/
-    /*text-decoration: none;*/
-/*}*/
-
 li:hover{
     text-decoration: underline;
     text-decoration-color: white;
