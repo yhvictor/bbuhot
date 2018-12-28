@@ -14,6 +14,7 @@ public class EntryPoint {
   }
 
   public static void main(final String[] args) {
+    Flags.initialize(args);
     appComponent = DaggerAppComponent.create();
     appComponent.entryPoint().startServer();
   }

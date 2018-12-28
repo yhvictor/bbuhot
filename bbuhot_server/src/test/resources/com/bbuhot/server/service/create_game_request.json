@@ -1,0 +1,16 @@
+{
+  "auth": {
+    "uid": 1,
+    "auth": "986atk1/mbgC3AeOxeKBREp4eE8WbUpfDtKrliINd7DzV8nrAp1ZpM9KEJYT935EF5EwFlAidT7/4H19q3tc",
+    "saltKey": "RaIEjNbx"
+  },
+  "game": {
+    "id": -1,
+    "name": "English name only",
+    "description": "23333 no Chinese",
+    "bet_option_limit": 2,
+    "bet_amount_lowest": 5,
+    "bet_amount_highest": 15,
+    "end_time_ms": 111123
+  }
+}

@@ -29,8 +29,16 @@ public class ServiceModule {
   @Provides
   @IntoMap
   @StringKey("/api/bet/admin_game")
-  HttpHandler gameUpdatingService(GameUpdatingService gameUpdatingService) {
-    return gameUpdatingService;
+  HttpHandler adminGameUpdatingService(AdminGameUpdatingService adminGameUpdatingService) {
+    return adminGameUpdatingService;
+  }
+
+  @Provides
+  @IntoMap
+  @StringKey("/api/bet/admin_status")
+  HttpHandler adminGameStatusChangeService(
+      AdminGameStatusChangeService adminGameStatusChangeService) {
+    return adminGameStatusChangeService;
   }
 
   @Provides

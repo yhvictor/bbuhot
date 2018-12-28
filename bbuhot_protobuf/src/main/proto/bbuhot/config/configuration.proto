@@ -1,0 +1,29 @@
+syntax = "proto2";
+
+package bhuhot.service;
+
+option java_package = "com.bbuhot.server.config";
+option java_multiple_files = true;
+
+message Configuration {
+
+  message Database {
+    required string connection_url = 1;
+    required string user = 2;
+    required string password = 3;
+    required string table_prefix = 4;
+  }
+
+  required Database database = 1;
+
+  message DiscuzConfig {
+    required string auth_key = 1;
+    repeated int32 admin_group = 2;
+  }
+
+  required DiscuzConfig discuz_config = 2;
+
+  required string host = 3;
+  required int32 port = 4;
+  required bool is_debug = 5;
+}

@@ -1,0 +1,30 @@
+{
+  "auth": {
+    "uid": 1,
+    "auth": "986atk1/mbgC3AeOxeKBREp4eE8WbUpfDtKrliINd7DzV8nrAp1ZpM9KEJYT935EF5EwFlAidT7/4H19q3tc",
+    "saltKey": "RaIEjNbx"
+  },
+  "game": {
+    "id": 1,
+    "name": "English name xxx",
+    "description": "23333 no xxx",
+    "bet_option_limit": 2,
+    "bet_amount_lowest": 123,
+    "bet_amount_highest": 123,
+    "end_time_ms": 987654321,
+    "betting_options": [
+      {
+        "name": "4th win",
+        "odds": 123456
+      },
+      {
+        "name": "2nd win",
+        "odds": 654321
+      },
+      {
+        "name": "3rd win",
+        "odds": 444444
+      }
+    ]
+  }
+}

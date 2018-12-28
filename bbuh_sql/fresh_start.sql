@@ -13,6 +13,7 @@ CREATE TABLE bbuhot_game (
   bet_amount_lowest INT NOT NULL DEFAULT '0',
   bet_amount_highest INT NOT NULL DEFAULT '0',
   end_time_ms TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  winning_bet_option INT NOT NULL DEFAULT '-2',
   PRIMARY KEY(id)
 ) ENGINE = INNODB;
 

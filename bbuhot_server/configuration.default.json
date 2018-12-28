@@ -1,0 +1,19 @@
+{
+  "database": {
+    "connection_url": "jdbc:mysql://192.168.1.101:3306/ultrax",
+    "user": "root",
+    "password": "bbuhot",
+    "tablePrefix": "pre_"
+  },
+  "discuz_config": {
+    "auth_key": "76fce85ae9cf5ceeee99c014615ee215qfDf49F0YXdxHuEkru",
+    "admin_group": [
+      1,
+      2,
+      3
+    ]
+  },
+  "host": "0.0.0.0",
+  "port": 8080,
+  "is_debug": true
+}

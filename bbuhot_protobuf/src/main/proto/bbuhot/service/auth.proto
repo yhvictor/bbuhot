@@ -16,14 +16,11 @@ message AuthReply {
     // No error.
     NO_ERROR = 0;
 
-    // There's no user with such user id.
-    NO_SUCH_USER = 1;
-
     // The user's auth and saltKey doesn't match the record.
-    KEY_NOT_MATCHING = 2;
+    KEY_NOT_MATCHING = 1;
 
     // The user doesn't have the right permission to do so.
-    PERMISSION_DENY = 3;
+    PERMISSION_DENY = 2;
   }
 
   // The error code.

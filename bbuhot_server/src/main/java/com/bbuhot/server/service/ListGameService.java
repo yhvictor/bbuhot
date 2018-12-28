@@ -3,7 +3,7 @@ package com.bbuhot.server.service;
 import com.bbuhot.server.domain.Authority;
 import com.bbuhot.server.entity.GameEntity;
 import com.bbuhot.server.persistence.GameQueries;
-import com.bbuhot.server.persistence.GameQueries.GameStatus;
+import com.bbuhot.server.persistence.GameQueries.GameEntityStatus;
 import com.bbuhot.server.service.AuthReply.AuthErrorCode;
 import com.bbuhot.server.service.Game.Status;
 import java.util.List;
@@ -41,15 +41,15 @@ class ListGameService extends AbstractProtobufService<ListGameRequest, ListGameR
     }
 
     List<GameEntity> gameEntities =
-        gameQueries.queryByStatus(GameStatus.valueOf(listGameRequest.getGameStatus()));
+        gameQueries.queryByStatus(GameEntityStatus.valueOf(listGameRequest.getGameStatus()));
 
     for (GameEntity gameEntity : gameEntities) {
-      if ((!listGameRequest.getIsAdminRequest()) && !gameEntity.isNormalUserVisible()) {
+      if (!listGameRequest.getIsAdminRequest() && !gameEntity.isNormalUserVisible()) {
         // TODO(yhvictor): move this to db query.
         continue;
       }
 
-      reply.addGames(GameUpdatingService.toGame(gameEntity));
+      reply.addGames(AdminGameUpdatingService.toGame(gameEntity));
     }
 
     if (!listGameRequest.getIsAdminRequest()) {

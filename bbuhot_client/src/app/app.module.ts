@@ -44,6 +44,7 @@ registerLocaleData(zh);
     ],
     providers: [{provide: NZ_I18N, useValue: zh_CN}, {provide: LocationStrategy, useClass: HashLocationStrategy}],
     bootstrap: [AppComponent]
+
 })
 export class AppModule {
 }

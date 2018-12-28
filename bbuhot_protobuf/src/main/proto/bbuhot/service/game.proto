@@ -148,14 +148,6 @@ message AdminGameStatusReply {
 
     // There's worker ongoing to change the user betting log. So this time, the modification failed.
     LOCKED = 1;
-
-    // The status change is not one of the valid status change.
-    INVALID_STATUS_CHANGE = 2;
-
-    // The game status is setting to be SETTLED, but either:
-    //   1) the winning_option is not specified.
-    //   2) or the winning_option is out of range.
-    INVALID_WINNING_OPTION = 3;
   }
 
   optional ErrorCode game_status_error_code = 2;

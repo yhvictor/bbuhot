@@ -11,7 +11,7 @@ import javax.persistence.EntityManagerFactory;
 
 public class GameQueries {
 
-  private static final String LIST_SQL = "Select g From GameEntity g join fetch g.betEntities b where ";
+  private static final String LIST_SQL = "Select g From GameEntity g where ";
 
   private final EntityManagerFactory entityManagerFactory;
 
@@ -20,64 +20,49 @@ public class GameQueries {
     this.entityManagerFactory = entityManagerFactory;
   }
 
-  public void create(GameEntity gameEntity) {
+  public void save(GameEntity gameEntity) {
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     entityManager.getTransaction().begin();
-    entityManager.persist(gameEntity);
-    entityManager.flush();
-    entityManager.getTransaction().commit();
-  }
-
-  public void update(GameEntity gameEntity) {
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
-    entityManager.getTransaction().begin();
-    entityManager.merge(gameEntity);
-    entityManager.flush();
+    if (gameEntity.getId() > 0) {
+      entityManager.merge(gameEntity);
+    } else {
+      entityManager.persist(gameEntity);
+    }
     entityManager.getTransaction().commit();
   }
 
   public Optional<GameEntity> queryById(int id) {
-    List<?> gameList =
-        entityManagerFactory
-            .createEntityManager()
-            .createQuery(LIST_SQL + "g.id = ?1")
-            .setParameter(1, id)
-            .getResultList();
-
-    if (gameList.size() > 1) {
-      throw new IllegalStateException("Too many results.");
-    }
-    return gameList.stream().findFirst().map(object -> (GameEntity) object);
+    GameEntity gameEntity = entityManagerFactory.createEntityManager().find(GameEntity.class, id);
+    return Optional.ofNullable(gameEntity);
   }
 
-  public List<GameEntity> queryByStatus(GameStatus gameStatus) {
+  public List<GameEntity> queryByStatus(GameEntityStatus gameEntityStatus) {
     @SuppressWarnings("unchecked")
     List<GameEntity> gameList =
         entityManagerFactory
             .createEntityManager()
             .createQuery(LIST_SQL + "g.status = ?1")
-            .setParameter(1, gameStatus.value)
+            .setParameter(1, gameEntityStatus.value)
             .getResultList();
 
     return gameList;
   }
 
-  public enum GameStatus {
+  public enum GameEntityStatus {
     DRAFT(0, Game.Status.DRAFT),
     PUBLISHED(1, Status.PUBLISHED),
     SETTLED(2, Status.SETTLED),
-    CANCELLED(3, Status.CANCELLED),
     ;
-    public int value;
-    public Game.Status serviceStatus;
+    public final int value;
+    public final Game.Status serviceStatus;
 
-    GameStatus(int value, Game.Status serviceStatus) {
+    GameEntityStatus(int value, Game.Status serviceStatus) {
       this.value = value;
       this.serviceStatus = serviceStatus;
     }
 
-    public static GameStatus valueOf(int value) {
-      for (GameStatus status : GameStatus.values()) {
+    public static GameEntityStatus valueOf(int value) {
+      for (GameEntityStatus status : GameEntityStatus.values()) {
         if (status.value == value) {
           return status;
         }
@@ -86,8 +71,8 @@ public class GameQueries {
       throw new IllegalStateException("Wrong mapping value");
     }
 
-    public static GameStatus valueOf(Game.Status value) {
-      for (GameStatus status : GameStatus.values()) {
+    public static GameEntityStatus valueOf(Game.Status value) {
+      for (GameEntityStatus status : GameEntityStatus.values()) {
         if (status.serviceStatus == value) {
           return status;
         }

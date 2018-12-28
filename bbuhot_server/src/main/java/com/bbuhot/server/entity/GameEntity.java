@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Table(name = "bbuhot_game")
 @Entity
@@ -47,10 +50,14 @@ public class GameEntity {
   @Column(name = "end_time_ms")
   private Timestamp endTimeMs;
 
-  @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+  @Column(name = "winning_bet_option")
+  private int winningBetOption = -2;
+
+  // Use FetchType.EAGER to bypass a bug: https://hibernate.atlassian.net/browse/HHH-4808
+  @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinColumn(name = "game_id", referencedColumnName = "id")
   @OrderBy("id")
-  private List<BettingOptionEntity> betEntities;
+  private List<BettingOptionEntity> bettingOptionEntities = new ArrayList<>();
 
   public GameEntity() {}
 
@@ -126,15 +133,16 @@ public class GameEntity {
     this.endTimeMs = endTimeMs;
   }
 
-  public List<BettingOptionEntity> getBetEntities() {
-    if (betEntities == null) {
-      betEntities = new ArrayList<>();
-    }
-    return betEntities;
+  public List<BettingOptionEntity> getBettingOptionEntities() {
+    return bettingOptionEntities;
   }
 
-  public void setBetEntities(List<BettingOptionEntity> betEntities) {
-    this.betEntities = betEntities;
+  public int getWinningBetOption() {
+    return winningBetOption;
+  }
+
+  public void setWinningBetOption(int winningBetOption) {
+    this.winningBetOption = winningBetOption;
   }
 
   @Table(name = "bbuhot_betting_options")
