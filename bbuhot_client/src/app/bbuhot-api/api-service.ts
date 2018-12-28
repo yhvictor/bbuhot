@@ -1,9 +1,9 @@
-import { map , filter } from 'rxjs/operators';
-import { HttpClient, HttpRequest, HttpEvent, HttpResponse, HttpEventType } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpEventType, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Game, ListGameReply, ListGameRequest } from '../proto/bbuhot/service/game_pb';
 import { Message } from 'google-protobuf';
 import { Observable } from 'rxjs';
+import { filter , map } from 'rxjs/operators';
+import { Game, ListGameReply, ListGameRequest } from '../proto/bbuhot/service/game_pb';
 
 @Injectable()
 export class ApiService {

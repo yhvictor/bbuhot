@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../bbuhot-api/api-service';
-import { Game, ListGameRequest } from '../proto/bbuhot/service/game_pb';
 import { AuthRequest } from '../proto/bbuhot/service/auth_pb';
+import { Game, ListGameRequest } from '../proto/bbuhot/service/game_pb';
 
 @Component({
   selector: 'app-homepage',

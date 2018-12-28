@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {HomepageComponent} from './homepage/homepage.component';
 import {CompetitionComponent} from './competition/competition.component';
+import {HomepageComponent} from './homepage/homepage.component';
 import {LeaderBoardComponent} from './leader-board/leader-board.component';
 import {WayneComponent} from './wayne/wayne.component';
 
