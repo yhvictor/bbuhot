@@ -1,9 +1,8 @@
 import { map , filter } from 'rxjs/operators';
 import { HttpClient, HttpRequest, HttpEvent, HttpResponse, HttpEventType } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Game, ListGameReply } from '../proto/bbuhot/service/game_pb';
+import { Game, ListGameReply, ListGameRequest } from '../proto/bbuhot/service/game_pb';
 import { Message } from 'google-protobuf';
-import { ListGameRequest } from 'build/generated/source/proto/main/ts/bbuhot/service/game_pb';
 import { Observable } from 'rxjs';
 
 @Injectable()
