@@ -1,8 +1,12 @@
 {
+  "extends": "tslint-plugin-prettier",
   "rulesDirectory": [
-    "node_modules/codelyzer"
+    "node_modules/codelyzer",
+    "node_modules/tslint-plugin-prettier",
+    "node_modules/tslint-jasmine-rules/dist"
   ],
   "rules": {
+    "prettier": true,
     "arrow-return-shorthand": true,
     "callable-types": true,
     "class-name": true,
@@ -21,10 +25,7 @@
       "rxjs/Rx"
     ],
     "import-spacing": true,
-    "indent": [
-      true,
-      "spaces"
-    ],
+    "indent": [true, "spaces", 4],
     "interface-over-type-literal": true,
     "label-position": true,
     "max-line-length": [
@@ -133,6 +134,6 @@
         "import-sources-order": "lowercase-last",
         "named-imports-order": "lowercase-first"
       }
-  ]
+    ]
   }
 }
