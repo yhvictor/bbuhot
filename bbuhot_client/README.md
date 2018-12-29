@@ -22,7 +22,7 @@
 2. ng serve --open
 ```
 
-浏览器会自动打开项目, 运行在http://localhost:4200/地址
+浏览器会自动打开项目, 运行在http://localhost:4200  地址
 
 ## 远程合作
 
@@ -50,6 +50,6 @@ git rebase --continue
 git push
 ```
 
-5. 切换分支到client/release, 将自己所完成分支与merge, 此时release分支上应不会产生冲突, 顺利合并完成, 提交后推送远程client/release分支
+5. 切换分支到client/release, 将自己所完成分支与release分支merge, 此时release分支上应不会产生冲突, 会顺利合并完成, 提交merge后推送远程client/release分支
 
 6. 原则上release分支只用来merge操作不应有任何实际上的代码修改, 如第五步产生conflict需复查第四步
