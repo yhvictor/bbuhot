@@ -28,3 +28,30 @@ CREATE TABLE bbuhot_betting_options (
       REFERENCES bbuhot_game(id)
       ON DELETE CASCADE
 ) ENGINE = INNODB;
+
+DROP TABLE IF EXISTS bbuhot_bets;
+CREATE TABLE bbuhot_bets (
+  id INT NOT NULL AUTO_INCREMENT,
+-- TODO(luciusgone): find ways to add foreign key constraint for use_id
+  user_id mediumint(8) unsigned NOT NULL DEFAULT '0',
+  betting_option_id INT NOT NULL DEFAULT '0',
+  bet_amount INT NOT NULL DEFAULT '0',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (betting_option_id)
+      REFERENCES bbuhot_betting_options(id)
+) ENGINE = INNODB;
+
+DROP TABLE IF EXISTS bbuhot_paid_bets;
+CREATE TABLE bbuhot_paid_bets (
+  id INT NOT NULL AUTO_INCREMENT,
+-- TODO(luciusgone): find ways to add foreign key constraint for user_id
+  user_id mediumint(8) unsigned NOT NULL DEFAULT '0',
+  betting_option_id INT NOT NULL DEFAULT '0',
+  bet_amount INT NOT NULL DEFAULT '0',
+  earning INT NOT NULL DEFAULT '0',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (betting_option_id)
+      REFERENCES bbuhot_betting_options(id)
+) ENGINE = INNODB;
