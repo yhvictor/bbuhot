@@ -12,7 +12,11 @@ public class EntityModule {
   public static Set<Class<?>> annotatedClasses =
       Sets.newHashSet(
           // Keep alphabetical order.
-          GameEntity.BettingOptionEntity.class, GameEntity.class, UserEntity.class);
+          BetEntity.class,
+          GameEntity.BettingOptionEntity.class,
+          GameEntity.class,
+          UserEntity.class
+      );
 
   @Provides
   @Singleton

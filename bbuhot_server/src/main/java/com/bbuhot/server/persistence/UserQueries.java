@@ -21,6 +21,14 @@ public class UserQueries {
     return Optional.ofNullable(user);
   }
 
+  //TODO(luciusgone): finish this;
+  public int queryRemainingMoney(int uid) {
+  }
+
+  //TODO(luciusgone): finish this;
+  public void updateRemainingMoney(int uid, int remainingMoney) {
+  }
+
   @TestOnly
   public void save(UserEntity userEntity) {
     EntityManager entityManager = entityManagerFactory.createEntityManager();
