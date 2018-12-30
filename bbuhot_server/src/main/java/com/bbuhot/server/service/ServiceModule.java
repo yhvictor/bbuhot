@@ -52,7 +52,7 @@ public class ServiceModule {
   @IntoMap
   @StringKey("/api/bet/bet")
   HttpHandler betUpdatingService(BetUpdatingService betUpdatingService) {
-      return betUpdatingService;
+    return betUpdatingService;
   }
 
   @Provides

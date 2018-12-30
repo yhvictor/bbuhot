@@ -55,39 +55,39 @@ public class BettingOnGame {
     List<BetEntity> betEntities = new ArrayList<>();
     int total = 0;
     for (Bet bet:bets) {
-      if (bet.getBettingOptionId() >= gameEntity.getBettingOptionEntities().size())
+      if (bet.getBettingOptionId() >= gameEntity.getBettingOptionEntities().size()) {
         throw IllegalStateException("Betting option Id out of range:" + bet.getBettingOptionId());
+      }
+
+      if (bet.getMoney() < gameEntity.getBetAmountLowest()) {
+        throw new BettingOnGameException(BetErrorCode.MONEY_TOO_LOW);
+      } else if(bet.getMoney() > gameEntity.getBetAmountHighest()) {
+        throw new BettingOnGameException(BetErrorCode.MONEY_TOO_HIGH);
+      }
+
+      total += bet.getMoney();
+
+      BetEntity betEntity = new BetEntity();
+      betEntity.setUid(uid);
+      betEntity.setGameId(gameId);
+      betEntity.setBettingOptionId(bet.getBettingOptionId());
+      betEntity.setBetAmount(bet.getMoney());
+
+      betEntities.add(betEntity);
     }
 
-    if (bet.getMoney() < gameEntity.getBetAmountLowest()) {
-      throw new BettingOnGameException(BetErrorCode.MONEY_TOO_LOW);
-    } else if(bet.getMoney() > gameEntity.getBetAmountHighest()) {
-      throw new BettingOnGameException(BetErrorCode.MONEY_TOO_HIGH);
+    int betted = betQueries.queryBetted(gameId, uid);
+    int remaining = userQueries.queryRemainingMoney(uid);
+
+    if (remaining + betted < total) {
+      throw new BettingOnGameException(BetErrorCode.NO_ENOUGH_MONEY);
     }
 
-    total += bet.getMoney();
+    betQueries.saveBets(betEntities);
+    userQueries.updateRemainingMoney(uid, remaining + betted - total);
 
-    BetEntity betEntity = new BetEntity();
-    betEntity.setUid(uid);
-    betEntity.setGameId(gameId);
-    betEntity.setBettingOptionId(bet.getBettingOptionId());
-    betEntity.setBetAmount(bet.getMoney());
-
-    betEntities.add(betEntity);
+    return betEntities;
   }
-
-  int betted = betQueries.queryBetted(gameId, uid);
-  int remaining = userQueries.queryRemainingMoney(uid);
-
-        if (remaining + betted < total) {
-    throw new BettingOnGameException(BetErrorCode.NO_ENOUGH_MONEY);
-  }
-
-        betQueries.saveBets(betEntities);
-        userQueries.updateRemainingMoney(uid, remaining + betted - total);
-
-        return betEntities;
-}
 
   public void withdrawFromGame(int gameId, int uid) {
     GameEntity gameEntity = getGameEntity(gameId);
@@ -98,15 +98,15 @@ public class BettingOnGame {
     return betQueries.queryByGameAndUser(gameId, uid);
   }
 
-public static final class BettingOnGameException extends Exception {
-  private BetErrorCode betErrorCode;
+  public static final class BettingOnGameException extends Exception {
+    private BetErrorCode betErrorCode;
 
-  private BettingOnGameException(BetErrorCode betErrorCode) {
-    this.betErrorCode = betErrorCode;
-  }
+    private BettingOnGameException(BetErrorCode betErrorCode) {
+      this.betErrorCode = betErrorCode;
+    }
 
-  public BetErrorCode getBetErrorCode() {
-    return betErrorCode;
+    public BetErrorCode getBetErrorCode() {
+      return betErrorCode;
+    }
   }
-}
 }
