@@ -25,15 +25,15 @@
 	<nz-footer>
 		<div class="footer-bg">
 			<div class="footer-wrapper">
+				<bbuhot-card *ngFor="let quiz of QuizArr" [quiz]="quiz" class="footer-card"></bbuhot-card>
+				<!-- <bbuhot-card class="footer-card"></bbuhot-card>
 				<bbuhot-card class="footer-card"></bbuhot-card>
 				<bbuhot-card class="footer-card"></bbuhot-card>
 				<bbuhot-card class="footer-card"></bbuhot-card>
-				<bbuhot-card class="footer-card"></bbuhot-card>
-				<bbuhot-card class="footer-card"></bbuhot-card>
-				<bbuhot-card class="footer-card"></bbuhot-card>
+				<bbuhot-card class="footer-card"></bbuhot-card> -->
 			</div>
 			<div class="footer-bar-wrapper">
-				<bbuhot-footer-bar></bbuhot-footer-bar>
+				<bbuhot-footer-bar (onConfirm)="onConfirmClick($event)" [quiz]="QuizArr[0]" [selectedTeam]="QuizArr[0].teamLeft"></bbuhot-footer-bar>
 			</div>
 		</div>
 	</nz-footer>
