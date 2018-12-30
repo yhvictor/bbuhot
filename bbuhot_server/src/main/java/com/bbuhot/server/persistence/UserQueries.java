@@ -21,12 +21,18 @@ public class UserQueries {
     return Optional.ofNullable(user);
   }
 
-  //TODO(luciusgone): finish this;
   public int queryRemainingMoney(int uid) {
+    UserEntity user = entityManagerFactory.createEntityManager().find(UserEntity.class, uid);
+    return user.getCredits();
   }
 
-  //TODO(luciusgone): finish this;
   public void updateRemainingMoney(int uid, int remainingMoney) {
+    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    entityManager.getTransaction().begin();
+    UserEntity user = entityManager.find(UserEntity.class, uid);
+    user.setCredits(remainingMoney);
+    entityManager.merge(user);
+    entityManager.getTransaction().commit();
   }
 
   @TestOnly

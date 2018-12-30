@@ -83,7 +83,7 @@ public class BettingOnGame {
       throw new BettingOnGameException(BetErrorCode.NO_ENOUGH_MONEY);
     }
 
-    betQueries.saveBets(betEntities);
+    betQueries.saveBets(betEntities, gameId, uid);
     userQueries.updateRemainingMoney(uid, remaining + betted - total);
 
     return betEntities;

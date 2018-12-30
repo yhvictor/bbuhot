@@ -9,6 +9,8 @@ import javax.persistence.EntityManagerFactory;
 public class BetQueries {
 
   private static final String SUM_SQL = "SELECT SUM(b.betAmount) FROM BetEntity b WHERE b.gameId = ?1 AND b.uid = ?2";
+  private static final String DELETE_SQL = "DELETE FROM BetEntity b WHERE b.gameId = ?1 AND b.uid = ?2";
+  private static final String SELECT_SQL = "SELECT b FROM BetEntity b WHERE b.gameId = ?1 AND b.uid = ?2";
 
   @Inject
   BetQueries(EntityManagerFactory entityManagerFactory) {
@@ -26,15 +28,34 @@ public class BetQueries {
     return betted;
   }
 
-  //TODO(luciusgone): finish this;
-  public void saveBets(List<BetEntity> bets) {
+  public void saveBets(List<BetEntity> betEntities, int gameId, int uid) {
+      deleteBets(gameId, uid);
+
+      EntityManager entityManager = entityManagerFactory.createEntityManager();
+      entityManager.getTransaction().begin();
+      for (BetEntity betEntity:betEntities) {
+          entityManager.persist(betEntity);
+      }
+      entityManager.getTransaction().commit();
   }
 
-  //TODO(luciusgone): finish this;
   public void deleteBets(int gameId, int uid) {
+    entityManagerFactory
+        .createEntityManager()
+        .createQuery(DELETE_SQL)
+        .setParameter(1, gameId)
+        .setParameter(2, uid)
+        .executeUpdate();
   }
 
-  //TODO(luciusgone): finish this;
   public List<BetEntity> queryByGameAndUser(int gameId, int uid) {
+    List<BetEntity> betEntities = entityManagerFactory
+        .createEntityManager()
+        .createQuery(SELECT_SQL)
+        .setParameter(1, gameId)
+        .setParameter(2, uid)
+        .getResultList();
+
+    return betEntities;
   }
 }

@@ -27,6 +27,9 @@ public class UserEntity {
   @Column(nullable = false)
   private int groupId;
 
+  @Column(nullable = false)
+  private int credits;
+
   public UserEntity() {}
 
   public int getUid() {
@@ -58,6 +61,14 @@ public class UserEntity {
 
   public int getGroupId() {
     return groupId;
+  }
+
+  public int getCredits() {
+    return credits;
+  }
+
+  public void setCredits(int credits) {
+    this.credits = credits;
   }
 
   @TestOnly
