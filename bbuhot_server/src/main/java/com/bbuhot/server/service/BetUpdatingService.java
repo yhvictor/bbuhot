@@ -4,11 +4,12 @@ import com.bbuhot.server.domain.Authority;
 import com.bbuhot.server.domain.BettingOnGame;
 import com.bbuhot.server.domain.BettingOnGame.BettingOnGameException;
 import com.bbuhot.server.entity.BetEntity;
+import com.bbuhot.server.service.AuthReply.AuthErrorCode;
 import java.util.List;
 import javax.inject.Inject;
 
 
-class BetUpdatingService extends AbstractProtoBufService<BetRequest, BetReply> {
+class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
 
   private final Authority authority;
   private final BettingOnGame bettingOnGame;
@@ -34,19 +35,23 @@ class BetUpdatingService extends AbstractProtoBufService<BetRequest, BetReply> {
   @Override
   BetReply callProtobufServiceImpl(BetRequest betRequest) {
     AuthReply authReply = authority.auth(betRequest.getAuth(), false);
-    if (authReply.getErrorCode != AuthErrorCode.NO_ERROR) {
+    if (authReply.getErrorCode() != AuthErrorCode.NO_ERROR) {
       // Failed to auth.
       return BetReply.newBuilder().setAuthErrorCode(authReply.getErrorCode()).build();
     }
 
     BetReply.Builder reply = BetReply.newBuilder().setAuthErrorCode(authReply.getErrorCode());
 
-    if (betRequest.hasBets()) {
+    if (betRequest.getBetsCount() == 0) {
+      bettingOnGame.withdrawFromGame(betRequest.getGameId(),
+          betRequest.getAuth().getUid());
+      return reply.build();
+    } else {
       try {
         List<BetEntity> bets = bettingOnGame.bettingOnGame(
             betRequest.getGameId(),
             betRequest.getAuth().getUid(),
-            betRequest.getBets());
+            betRequest.getBetsList());
         for (int i = 0; i < bets.size(); i++) {
           reply.addBets(BetUpdatingService.toBet(bets.get(i)));
         }
@@ -59,10 +64,6 @@ class BetUpdatingService extends AbstractProtoBufService<BetRequest, BetReply> {
           reply.addBets(BetUpdatingService.toBet(bets.get(i)));
         }
       }
-    } else {
-      bettingOnGame.withdrawFromGame(betRequest.getGameId(),
-          betRequest.getAuth().getUid());
-      return reply.build();
     }
 
     return reply.build();

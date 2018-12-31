@@ -56,7 +56,7 @@ public class BettingOnGame {
     int total = 0;
     for (Bet bet:bets) {
       if (bet.getBettingOptionId() >= gameEntity.getBettingOptionEntities().size()) {
-        throw IllegalStateException("Betting option Id out of range:" + bet.getBettingOptionId());
+        throw new IllegalStateException("Betting option Id out of range:" + bet.getBettingOptionId());
       }
 
       if (bet.getMoney() < gameEntity.getBetAmountLowest()) {
@@ -91,7 +91,7 @@ public class BettingOnGame {
 
   public void withdrawFromGame(int gameId, int uid) {
     GameEntity gameEntity = getGameEntity(gameId);
-    betQueries.deleteBets(int gameId, int uid);
+    betQueries.deleteBets(gameId, uid);
   }
 
   public List<BetEntity> getOriginalBets(int gameId, int uid) {

@@ -1,4 +1,4 @@
-package com.bbuhot.server.persistence
+package com.bbuhot.server.persistence;
 
 import com.bbuhot.server.entity.BetEntity;
 import java.util.List;
@@ -11,6 +11,8 @@ public class BetQueries {
   private static final String SUM_SQL = "SELECT SUM(b.betAmount) FROM BetEntity b WHERE b.gameId = ?1 AND b.uid = ?2";
   private static final String DELETE_SQL = "DELETE FROM BetEntity b WHERE b.gameId = ?1 AND b.uid = ?2";
   private static final String SELECT_SQL = "SELECT b FROM BetEntity b WHERE b.gameId = ?1 AND b.uid = ?2";
+
+  private final EntityManagerFactory entityManagerFactory;
 
   @Inject
   BetQueries(EntityManagerFactory entityManagerFactory) {

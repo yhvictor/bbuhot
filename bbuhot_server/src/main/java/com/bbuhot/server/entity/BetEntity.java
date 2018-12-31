@@ -42,7 +42,7 @@ public class BetEntity {
   }
 
   public int getUid() {
-    return user;
+    return uid;
   }
 
   public void setUid(int uid) {
@@ -62,7 +62,7 @@ public class BetEntity {
   }
 
   public void setBettingOptionId(int bettingOptionId) {
-    this.bettingOptionId = bettingOptionId
+    this.bettingOptionId = bettingOptionId;
   }
 
   public int getBetAmount() {
