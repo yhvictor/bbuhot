@@ -1,11 +1,15 @@
 package com.bbuhot.server.entity;
 
 import com.bbuhot.errorprone.TestOnly;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 // TODO(yh_victor): we should not need to support custom prefix.
@@ -27,8 +31,11 @@ public class UserEntity {
   @Column(nullable = false)
   private int groupId;
 
-  @Column(nullable = false)
-  private int credits;
+  //TODO(luciusgone): we can't be sure which extcredit we are using.
+  //                  by default it is `extcredits2` from `pre_common_member_count`
+  @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+  @JoinColumn(name = "uid", referencedColumnName = "uid")
+  private ExtcreditsEntity extcreditsEntity;
 
   public UserEntity() {}
 
@@ -63,16 +70,37 @@ public class UserEntity {
     return groupId;
   }
 
-  public int getCredits() {
-    return credits;
-  }
-
-  public void setCredits(int credits) {
-    this.credits = credits;
+  public ExtcreditsEntity getExtcreditsEntity() {
+    return extcreditsEntity;
   }
 
   @TestOnly
   public void setGroupId(int groupId) {
     this.groupId = groupId;
+  }
+
+  @Table(name = "pre_common_member_count")
+  @Entity
+  public static class ExtcreditsEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, updatable = false, nullable = false)
+    private int uid;
+
+    // Use this credits instead of the credits from the `pre_common_member`
+    // table for now.
+    @Column(nullable = false)
+    private int extcredits2;
+
+    public ExtcreditsEntity() {}
+
+    public int getExtcredits2() {
+      return extcredits2;
+    }
+
+    public void setExtcredits2(int extcredits2) {
+      this.extcredits2 = extcredits2;
+    }
   }
 }
