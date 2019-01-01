@@ -91,7 +91,10 @@ public class BettingOnGame {
 
   public void withdrawFromGame(int gameId, int uid) {
     GameEntity gameEntity = getGameEntity(gameId);
+    int betted = betQueries.queryBetted(gameId, uid);
+    int remaining = userQueries.queryRemainingMoney(uid);
     betQueries.deleteBets(gameId, uid);
+    userQueries.updateRemainingMoney(uid, remaining + betted);
   }
 
   public List<BetEntity> getOriginalBets(int gameId, int uid) {

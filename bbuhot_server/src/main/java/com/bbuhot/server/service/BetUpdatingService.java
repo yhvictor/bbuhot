@@ -5,6 +5,7 @@ import com.bbuhot.server.domain.BettingOnGame;
 import com.bbuhot.server.domain.BettingOnGame.BettingOnGameException;
 import com.bbuhot.server.entity.BetEntity;
 import com.bbuhot.server.service.AuthReply.AuthErrorCode;
+import com.bbuhot.server.service.BetReply.BetErrorCode;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -45,6 +46,7 @@ class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
     if (betRequest.getBetsCount() == 0) {
       bettingOnGame.withdrawFromGame(betRequest.getGameId(),
           betRequest.getAuth().getUid());
+      reply.setBetErrorCode(BetErrorCode.NO_ERROR);
       return reply.build();
     } else {
       try {
@@ -52,6 +54,7 @@ class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
             betRequest.getGameId(),
             betRequest.getAuth().getUid(),
             betRequest.getBetsList());
+        reply.setBetErrorCode(BetErrorCode.NO_ERROR);
         for (int i = 0; i < bets.size(); i++) {
           reply.addBets(BetUpdatingService.toBet(bets.get(i)));
         }

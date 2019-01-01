@@ -15,7 +15,8 @@ public class EntityModule {
           BetEntity.class,
           GameEntity.BettingOptionEntity.class,
           GameEntity.class,
-          UserEntity.class
+          UserEntity.class,
+          UserEntity.ExtcreditsEntity.class
       );
 
   @Provides

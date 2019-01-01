@@ -29,7 +29,7 @@ public class BetQueries {
 
     if (result == null) return 0;
 
-    return (int) result;
+    return ((Long) result).intValue();
   }
 
   public void saveBets(List<BetEntity> betEntities, int gameId, int uid) {
@@ -46,12 +46,13 @@ public class BetQueries {
   }
 
   public void deleteBets(int gameId, int uid) {
-    entityManagerFactory
-        .createEntityManager()
-        .createQuery(DELETE_SQL)
+    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    entityManager.getTransaction().begin();
+    entityManager.createQuery(DELETE_SQL)
         .setParameter(1, gameId)
         .setParameter(2, uid)
         .executeUpdate();
+    entityManager.getTransaction().commit();
   }
 
   public List<BetEntity> queryByGameAndUser(int gameId, int uid) {

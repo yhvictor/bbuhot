@@ -23,14 +23,14 @@ public class UserQueries {
 
   public int queryRemainingMoney(int uid) {
     UserEntity user = entityManagerFactory.createEntityManager().find(UserEntity.class, uid);
-    return user.getExcreditsEntity().getExtcredits2();
+    return user.getExtcreditsEntity().getExtcredits2();
   }
 
   public void updateRemainingMoney(int uid, int remainingMoney) {
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     entityManager.getTransaction().begin();
     UserEntity user = entityManager.find(UserEntity.class, uid);
-    user.getExcreditsEntity.setExtcredits2(remainingMoney);
+    user.getExtcreditsEntity().setExtcredits2(remainingMoney);
     entityManager.merge(user);
     entityManager.getTransaction().commit();
   }
