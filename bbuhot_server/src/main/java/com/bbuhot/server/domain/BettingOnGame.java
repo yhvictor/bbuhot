@@ -92,7 +92,7 @@ public class BettingOnGame {
       throw new BettingOnGameException(BetErrorCode.NO_ENOUGH_MONEY);
     }
 
-    betQueries.saveBets(betEntities, gameId, uid, remained + betted - total);
+    betQueries.saveBets(betEntities, gameId, uid, betted - total);
 
     return betEntities;
   }
@@ -103,7 +103,7 @@ public class BettingOnGame {
 
     int remained = extcreditsQueries.queryRemainingCredits(uid);
 
-    betQueries.deleteBets(gameId, uid, remained + betted);
+    betQueries.deleteBets(gameId, uid, betted);
   }
 
   public List<BetEntity> getOriginalBets(int gameId, int uid) {

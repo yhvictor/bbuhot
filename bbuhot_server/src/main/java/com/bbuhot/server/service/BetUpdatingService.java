@@ -47,22 +47,22 @@ class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
       bettingOnGame.withdrawFromGame(betRequest.getGameId(), betRequest.getAuth().getUid());
       reply.setBetErrorCode(BetErrorCode.NO_ERROR);
       return reply.build();
-    } else {
-      try {
-        List<BetEntity> betEntities =
-            bettingOnGame.bettingOnGame(
-                betRequest.getGameId(), betRequest.getAuth().getUid(), betRequest.getBetsList());
-        reply.setBetErrorCode(BetErrorCode.NO_ERROR);
-        for (BetEntity betEntity : betEntities) {
-          reply.addBets(toBet(betEntity));
-        }
-      } catch (BettingOnGameException e) {
-        reply.setBetErrorCode(e.getBetErrorCode());
-        List<BetEntity> betEntities =
-            bettingOnGame.getOriginalBets(betRequest.getGameId(), betRequest.getAuth().getUid());
-        for (BetEntity betEntity : betEntities) {
-          reply.addBets(toBet(betEntity));
-        }
+    }
+
+    try {
+      List<BetEntity> betEntities =
+          bettingOnGame.bettingOnGame(
+              betRequest.getGameId(), betRequest.getAuth().getUid(), betRequest.getBetsList());
+      reply.setBetErrorCode(BetErrorCode.NO_ERROR);
+      for (BetEntity betEntity : betEntities) {
+        reply.addBets(toBet(betEntity));
+      }
+    } catch (BettingOnGameException e) {
+      reply.setBetErrorCode(e.getBetErrorCode());
+      List<BetEntity> betEntities =
+          bettingOnGame.getOriginalBets(betRequest.getGameId(), betRequest.getAuth().getUid());
+      for (BetEntity betEntity : betEntities) {
+        reply.addBets(toBet(betEntity));
       }
     }
 
