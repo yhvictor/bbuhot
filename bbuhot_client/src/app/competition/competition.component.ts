@@ -9,8 +9,6 @@ import { Quiz, TeamRatio } from 'src/models';
 export class CompetitionComponent implements OnInit {
   QuizArr: Array<Quiz> = [];
 
-  QuizArr: Array<Quiz> = [];
-
   constructor() {
     this.QuizArr = [
       new Quiz(1, '猜输赢', 2, '未开始', new TeamRatio(1, 'PSG.LGD', 0.12), new TeamRatio(2, 'OG', 0.18)),

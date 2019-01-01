@@ -35,7 +35,7 @@ registerLocaleData(zh);
     CompetitionDetailComponent,
     NavigationBarComponent,
     LeaderBoardComponent,
-    WayneComponent
+    WayneComponent,
     BbuhotCardComponent,
     BbuhotFooterBarComponent,
   ],

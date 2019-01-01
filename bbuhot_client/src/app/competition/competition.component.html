@@ -12,24 +12,18 @@
 					<app-competition-player></app-competition-player>
 				</div>
 			</div>
-            <div class="detail">
-				<app-competition-detail></app-competition-detail>
-			</div>
-			<div class="player">
-				<app-competition-player></app-competition-player>
-			</div>
-		</div>
+		</nz-content>
 		<!--</div>-->
-	</nz-content>
-	<nz-footer>
-		<div class="footer-bg">
-			<div class="footer-wrapper">
-				<bbuhot-card (onClick)="onItemClick($event, quiz)" *ngFor="let quiz of QuizArr" [quiz]="quiz" [teamLeft]="quiz.teamLeft" [teamRight]="quiz.teamRight" class="footer-card"></bbuhot-card>
+		<nz-footer>
+			<div class="footer-bg">
+				<div class="footer-wrapper">
+					<bbuhot-card (onClick)="onItemClick($event, quiz)" *ngFor="let quiz of QuizArr" [quiz]="quiz" [teamLeft]="quiz.teamLeft"
+					 [teamRight]="quiz.teamRight" class="footer-card"></bbuhot-card>
+				</div>
+				<div class="footer-bar-wrapper">
+					<bbuhot-footer-bar (onConfirm)="onConfirmClick($event)" [quiz]="QuizArr[0]" [selectedTeam]="QuizArr[0].teamLeft"></bbuhot-footer-bar>
+				</div>
 			</div>
-			<div class="footer-bar-wrapper">
-				<bbuhot-footer-bar (onConfirm)="onConfirmClick($event)" [quiz]="QuizArr[0]" [selectedTeam]="QuizArr[0].teamLeft"></bbuhot-footer-bar>
-			</div>
-		</div>
-	</nz-footer>
+		</nz-footer>
 	</div>
 </nz-layout>
