@@ -115,18 +115,21 @@
     color:rgba(255,255,255,1);
     line-height:46px;
     letter-spacing:2px;
+    cursor: pointer;
 }
 .team-ratio-left{
     background:rgba(34,30,30,1);
 }   
 .team-ratio-left-done{
     background:rgba(143,143,143,1);
+    cursor: not-allowed;
 }
 .team-ratio-right{
     background: rgba(60,51,99,1);
 }
 .team-ratio-right-done{
     background:rgba(138,132,166,1);
+    cursor: not-allowed;
 }
 .team-team_name {
     margin: auto;
