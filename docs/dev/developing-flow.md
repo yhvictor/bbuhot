@@ -4,7 +4,7 @@ Developing flow
 ## Create your own branch for developing
 You can either
 * create a branch under yhvictor/bbuhot or
-* fork the project and modify on your forked branch.
+* fork the project and modify on your forked project.
 
 Example for first approach:
 ```
