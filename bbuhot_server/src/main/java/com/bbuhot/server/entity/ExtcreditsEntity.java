@@ -8,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
 // TODO(luciusgone): The default credits used for trading is `extcredits2`
 //                   from`pre_common_member_count`. Find a good way to handle
 //                   this.

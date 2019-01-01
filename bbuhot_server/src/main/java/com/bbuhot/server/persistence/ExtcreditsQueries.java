@@ -16,9 +16,8 @@ public class ExtcreditsQueries {
   }
 
   public int queryRemainingCredits(int uid) {
-    ExtcreditsEntity extcreditsEntity = entityManagerFactory
-        .createEntityManager()
-        .find(ExtcreditsEntity.class, uid);
+    ExtcreditsEntity extcreditsEntity =
+        entityManagerFactory.createEntityManager().find(ExtcreditsEntity.class, uid);
 
     if (extcreditsEntity == null) {
       throw new IllegalStateException("No credits for user: " + uid);

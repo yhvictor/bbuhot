@@ -16,8 +16,7 @@ public class EntityModule {
           ExtcreditsEntity.class,
           GameEntity.BettingOptionEntity.class,
           GameEntity.class,
-          UserEntity.class
-      );
+          UserEntity.class);
 
   @Provides
   @Singleton

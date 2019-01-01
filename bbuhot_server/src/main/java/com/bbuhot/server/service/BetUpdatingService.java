@@ -9,7 +9,6 @@ import com.bbuhot.server.service.BetReply.BetErrorCode;
 import java.util.List;
 import javax.inject.Inject;
 
-
 class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
 
   private final Authority authority;
@@ -27,9 +26,10 @@ class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
   }
 
   static Game.Bet toBet(BetEntity betEntity) {
-    Game.Bet.Builder betBuild = Game.Bet.newBuilder()
-        .setBettingOptionId(betEntity.getBettingOptionId())
-        .setMoney(betEntity.getBetAmount());
+    Game.Bet.Builder betBuild =
+        Game.Bet.newBuilder()
+            .setBettingOptionId(betEntity.getBettingOptionId())
+            .setMoney(betEntity.getBetAmount());
     return betBuild.build();
   }
 
@@ -44,26 +44,23 @@ class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
     BetReply.Builder reply = BetReply.newBuilder().setAuthErrorCode(authReply.getErrorCode());
 
     if (betRequest.getBetsCount() == 0) {
-      bettingOnGame.withdrawFromGame(betRequest.getGameId(),
-          betRequest.getAuth().getUid());
+      bettingOnGame.withdrawFromGame(betRequest.getGameId(), betRequest.getAuth().getUid());
       reply.setBetErrorCode(BetErrorCode.NO_ERROR);
       return reply.build();
     } else {
       try {
-        List<BetEntity> betEntities = bettingOnGame.bettingOnGame(
-            betRequest.getGameId(),
-            betRequest.getAuth().getUid(),
-            betRequest.getBetsList());
+        List<BetEntity> betEntities =
+            bettingOnGame.bettingOnGame(
+                betRequest.getGameId(), betRequest.getAuth().getUid(), betRequest.getBetsList());
         reply.setBetErrorCode(BetErrorCode.NO_ERROR);
-        for (BetEntity betEntity:betEntities) {
+        for (BetEntity betEntity : betEntities) {
           reply.addBets(toBet(betEntity));
         }
       } catch (BettingOnGameException e) {
         reply.setBetErrorCode(e.getBetErrorCode());
-        List<BetEntity> betEntities = bettingOnGame.getOriginalBets(
-            betRequest.getGameId(),
-            betRequest.getAuth().getUid());
-        for (BetEntity betEntity:betEntities) {
+        List<BetEntity> betEntities =
+            bettingOnGame.getOriginalBets(betRequest.getGameId(), betRequest.getAuth().getUid());
+        for (BetEntity betEntity : betEntities) {
           reply.addBets(toBet(betEntity));
         }
       }

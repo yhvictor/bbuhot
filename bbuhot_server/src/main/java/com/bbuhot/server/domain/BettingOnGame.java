@@ -21,7 +21,8 @@ public class BettingOnGame {
   private final ExtcreditsQueries extcreditsQueries;
 
   @Inject
-  public BettingOnGame(GameQueries gameQueries, BetQueries betQueries, ExtcreditsQueries extcreditsQueries) {
+  public BettingOnGame(
+      GameQueries gameQueries, BetQueries betQueries, ExtcreditsQueries extcreditsQueries) {
     this.gameQueries = gameQueries;
     this.betQueries = betQueries;
     this.extcreditsQueries = extcreditsQueries;
@@ -30,24 +31,29 @@ public class BettingOnGame {
   private GameEntity getGameEntity(int gameId) {
     Date date = new Date();
 
-    GameEntity gameEntity = gameQueries.queryById(gameId).orElseGet(() -> {
-      throw new IllegalStateException("No game with such id: " + gameId);
-    });
+    GameEntity gameEntity =
+        gameQueries
+            .queryById(gameId)
+            .orElseGet(
+                () -> {
+                  throw new IllegalStateException("No game with such id: " + gameId);
+                });
 
     if (GameEntityStatus.valueOf(gameEntity.getStatus()) != GameEntityStatus.PUBLISHED) {
       throw new IllegalStateException("Game status is not published. game id: " + gameId);
     }
 
-    if (date.getTime() >= gameEntity.getEndTimeMs().getTime() ) {
+    if (date.getTime() >= gameEntity.getEndTimeMs().getTime()) {
       throw new IllegalStateException("Betting time over for game: " + gameId);
     }
 
-    //TODO(luciusgone): make sure user can't bet when server settles bets
+    // TODO(luciusgone): make sure user can't bet when server settles bets
 
     return gameEntity;
   }
 
-  public List<BetEntity> bettingOnGame(int gameId, int uid, List<Bet> bets) throws BettingOnGameException {
+  public List<BetEntity> bettingOnGame(int gameId, int uid, List<Bet> bets)
+      throws BettingOnGameException {
     GameEntity gameEntity = getGameEntity(gameId);
 
     if (bets.size() > gameEntity.getBetOptionLimit()) {
@@ -56,14 +62,15 @@ public class BettingOnGame {
 
     List<BetEntity> betEntities = new ArrayList<>();
     int total = 0;
-    for (Bet bet:bets) {
+    for (Bet bet : bets) {
       if (bet.getBettingOptionId() >= gameEntity.getBettingOptionEntities().size()) {
-        throw new IllegalStateException("Betting option id out of range:" + bet.getBettingOptionId());
+        throw new IllegalStateException(
+            "Betting option id out of range:" + bet.getBettingOptionId());
       }
 
       if (bet.getMoney() < gameEntity.getBetAmountLowest()) {
         throw new BettingOnGameException(BetErrorCode.MONEY_TOO_LOW);
-      } else if(bet.getMoney() > gameEntity.getBetAmountHighest()) {
+      } else if (bet.getMoney() > gameEntity.getBetAmountHighest()) {
         throw new BettingOnGameException(BetErrorCode.MONEY_TOO_HIGH);
       }
 
