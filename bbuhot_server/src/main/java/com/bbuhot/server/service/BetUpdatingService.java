@@ -27,9 +27,9 @@ class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
   }
 
   static Game.Bet toBet(BetEntity betEntity) {
-    Game.Bet.Builder betBuild = Game.Bet.newBuilder();
-    betBuild.setBettingOptionId(betEntity.getBettingOptionId());
-    betBuild.setMoney(betEntity.getBetAmount());
+    Game.Bet.Builder betBuild = Game.Bet.newBuilder()
+        .setBettingOptionId(betEntity.getBettingOptionId())
+        .setMoney(betEntity.getBetAmount());
     return betBuild.build();
   }
 
@@ -50,21 +50,21 @@ class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
       return reply.build();
     } else {
       try {
-        List<BetEntity> bets = bettingOnGame.bettingOnGame(
+        List<BetEntity> betEntities = bettingOnGame.bettingOnGame(
             betRequest.getGameId(),
             betRequest.getAuth().getUid(),
             betRequest.getBetsList());
         reply.setBetErrorCode(BetErrorCode.NO_ERROR);
-        for (int i = 0; i < bets.size(); i++) {
-          reply.addBets(toBet(bets.get(i)));
+        for (BetEntity betEntity:betEntities) {
+          reply.addBets(toBet(betEntity));
         }
       } catch (BettingOnGameException e) {
         reply.setBetErrorCode(e.getBetErrorCode());
-        List<BetEntity> bets = bettingOnGame.getOriginalBets(
+        List<BetEntity> betEntities = bettingOnGame.getOriginalBets(
             betRequest.getGameId(),
             betRequest.getAuth().getUid());
-        for (int i = 0; i < bets.size(); i++) {
-          reply.addBets(toBet(bets.get(i)));
+        for (BetEntity betEntity:betEntities) {
+          reply.addBets(toBet(betEntity));
         }
       }
     }
