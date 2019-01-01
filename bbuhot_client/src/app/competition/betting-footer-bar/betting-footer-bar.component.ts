@@ -6,7 +6,7 @@ import { TeamRatio } from '../models/team-ratio';
   templateUrl: './betting-footer-bar.component.html',
   styleUrls: ['./betting-footer-bar.component.css']
 })
-export class BbuhotFooterBarComponent {
+export class BettingFooterBarComponent {
   @Input() quiz: Quiz;
   @Input() selectedTeam: TeamRatio;
   inputValue: string;
