@@ -60,10 +60,6 @@ public class UserEntity {
     return groupId;
   }
 
-  public ExtcreditsEntity getExtcreditsEntity() {
-    return extcreditsEntity;
-  }
-
   @TestOnly
   public void setGroupId(int groupId) {
     this.groupId = groupId;
