@@ -26,16 +26,16 @@ class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
     return BetRequest.getDefaultInstance();
   }
 
-  static Game.Bet.Builder toBet(BetEntity betEntity) {
+  static Game.Bet toBet(BetEntity betEntity) {
     Game.Bet.Builder betBuild = Game.Bet.newBuilder();
     betBuild.setBettingOptionId(betEntity.getBettingOptionId());
     betBuild.setMoney(betEntity.getBetAmount());
-    return betBuild;
+    return betBuild.build();
   }
 
   @Override
   BetReply callProtobufServiceImpl(BetRequest betRequest) {
-    AuthReply authReply = authority.auth(betRequest.getAuth(), false);
+    AuthReply authReply = authority.auth(betRequest.getAuth(), /* checkIsAdmin= */ false);
     if (authReply.getErrorCode() != AuthErrorCode.NO_ERROR) {
       // Failed to auth.
       return BetReply.newBuilder().setAuthErrorCode(authReply.getErrorCode()).build();
@@ -56,7 +56,7 @@ class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
             betRequest.getBetsList());
         reply.setBetErrorCode(BetErrorCode.NO_ERROR);
         for (int i = 0; i < bets.size(); i++) {
-          reply.addBets(BetUpdatingService.toBet(bets.get(i)));
+          reply.addBets(toBet(bets.get(i)));
         }
       } catch (BettingOnGameException e) {
         reply.setBetErrorCode(e.getBetErrorCode());
@@ -64,7 +64,7 @@ class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
             betRequest.getGameId(),
             betRequest.getAuth().getUid());
         for (int i = 0; i < bets.size(); i++) {
-          reply.addBets(BetUpdatingService.toBet(bets.get(i)));
+          reply.addBets(toBet(bets.get(i)));
         }
       }
     }

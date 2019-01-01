@@ -1,7 +1,6 @@
 package com.bbuhot.server.domain;
 
 import com.bbuhot.server.entity.BetEntity;
-import com.bbuhot.server.entity.ExtcreditsEntity;
 import com.bbuhot.server.entity.GameEntity;
 import com.bbuhot.server.persistence.BetQueries;
 import com.bbuhot.server.persistence.ExtcreditsQueries;
@@ -36,12 +35,14 @@ public class BettingOnGame {
     });
 
     if (GameEntityStatus.valueOf(gameEntity.getStatus()) != GameEntityStatus.PUBLISHED) {
-      throw new IllegalStateException("Not Betable for game: " + gameId);
+      throw new IllegalStateException("Game status is not published. game id: " + gameId);
     }
 
-    if (date.getTime() > gameEntity.getEndTimeMs().getTime() ) {
+    if (date.getTime() >= gameEntity.getEndTimeMs().getTime() ) {
       throw new IllegalStateException("Betting time over for game: " + gameId);
     }
+
+    //TODO(luciusgone): make sure user can't bet when server settles bets
 
     return gameEntity;
   }
@@ -57,7 +58,7 @@ public class BettingOnGame {
     int total = 0;
     for (Bet bet:bets) {
       if (bet.getBettingOptionId() >= gameEntity.getBettingOptionEntities().size()) {
-        throw new IllegalStateException("Betting option Id out of range:" + bet.getBettingOptionId());
+        throw new IllegalStateException("Betting option id out of range:" + bet.getBettingOptionId());
       }
 
       if (bet.getMoney() < gameEntity.getBetAmountLowest()) {
@@ -78,20 +79,13 @@ public class BettingOnGame {
     }
 
     int betted = betQueries.queryBetted(gameId, uid);
-    ExtcreditsEntity extcreditsEntity = extcreditsQueries.queryById(uid).orElseGet(() -> {
-      throw new IllegalStateException("No extcredits for user: " + uid);
-    });
+    int remained = extcreditsQueries.queryRemainingCredits(uid);
 
-    int remaining = extcreditsEntity.getExtcredits2();
-
-    if (total > remaining + betted) {
+    if (total > remained + betted) {
       throw new BettingOnGameException(BetErrorCode.NO_ENOUGH_MONEY);
     }
 
-    betQueries.saveBets(betEntities, gameId, uid);
-
-    extcreditsEntity.setExtcredits2(remaining + betted - total);
-    extcreditsQueries.save(extcreditsEntity);
+    betQueries.saveBets(betEntities, gameId, uid, remained + betted - total);
 
     return betEntities;
   }
@@ -100,14 +94,9 @@ public class BettingOnGame {
     GameEntity gameEntity = getGameEntity(gameId);
     int betted = betQueries.queryBetted(gameId, uid);
 
-    ExtcreditsEntity extcreditsEntity = extcreditsQueries.queryById(uid).orElseGet(() -> {
-      throw new IllegalStateException("No extcredits for user: " + uid);
-    });
-    int remaining = extcreditsEntity.getExtcredits2();
+    int remained = extcreditsQueries.queryRemainingCredits(uid);
 
-    betQueries.deleteBets(gameId, uid);
-    extcreditsEntity.setExtcredits2(remaining + betted);
-    extcreditsQueries.save(extcreditsEntity);
+    betQueries.deleteBets(gameId, uid, remained + betted);
   }
 
   public List<BetEntity> getOriginalBets(int gameId, int uid) {

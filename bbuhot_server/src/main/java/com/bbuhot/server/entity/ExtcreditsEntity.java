@@ -1,5 +1,6 @@
 package com.bbuhot.server.entity;
 
+import com.bbuhot.errorprone.TestOnly;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,6 +30,7 @@ public class ExtcreditsEntity {
     return uid;
   }
 
+  @TestOnly
   public void setUid(int uid) {
     this.uid = uid;
   }
@@ -37,6 +39,7 @@ public class ExtcreditsEntity {
     return extcredits2;
   }
 
+  @TestOnly
   public void setExtcredits2(int extcredits2) {
     this.extcredits2 = extcredits2;
   }
