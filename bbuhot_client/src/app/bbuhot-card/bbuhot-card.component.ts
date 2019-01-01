@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Quiz, TeamRatio } from 'src/models';
 
 const STATUS_DOING = 1;
@@ -22,6 +22,10 @@ export class BbuhotCardComponent implements OnInit {
   @Input() teamLeft: TeamRatio;
   @Input() teamRight: TeamRatio;
 
+  @Output() onClick = new EventEmitter<{ $event: Event, team: TeamRatio, quiz: Quiz }>();
+
+  selectedTeam: TeamRatio;
+
   getStatusStyle() {
     return {
       ['card-status']: true,
@@ -34,13 +38,23 @@ export class BbuhotCardComponent implements OnInit {
   getRatioLabelStyle(position: 'left' | 'right') {
     return {
       ['team-ratio']: true,
-      [`team-ratio-${position}`]: this.quiz.status !== STATUS_DONE,
-      [`team-ratio-${position}-done`]: this.quiz.status === STATUS_DONE,
+      [`team-ratio-${position}${this.quiz.status === STATUS_DONE ? '-done' : ''}`]: true,
     };
   }
 
+  onItemClick($event: Event, position: 'left' | 'right') {
+    if(this.quiz.status !== STATUS_DONE) {
+      this.onClick.emit({
+        $event,
+        team: this[`team${position.charAt(0).toUpperCase() + position.slice(1)}`],
+        quiz: this.quiz,
+      });
+    } else {
+      return;
+    }
+  }
+
   isWin(position: 'left' | 'right') {
-    
     return this.quiz.result === position && this.quiz.status === STATUS_DONE;
   }
 
