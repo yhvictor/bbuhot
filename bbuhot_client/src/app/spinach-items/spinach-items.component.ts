@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-spinach-items',
+  selector: 'bbuhot-spinach-items',
   templateUrl: './spinach-items.component.html',
   styleUrls: ['./spinach-items.component.css']
 })

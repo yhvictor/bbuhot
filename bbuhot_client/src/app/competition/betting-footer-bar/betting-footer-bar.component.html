@@ -7,6 +7,6 @@
         </div>
         <!-- <input class='footer-chip-input' placeholder='您的金币可用余额为：321,000' /> -->
         <input class='footer-chip-input' nz-input placeholder="您的金币可用余额为：321,000" [(ngModel)]="inputValue" (input)="onInputChange($event)">
-        <div [ngClass]="{ 'footer-chip-confirm': true, 'footer-chip-confirm-disabled': btnDisabled}" (click)="btnClick()">确定</div>
+        <div [ngClass]="{ 'footer-chip-confirm': true, 'footer-chip-confirm-disabled': btnDisabled}" (click)="onBtnClick()">确定</div>
     </div>
 </div>

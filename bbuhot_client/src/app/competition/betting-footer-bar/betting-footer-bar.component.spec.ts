@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BbuhotFooterBarComponent } from './bbuhot-footer-bar.component';
+import { BbuhotFooterBarComponent } from './betting-footer-bar.component';
 
 describe('BbuhotFooterBarComponent', () => {
   let component: BbuhotFooterBarComponent;
@@ -8,9 +8,8 @@ describe('BbuhotFooterBarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BbuhotFooterBarComponent ]
-    })
-    .compileComponents();
+      declarations: [BbuhotFooterBarComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
