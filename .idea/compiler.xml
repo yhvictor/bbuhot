@@ -5,6 +5,14 @@
       <profile default="true" name="Default" enabled="true" />
     </annotationProcessing>
     <bytecodeTargetLevel target="8">
+      <module name="bbuhot.bbuhot_client.main" target="1.8" />
+      <module name="bbuhot.bbuhot_client.test" target="1.8" />
+      <module name="bbuhot.bbuhot_custom_error_prone.main" target="1.8" />
+      <module name="bbuhot.bbuhot_custom_error_prone.test" target="1.8" />
+      <module name="bbuhot.bbuhot_protobuf.main" target="1.8" />
+      <module name="bbuhot.bbuhot_protobuf.test" target="1.8" />
+      <module name="bbuhot.bbuhot_server.main" target="1.8" />
+      <module name="bbuhot.bbuhot_server.test" target="1.8" />
       <module name="bbuhot_client_main" target="1.8" />
       <module name="bbuhot_client_test" target="1.8" />
       <module name="bbuhot_custom_error_prone_main" target="1.8" />
