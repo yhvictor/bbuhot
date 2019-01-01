@@ -9,15 +9,17 @@ import { Quiz, TeamRatio } from 'src/models';
 export class CompetitionComponent implements OnInit {
   QuizArr: Array<Quiz> = [];
 
+  QuizArr: Array<Quiz> = [];
+
   constructor() {
     this.QuizArr = [
-      new Quiz(1, '²ÂÊäÓ®', 2, 'Î´¿ªÊ¼', new TeamRatio(1, 'PSG.LGD', 0.12), new TeamRatio(2, 'OG', 0.18)),
-      new Quiz(2, 'µÚÒ»¾ÖÓ®', 2, 'Î´¿ªÊ¼', new TeamRatio(1, 'PSG.LGD', 0.14), new TeamRatio(2, 'OasdG', 0.10)),
-      new Quiz(3, '²ÂÊäÓ®', 3, 'ÒÑ½áÊø', new TeamRatio(1, 'PSG.LGD', 0.12), new TeamRatio(2, 'OG', 0.18), 'left'),
-      new Quiz(4, '²ÂÊäÓ®', 2, 'Î´¿ªÊ¼', new TeamRatio(1, 'PSG.LGD', 0.12), new TeamRatio(2, 'OG', 0.18)),
-      // new Quiz(5, '²ÂÊäÓ®', 1, '½øĞĞÖĞ', new TeamRatio(1, 'PSG.LGD', 0.12), new TeamRatio(2, 'OG', 0.18)),
-      // new Quiz(6, 'µÚ¶ş¾ÖÓ®', 3, 'ÒÑ½áÊø', new TeamRatio(1, 'PSG.LGD', 0.12), new TeamRatio(2, 'OG', 0.18), 'right'),
-      new Quiz(7, '²ÂÊäÓ®', 1, '½øĞĞÖĞ', new TeamRatio(1, 'PSG.LGD', 0.12), new TeamRatio(2, 'OG', 0.18))
+      new Quiz(1, 'çŒœè¾“èµ¢', 2, 'æœªå¼€å§‹', new TeamRatio(1, 'PSG.LGD', 0.12), new TeamRatio(2, 'OG', 0.18)),
+      new Quiz(2, 'ç¬¬ä¸€å±€èµ¢', 2, 'æœªå¼€å§‹', new TeamRatio(1, 'PSG.LGD', 0.14), new TeamRatio(2, 'OasdG', 0.10)),
+      new Quiz(3, 'çŒœè¾“èµ¢', 3, 'å·²ç»“æŸ', new TeamRatio(1, 'PSG.LGD', 0.12), new TeamRatio(2, 'OG', 0.18), 'left'),
+      new Quiz(4, 'çŒœè¾“èµ¢', 2, 'æœªå¼€å§‹', new TeamRatio(1, 'PSG.LGD', 0.12), new TeamRatio(2, 'OG', 0.18)),
+      // new Quiz(5, 'çŒœè¾“èµ¢', 1, 'è¿›è¡Œä¸­', new TeamRatio(1, 'PSG.LGD', 0.12), new TeamRatio(2, 'OG', 0.18)),
+      // new Quiz(6, 'ç¬¬äºŒå±€èµ¢', 3, 'å·²ç»“æŸ', new TeamRatio(1, 'PSG.LGD', 0.12), new TeamRatio(2, 'OG', 0.18), 'right'),
+      new Quiz(7, 'çŒœè¾“èµ¢', 1, 'è¿›è¡Œä¸­', new TeamRatio(1, 'PSG.LGD', 0.12), new TeamRatio(2, 'OG', 0.18))
     ];
   }
 
@@ -26,7 +28,7 @@ export class CompetitionComponent implements OnInit {
     console.log('TODO: onLeftItemClick', $event, team, quiz);
   }
   onConfirmClick (inputValue: string) {
-    // µã»÷È·¶¨°´Å¥½«ÊäÈë¿òµÄÖµ´øÈë
+    // ç‚¹å‡»ç¡®å®šæŒ‰é’®å°†è¾“å…¥æ¡†çš„å€¼å¸¦å…¥
     console.log(inputValue);
   }
   ngOnInit() {
