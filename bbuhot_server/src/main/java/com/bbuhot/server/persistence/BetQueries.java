@@ -29,6 +29,7 @@ public class BetQueries {
 
     if (result == null) return 0;
 
+    //TODO(luciusgone): refactoring code?
     return ((Long) result).intValue();
   }
 

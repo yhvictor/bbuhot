@@ -1,11 +1,12 @@
 package com.bbuhot.server.domain;
 
-import com.bbuhot.server.entity.GameEntity;
 import com.bbuhot.server.entity.BetEntity;
+import com.bbuhot.server.entity.ExtcreditsEntity;
+import com.bbuhot.server.entity.GameEntity;
 import com.bbuhot.server.persistence.BetQueries;
+import com.bbuhot.server.persistence.ExtcreditsQueries;
 import com.bbuhot.server.persistence.GameQueries;
 import com.bbuhot.server.persistence.GameQueries.GameEntityStatus;
-import com.bbuhot.server.persistence.UserQueries;
 import com.bbuhot.server.service.BetReply.BetErrorCode;
 import com.bbuhot.server.service.Game.Bet;
 import java.sql.Timestamp;
@@ -18,13 +19,13 @@ public class BettingOnGame {
 
   private final GameQueries gameQueries;
   private final BetQueries betQueries;
-  private final UserQueries userQueries;
+  private final ExtcreditsQueries extcreditsQueries;
 
   @Inject
-  public BettingOnGame(GameQueries gameQueries, BetQueries betQueries, UserQueries userQueries) {
+  public BettingOnGame(GameQueries gameQueries, BetQueries betQueries, ExtcreditsQueries extcreditsQueries) {
     this.gameQueries = gameQueries;
     this.betQueries = betQueries;
-    this.userQueries = userQueries;
+    this.extcreditsQueries = extcreditsQueries;
   }
 
   private GameEntity getGameEntity(int gameId) {
@@ -77,14 +78,20 @@ public class BettingOnGame {
     }
 
     int betted = betQueries.queryBetted(gameId, uid);
-    int remaining = userQueries.queryRemainingMoney(uid);
+    ExtcreditsEntity extcreditsEntity = extcreditsQueries.queryById(uid).orElseGet(() -> {
+      throw new IllegalStateException("No extcredits for user: " + uid);
+    });
 
-    if (remaining + betted < total) {
+    int remaining = extcreditsEntity.getExtcredits2();
+
+    if (total > remaining + betted) {
       throw new BettingOnGameException(BetErrorCode.NO_ENOUGH_MONEY);
     }
 
     betQueries.saveBets(betEntities, gameId, uid);
-    userQueries.updateRemainingMoney(uid, remaining + betted - total);
+
+    extcreditsEntity.setExtcredits2(remaining + betted - total);
+    extcreditsQueries.save(extcreditsEntity);
 
     return betEntities;
   }
@@ -92,9 +99,15 @@ public class BettingOnGame {
   public void withdrawFromGame(int gameId, int uid) {
     GameEntity gameEntity = getGameEntity(gameId);
     int betted = betQueries.queryBetted(gameId, uid);
-    int remaining = userQueries.queryRemainingMoney(uid);
+
+    ExtcreditsEntity extcreditsEntity = extcreditsQueries.queryById(uid).orElseGet(() -> {
+      throw new IllegalStateException("No extcredits for user: " + uid);
+    });
+    int remaining = extcreditsEntity.getExtcredits2();
+
     betQueries.deleteBets(gameId, uid);
-    userQueries.updateRemainingMoney(uid, remaining + betted);
+    extcreditsEntity.setExtcredits2(remaining + betted);
+    extcreditsQueries.save(extcreditsEntity);
   }
 
   public List<BetEntity> getOriginalBets(int gameId, int uid) {

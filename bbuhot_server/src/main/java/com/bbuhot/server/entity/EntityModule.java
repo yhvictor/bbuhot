@@ -13,10 +13,10 @@ public class EntityModule {
       Sets.newHashSet(
           // Keep alphabetical order.
           BetEntity.class,
+          ExtcreditsEntity.class,
           GameEntity.BettingOptionEntity.class,
           GameEntity.class,
-          UserEntity.class,
-          UserEntity.ExtcreditsEntity.class
+          UserEntity.class
       );
 
   @Provides

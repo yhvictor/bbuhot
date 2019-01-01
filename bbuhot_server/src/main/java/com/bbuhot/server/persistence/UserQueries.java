@@ -21,20 +21,6 @@ public class UserQueries {
     return Optional.ofNullable(user);
   }
 
-  public int queryRemainingMoney(int uid) {
-    UserEntity user = entityManagerFactory.createEntityManager().find(UserEntity.class, uid);
-    return user.getExtcreditsEntity().getExtcredits2();
-  }
-
-  public void updateRemainingMoney(int uid, int remainingMoney) {
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
-    entityManager.getTransaction().begin();
-    UserEntity user = entityManager.find(UserEntity.class, uid);
-    user.getExtcreditsEntity().setExtcredits2(remainingMoney);
-    entityManager.merge(user);
-    entityManager.getTransaction().commit();
-  }
-
   @TestOnly
   public void save(UserEntity userEntity) {
     EntityManager entityManager = entityManagerFactory.createEntityManager();
