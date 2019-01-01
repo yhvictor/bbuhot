@@ -33,16 +33,16 @@ public class BetQueries {
   }
 
   public void saveBets(List<BetEntity> betEntities, int gameId, int uid) {
-      EntityManager entityManager = entityManagerFactory.createEntityManager();
-      entityManager.getTransaction().begin();
-      entityManager.createQuery(DELETE_SQL)
-          .setParameter(1, gameId)
-          .setParameter(2, uid)
-          .executeUpdate();
-      for (BetEntity betEntity:betEntities) {
-          entityManager.persist(betEntity);
-      }
-      entityManager.getTransaction().commit();
+    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    entityManager.getTransaction().begin();
+    entityManager.createQuery(DELETE_SQL)
+        .setParameter(1, gameId)
+        .setParameter(2, uid)
+        .executeUpdate();
+    for (BetEntity betEntity:betEntities) {
+      entityManager.persist(betEntity);
+    }
+    entityManager.getTransaction().commit();
   }
 
   public void deleteBets(int gameId, int uid) {
