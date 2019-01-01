@@ -1,0 +1,9 @@
+nz-header {
+    padding: 0;
+    margin: 0;
+    height: 59px;
+}
+
+nz-footer {
+    background-color: pink;
+}
