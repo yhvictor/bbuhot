@@ -20,21 +20,25 @@ public class BetQueries {
   }
 
   public int queryBetted(int gameId, int uid) {
-    int betted = (int) entityManagerFactory
+    Object result = entityManagerFactory
         .createEntityManager()
         .createQuery(SUM_SQL)
         .setParameter(1, gameId)
         .setParameter(2, uid)
         .getSingleResult();
 
-    return betted;
+    if (result == null) return 0;
+
+    return (int) result;
   }
 
   public void saveBets(List<BetEntity> betEntities, int gameId, int uid) {
-      deleteBets(gameId, uid);
-
       EntityManager entityManager = entityManagerFactory.createEntityManager();
       entityManager.getTransaction().begin();
+      entityManager.createQuery(DELETE_SQL)
+          .setParameter(1, gameId)
+          .setParameter(2, uid)
+          .executeUpdate();
       for (BetEntity betEntity:betEntities) {
           entityManager.persist(betEntity);
       }
