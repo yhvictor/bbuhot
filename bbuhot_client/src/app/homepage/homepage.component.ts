@@ -9,11 +9,15 @@ import { Game, ListGameRequest } from '../proto/bbuhot/service/game_pb';
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
+  gamesList: Game[];
+
   constructor(private apiService: ApiService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadGamesListData();
+  }
 
-  onClickMe() {
+  loadGamesListData() {
     const listGameRequest = new ListGameRequest();
     listGameRequest.setAuth(new AuthRequest());
     listGameRequest.getAuth().setUid(1);
@@ -26,11 +30,13 @@ export class HomepageComponent implements OnInit {
 
     this.apiService.listGames(listGameRequest).subscribe(
       (reply) => {
-        console.log(reply.toObject());
+        this.gamesList = reply.getGamesList();
       },
       (error) => {
         console.log(error);
       }
     );
   }
+
+  onClickMe() {}
 }
