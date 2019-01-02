@@ -14,7 +14,7 @@ export class BettingFooterBarComponent {
 
   @Output() confirmEvent = new EventEmitter<string>();
 
-  constructor() {}
+  constructor() { }
 
   onBtnClick() {
     if (this.inputValue) {

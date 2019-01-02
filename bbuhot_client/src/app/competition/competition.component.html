@@ -20,7 +20,7 @@
 					 [teamRight]="quiz.teamRight" class="footer-card"></bbuhot-betting-card>
 				</div>
 				<div class="footer-bar-wrapper">
-					<bbuhot-betting-footer-bar (onConfirm)="onConfirmClick($event)" [quiz]="QuizArr[0]" [selectedTeam]="QuizArr[0].teamLeft"></bbuhot-betting-footer-bar>
+					<bbuhot-betting-footer-bar (onConfirm)="onConfirmClick($event)" [quiz]="currentQuiz" [selectedTeam]="currentTeam"></bbuhot-betting-footer-bar>
 				</div>
 			</div>
 		</nz-footer>
