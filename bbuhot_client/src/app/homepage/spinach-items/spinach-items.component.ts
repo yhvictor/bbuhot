@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Game} from '../../proto/bbuhot/service/game_pb';
+import { Component, Input, OnInit } from '@angular/core';
+import { Game } from '../../proto/bbuhot/service/game_pb';
 
 @Component({
   selector: 'bbuhot-spinach-items',

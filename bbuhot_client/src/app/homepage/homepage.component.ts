@@ -9,10 +9,9 @@ import { Game, ListGameRequest } from '../proto/bbuhot/service/game_pb';
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
-  gamesList: Game.AsObject[];
+  gamesList: Game[];
 
-  constructor(private apiService: ApiService) {
-  }
+  constructor(private apiService: ApiService) {}
 
   ngOnInit() {
     this.loadGamesListData();
@@ -31,7 +30,7 @@ export class HomepageComponent implements OnInit {
 
     this.apiService.listGames(listGameRequest).subscribe(
       (reply) => {
-        this.gamesList = reply.toObject().gamesList;
+        this.gamesList = reply.getGamesList();
       },
       (error) => {
         console.log(error);
