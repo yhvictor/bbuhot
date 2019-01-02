@@ -7,10 +7,8 @@ import { Game } from '../../proto/bbuhot/service/game_pb';
   styleUrls: ['./spinach-items.component.css']
 })
 export class SpinachItemsComponent implements OnInit {
-  @Input() game: Game.AsObject;
+  @Input() game: Game;
   constructor() {}
 
-  ngOnInit() {
-    console.log('item: ', this.game.name);
-  }
+  ngOnInit() {}
 }
