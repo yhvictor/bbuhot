@@ -64,6 +64,10 @@ Frontend is using:
 * [typescript](https://www.typescriptlang.org/)
 * [ant design](https://ng.ant.design/docs/introduce/zh)
 
+We are using tools for better developing:
+* [lanhu](https://lanhuapp.com/web/#/item/board?pid=dc502362-c9c4-402a-b88b-a491dc5712d3)
+* [trello](https://trello.com/user55247310)
+
 #### Install npm and angular cli tool
 npm:
 ```
