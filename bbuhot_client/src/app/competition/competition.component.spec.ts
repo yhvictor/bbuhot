@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CompetitionComponent } from './competition.component';
+import { CompetitionModule } from './competition.module';
 
 describe('CompetitionComponent', () => {
   let component: CompetitionComponent;

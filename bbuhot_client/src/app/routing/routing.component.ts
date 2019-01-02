@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'bbuhot-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  templateUrl: './routing.component.html',
+  styleUrls: ['./routing.component.css']
 })
-export class AppComponent {
+export class RoutingComponent {
   title = 'Gotham-Spinach';
 }
