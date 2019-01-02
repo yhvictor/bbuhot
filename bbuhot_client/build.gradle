@@ -56,7 +56,7 @@ protobuf {
     }
     plugins {
         ts {
-            path = "${projectDir}/node_modules/.bin/protoc-gen-ts.cmd"
+            path = "${projectDir}/node_modules/.bin/protoc-gen-ts"
         }
     }
     generateProtoTasks {
