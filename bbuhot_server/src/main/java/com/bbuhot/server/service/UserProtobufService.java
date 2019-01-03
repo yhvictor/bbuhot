@@ -17,8 +17,8 @@ class UserProtobufService extends AbstractProtobufService<AuthReply.User, AuthRe
   }
 
   @Override
-  AuthReply.User getInputMessageDefaultInstance() {
-    return AuthReply.User.getDefaultInstance();
+  AuthReply.Builder getInputMessageBuilder(HttpServerExchangeMessageWrapper exchange) {
+    return AuthReply.newBuilder();
   }
 
   @Override

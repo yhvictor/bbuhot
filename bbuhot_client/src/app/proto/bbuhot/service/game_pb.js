@@ -2707,12 +2707,19 @@ proto.bhuhot.service.BetRequest.prototype.clearBetsList = function() {
  * @constructor
  */
 proto.bhuhot.service.BetReply = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.bhuhot.service.BetReply.repeatedFields_, null);
 };
 goog.inherits(proto.bhuhot.service.BetReply, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
   proto.bhuhot.service.BetReply.displayName = 'proto.bhuhot.service.BetReply';
 }
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.bhuhot.service.BetReply.repeatedFields_ = [3];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -2744,7 +2751,8 @@ proto.bhuhot.service.BetReply.toObject = function(includeInstance, msg) {
   var f, obj = {
     authErrorCode: jspb.Message.getField(msg, 1),
     betErrorCode: jspb.Message.getField(msg, 2),
-    bets: (f = msg.getBets()) && proto.bhuhot.service.Game.Bet.toObject(includeInstance, f)
+    betsList: jspb.Message.toObjectList(msg.getBetsList(),
+    proto.bhuhot.service.Game.Bet.toObject, includeInstance)
   };
 
   if (includeInstance) {
@@ -2792,7 +2800,7 @@ proto.bhuhot.service.BetReply.deserializeBinaryFromReader = function(msg, reader
     case 3:
       var value = new proto.bhuhot.service.Game.Bet;
       reader.readMessage(value,proto.bhuhot.service.Game.Bet.deserializeBinaryFromReader);
-      msg.setBets(value);
+      msg.addBets(value);
       break;
     default:
       reader.skipField();
@@ -2837,9 +2845,9 @@ proto.bhuhot.service.BetReply.serializeBinaryToWriter = function(message, writer
       f
     );
   }
-  f = message.getBets();
-  if (f != null) {
-    writer.writeMessage(
+  f = message.getBetsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
       3,
       f,
       proto.bhuhot.service.Game.Bet.serializeBinaryToWriter
@@ -2918,32 +2926,33 @@ proto.bhuhot.service.BetReply.prototype.hasBetErrorCode = function() {
 
 
 /**
- * optional Game.Bet bets = 3;
- * @return {?proto.bhuhot.service.Game.Bet}
+ * repeated Game.Bet bets = 3;
+ * @return {!Array<!proto.bhuhot.service.Game.Bet>}
  */
-proto.bhuhot.service.BetReply.prototype.getBets = function() {
-  return /** @type{?proto.bhuhot.service.Game.Bet} */ (
-    jspb.Message.getWrapperField(this, proto.bhuhot.service.Game.Bet, 3));
+proto.bhuhot.service.BetReply.prototype.getBetsList = function() {
+  return /** @type{!Array<!proto.bhuhot.service.Game.Bet>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.bhuhot.service.Game.Bet, 3));
 };
 
 
-/** @param {?proto.bhuhot.service.Game.Bet|undefined} value */
-proto.bhuhot.service.BetReply.prototype.setBets = function(value) {
-  jspb.Message.setWrapperField(this, 3, value);
-};
-
-
-proto.bhuhot.service.BetReply.prototype.clearBets = function() {
-  this.setBets(undefined);
+/** @param {!Array<!proto.bhuhot.service.Game.Bet>} value */
+proto.bhuhot.service.BetReply.prototype.setBetsList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 3, value);
 };
 
 
 /**
- * Returns whether this field is set.
- * @return {!boolean}
+ * @param {!proto.bhuhot.service.Game.Bet=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.bhuhot.service.Game.Bet}
  */
-proto.bhuhot.service.BetReply.prototype.hasBets = function() {
-  return jspb.Message.getField(this, 3) != null;
+proto.bhuhot.service.BetReply.prototype.addBets = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 3, opt_value, proto.bhuhot.service.Game.Bet, opt_index);
+};
+
+
+proto.bhuhot.service.BetReply.prototype.clearBetsList = function() {
+  this.setBetsList([]);
 };
 
 

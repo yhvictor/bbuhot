@@ -24,8 +24,10 @@ class AdminGameUpdatingService extends AbstractProtobufService<AdminGameRequest,
   }
 
   @Override
-  AdminGameRequest getInputMessageDefaultInstance() {
-    return AdminGameRequest.getDefaultInstance();
+  AdminGameRequest.Builder getInputMessageBuilder(HttpServerExchangeMessageWrapper exchange) {
+    AdminGameRequest.Builder builder = AdminGameRequest.newBuilder();
+    exchange.modifyAuthRequestBuilder(builder.getAuthBuilder());
+    return builder;
   }
 
   // TODO(yh_victor): move to util?

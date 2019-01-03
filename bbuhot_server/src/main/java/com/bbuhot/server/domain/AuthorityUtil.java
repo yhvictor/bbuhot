@@ -7,16 +7,30 @@ import java.util.Base64;
 
 class AuthorityUtil {
 
+  private AuthorityUtil() {
+  }
+
   private static final char[] hexArray = "0123456789abcdef".toCharArray();
 
   static String authKeyWithSaltAfterMd5(String authKey, String saltKey) {
     return md5(authKey + saltKey);
   }
 
-  static boolean isValid(
-      String authKey, String saltKey, String mixedInput, int uid, String password) {
+  static AuthResult getAuthResult(
+      String authKey, String saltKey, String mixedInput) {
+    if (saltKey == null || mixedInput == null) {
+      throw new IllegalStateException("Missing input values.");
+    }
+
     authKey = authKeyWithSaltAfterMd5(authKey, saltKey);
-    return decode(mixedInput, authKey).equals(password + "\t" + uid);
+
+    @SuppressWarnings("StringSplitter")
+    String[] pair = decode(mixedInput, authKey).split("\t");
+    if (pair.length != 2) {
+      throw new IllegalStateException("Auth decode error: wrong length");
+    }
+
+    return new AuthResult(/* uid= */ Integer.valueOf(pair[1]), /* password= */ pair[0]);
   }
 
   static String decode(String mixedInput, String authKey) {
@@ -107,5 +121,24 @@ class AuthorityUtil {
     }
 
     return sb.toString();
+  }
+
+  static class AuthResult {
+
+    private final int uid;
+    private final String password;
+
+    private AuthResult(int uid, String password) {
+      this.uid = uid;
+      this.password = password;
+    }
+
+    int getUid() {
+      return uid;
+    }
+
+    String getPassword() {
+      return password;
+    }
   }
 }

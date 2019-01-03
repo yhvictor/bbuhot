@@ -397,10 +397,10 @@ export class BetReply extends jspb.Message {
   getBetErrorCode(): BetReply.BetErrorCode | undefined;
   setBetErrorCode(value: BetReply.BetErrorCode): void;
 
-  hasBets(): boolean;
-  clearBets(): void;
-  getBets(): Game.Bet | undefined;
-  setBets(value?: Game.Bet): void;
+  clearBetsList(): void;
+  getBetsList(): Array<Game.Bet>;
+  setBetsList(value: Array<Game.Bet>): void;
+  addBets(value?: Game.Bet, index?: number): Game.Bet;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): BetReply.AsObject;
@@ -416,7 +416,7 @@ export namespace BetReply {
   export type AsObject = {
     authErrorCode?: bbuhot_service_auth_pb.AuthReply.AuthErrorCode,
     betErrorCode?: BetReply.BetErrorCode,
-    bets?: Game.Bet.AsObject,
+    betsList: Array<Game.Bet.AsObject>,
   }
 
   export enum BetErrorCode {

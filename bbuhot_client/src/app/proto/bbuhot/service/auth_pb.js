@@ -62,9 +62,8 @@ proto.bhuhot.service.AuthRequest.prototype.toObject = function(opt_includeInstan
  */
 proto.bhuhot.service.AuthRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    uid: jspb.Message.getField(msg, 1),
-    auth: jspb.Message.getField(msg, 2),
-    saltkey: jspb.Message.getField(msg, 3)
+    auth: jspb.Message.getField(msg, 1),
+    saltKey: jspb.Message.getField(msg, 2)
   };
 
   if (includeInstance) {
@@ -102,16 +101,12 @@ proto.bhuhot.service.AuthRequest.deserializeBinaryFromReader = function(msg, rea
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setUid(value);
-      break;
-    case 2:
       var value = /** @type {string} */ (reader.readString());
       msg.setAuth(value);
       break;
-    case 3:
+    case 2:
       var value = /** @type {string} */ (reader.readString());
-      msg.setSaltkey(value);
+      msg.setSaltKey(value);
       break;
     default:
       reader.skipField();
@@ -142,9 +137,9 @@ proto.bhuhot.service.AuthRequest.prototype.serializeBinary = function() {
  */
 proto.bhuhot.service.AuthRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = /** @type {number} */ (jspb.Message.getField(message, 1));
+  f = /** @type {string} */ (jspb.Message.getField(message, 1));
   if (f != null) {
-    writer.writeInt32(
+    writer.writeString(
       1,
       f
     );
@@ -156,32 +151,25 @@ proto.bhuhot.service.AuthRequest.serializeBinaryToWriter = function(message, wri
       f
     );
   }
-  f = /** @type {string} */ (jspb.Message.getField(message, 3));
-  if (f != null) {
-    writer.writeString(
-      3,
-      f
-    );
-  }
 };
 
 
 /**
- * required int32 uid = 1;
- * @return {number}
+ * optional string auth = 1;
+ * @return {string}
  */
-proto.bhuhot.service.AuthRequest.prototype.getUid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+proto.bhuhot.service.AuthRequest.prototype.getAuth = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
-/** @param {number} value */
-proto.bhuhot.service.AuthRequest.prototype.setUid = function(value) {
+/** @param {string} value */
+proto.bhuhot.service.AuthRequest.prototype.setAuth = function(value) {
   jspb.Message.setField(this, 1, value);
 };
 
 
-proto.bhuhot.service.AuthRequest.prototype.clearUid = function() {
+proto.bhuhot.service.AuthRequest.prototype.clearAuth = function() {
   jspb.Message.setField(this, 1, undefined);
 };
 
@@ -190,27 +178,27 @@ proto.bhuhot.service.AuthRequest.prototype.clearUid = function() {
  * Returns whether this field is set.
  * @return {!boolean}
  */
-proto.bhuhot.service.AuthRequest.prototype.hasUid = function() {
+proto.bhuhot.service.AuthRequest.prototype.hasAuth = function() {
   return jspb.Message.getField(this, 1) != null;
 };
 
 
 /**
- * required string auth = 2;
+ * optional string salt_key = 2;
  * @return {string}
  */
-proto.bhuhot.service.AuthRequest.prototype.getAuth = function() {
+proto.bhuhot.service.AuthRequest.prototype.getSaltKey = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
 /** @param {string} value */
-proto.bhuhot.service.AuthRequest.prototype.setAuth = function(value) {
+proto.bhuhot.service.AuthRequest.prototype.setSaltKey = function(value) {
   jspb.Message.setField(this, 2, value);
 };
 
 
-proto.bhuhot.service.AuthRequest.prototype.clearAuth = function() {
+proto.bhuhot.service.AuthRequest.prototype.clearSaltKey = function() {
   jspb.Message.setField(this, 2, undefined);
 };
 
@@ -219,37 +207,8 @@ proto.bhuhot.service.AuthRequest.prototype.clearAuth = function() {
  * Returns whether this field is set.
  * @return {!boolean}
  */
-proto.bhuhot.service.AuthRequest.prototype.hasAuth = function() {
+proto.bhuhot.service.AuthRequest.prototype.hasSaltKey = function() {
   return jspb.Message.getField(this, 2) != null;
-};
-
-
-/**
- * required string saltKey = 3;
- * @return {string}
- */
-proto.bhuhot.service.AuthRequest.prototype.getSaltkey = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
-};
-
-
-/** @param {string} value */
-proto.bhuhot.service.AuthRequest.prototype.setSaltkey = function(value) {
-  jspb.Message.setField(this, 3, value);
-};
-
-
-proto.bhuhot.service.AuthRequest.prototype.clearSaltkey = function() {
-  jspb.Message.setField(this, 3, undefined);
-};
-
-
-/**
- * Returns whether this field is set.
- * @return {!boolean}
- */
-proto.bhuhot.service.AuthRequest.prototype.hasSaltkey = function() {
-  return jspb.Message.getField(this, 3) != null;
 };
 
 

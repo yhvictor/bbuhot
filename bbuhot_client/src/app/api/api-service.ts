@@ -3,14 +3,16 @@ import { Injectable } from '@angular/core';
 import { Message } from 'google-protobuf';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { Game, ListGameReply, ListGameRequest } from '../proto/bbuhot/service/game_pb';
+import { AuthReply, AuthRequest } from '../proto/bbuhot/service/auth_pb';
+import { ListGameReply, ListGameRequest } from '../proto/bbuhot/service/game_pb';
 
 @Injectable()
 export class ApiService {
   static MessageHttpRequest = class extends HttpRequest<ArrayBufferLike> {
     constructor(url: string, message: Message) {
       super('POST', url, message.serializeBinary().buffer, {
-        responseType: 'arraybuffer'
+        responseType: 'arraybuffer',
+        withCredentials: true
       });
     }
   };
@@ -23,7 +25,12 @@ export class ApiService {
     transform: (bytes: Uint8Array) => O
   ): Observable<O> {
     return this.http
-      .request<Uint8Array>(new ApiService.MessageHttpRequest('http://165.227.17.140:8080' + path, input))
+      .request<Uint8Array>(
+        new ApiService.MessageHttpRequest(
+          'http://localhost:8080' + path + '?origin=http://localhost:4200',
+          input
+        )
+      )
       .pipe(
         filter((httpEvent: HttpEvent<Uint8Array>) => {
           return httpEvent.type === HttpEventType.Response;
@@ -40,5 +47,9 @@ export class ApiService {
 
   public listGames(listGameRequest: ListGameRequest): Observable<ListGameReply> {
     return this.callServiceImpl(listGameRequest, '/api/bet/list_game', ListGameReply.deserializeBinary);
+  }
+
+  public userLogin(authRequest: AuthRequest): Observable<AuthReply> {
+    return this.callServiceImpl(authRequest, '/api/auth', AuthReply.deserializeBinary);
   }
 }
