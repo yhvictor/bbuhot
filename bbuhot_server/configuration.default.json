@@ -14,8 +14,7 @@
     ],
     "cookie_pre": "0flr_2132_"
   },
-  "host": "0.0.0.0",
+  "host": "127.0.0.1",
   "port": 8080,
-  "is_debug": true,
-  "allow_cors": true
+  "is_debug": true
 }

@@ -27,5 +27,4 @@ message Configuration {
   required string host = 3;
   required int32 port = 4;
   required bool is_debug = 5;
-  required bool allow_cors = 6;
 }

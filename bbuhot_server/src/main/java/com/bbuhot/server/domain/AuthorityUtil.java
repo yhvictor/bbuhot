@@ -36,6 +36,10 @@ class AuthorityUtil {
   static String decode(String mixedInput, String authKey) {
     int keyCLength = 4;
 
+    if (mixedInput.length() <= keyCLength) {
+      throw new IllegalStateException("Auth key too short: " + mixedInput.length());
+    }
+
     authKey = md5(authKey);
     String keyA = md5(authKey.substring(0, 16));
     String keyB = md5(authKey.substring(16, 32));

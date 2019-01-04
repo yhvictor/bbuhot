@@ -14,7 +14,6 @@ import com.google.protobuf.util.JsonFormat;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.server.handlers.Cookie;
 import io.undertow.util.Headers;
-import io.undertow.util.HttpString;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -116,14 +115,6 @@ class HttpServerExchangeMessageWrapper {
     final byte[] bytes;
     ContentType outputContentType = getOutputContentType();
     httpServerExchange.getResponseHeaders().put(Headers.CONTENT_TYPE, outputContentType.typeString);
-    if (Flags.getInstance().getAllowCors()) {
-      httpServerExchange
-          .getResponseHeaders()
-          .put(new HttpString("Access-Control-Allow-Credentials"), Boolean.toString(true));
-      httpServerExchange
-          .getResponseHeaders()
-          .put(new HttpString("Access-Control-Allow-Origin"), getOriginParam());
-    }
 
     switch (outputContentType) {
       case PROTO:
@@ -148,14 +139,6 @@ class HttpServerExchangeMessageWrapper {
 
   private void writeErrorMessage(Throwable t) {
     httpServerExchange.setStatusCode(400);
-    if (Flags.getInstance().getAllowCors()) {
-      httpServerExchange
-          .getResponseHeaders()
-          .put(new HttpString("Access-Control-Allow-Credentials"), Boolean.toString(true));
-      httpServerExchange
-          .getResponseHeaders()
-          .put(new HttpString("Access-Control-Allow-Origin"), getOriginParam());
-    }
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
     t.printStackTrace(new PrintStream(byteArrayOutputStream));
     httpServerExchange
@@ -183,15 +166,6 @@ class HttpServerExchangeMessageWrapper {
     } catch (UnsupportedEncodingException e) {
       throw new IllegalStateException(e);
     }
-  }
-
-  private String getOriginParam() {
-    Map<String, Deque<String>> urlParams = httpServerExchange.getQueryParameters();
-    if (!urlParams.containsKey("origin")) {
-      return null;
-    }
-
-    return urlParams.get("origin").getFirst();
   }
 
   private ContentType getInputContentType() {
