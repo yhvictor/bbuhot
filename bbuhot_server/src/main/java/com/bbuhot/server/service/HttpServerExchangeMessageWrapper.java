@@ -12,7 +12,7 @@ import com.google.protobuf.Message;
 import com.google.protobuf.TextFormat;
 import com.google.protobuf.util.JsonFormat;
 import io.undertow.server.HttpServerExchange;
-import io.undertow.util.HeaderValues;
+import io.undertow.server.handlers.Cookie;
 import io.undertow.util.Headers;
 import io.undertow.util.HttpString;
 import java.io.ByteArrayInputStream;
@@ -26,18 +26,15 @@ import java.util.Deque;
 import java.util.Map;
 import javax.annotation.Nullable;
 
-class HttpServerExchangeMessageWrapper<InputMessage extends Message> {
+class HttpServerExchangeMessageWrapper {
 
-  private final InputMessage defaultMessage;
   private final HttpServerExchange httpServerExchange;
 
-  HttpServerExchangeMessageWrapper(
-      InputMessage defaultMessage, HttpServerExchange httpServerExchange) {
-    this.defaultMessage = defaultMessage;
+  HttpServerExchangeMessageWrapper(HttpServerExchange httpServerExchange) {
     this.httpServerExchange = httpServerExchange;
   }
 
-  ListenableFuture<InputMessage> parseRequest() {
+  <T extends Message> ListenableFuture<T> parseRequest(Message.Builder builder) {
     SettableFuture<byte[]> requestBodyFuture = SettableFuture.create();
     httpServerExchange
         .getRequestReceiver()
@@ -50,11 +47,17 @@ class HttpServerExchangeMessageWrapper<InputMessage extends Message> {
                     BbuhotThreadPool.workerThreadPool, () -> requestBodyFuture.setException(e)));
 
     return Futures.transform(
-        requestBodyFuture, this::parseRequestBody, MoreExecutors.directExecutor());
+        requestBodyFuture,
+        request -> {
+          assert request != null;
+          @SuppressWarnings("unchecked")
+          T message = (T) this.parseRequestBody(builder, request);
+          return message;
+        },
+        MoreExecutors.directExecutor());
   }
 
-  private InputMessage parseRequestBody(byte[] bytes) {
-    Message.Builder builder = defaultMessage.toBuilder();
+  private Message parseRequestBody(Message.Builder builder, byte[] bytes) {
     try {
       switch (getInputContentType()) {
         case JSON:
@@ -76,10 +79,7 @@ class HttpServerExchangeMessageWrapper<InputMessage extends Message> {
       throw new IllegalStateException(exception);
     }
 
-    @SuppressWarnings("unchecked")
-    InputMessage message = (InputMessage) builder.build();
-
-    return message;
+    return builder.build();
   }
 
   void writeOutputMessage(ListenableFuture<? extends Message> outputMessageFuture, long startTime) {
@@ -114,7 +114,14 @@ class HttpServerExchangeMessageWrapper<InputMessage extends Message> {
     final byte[] bytes;
     ContentType outputContentType = getOutputContentType();
     httpServerExchange.getResponseHeaders().put(Headers.CONTENT_TYPE, outputContentType.typeString);
-    httpServerExchange.getResponseHeaders().put(new HttpString("Access-Control-Allow-Origin"), "*");
+    if (Flags.getInstance().getAllowCors()) {
+      httpServerExchange
+          .getResponseHeaders()
+          .put(new HttpString("Access-Control-Allow-Credentials"), Boolean.toString(true));
+      httpServerExchange
+          .getResponseHeaders()
+          .put(new HttpString("Access-Control-Allow-Origin"), getOriginParam());
+    }
 
     switch (outputContentType) {
       case PROTO:
@@ -139,12 +146,46 @@ class HttpServerExchangeMessageWrapper<InputMessage extends Message> {
 
   private void writeErrorMessage(Throwable t) {
     httpServerExchange.setStatusCode(400);
-    httpServerExchange.getResponseHeaders().put(new HttpString("Access-Control-Allow-Origin"), "*");
+    if (Flags.getInstance().getAllowCors()) {
+      httpServerExchange
+          .getResponseHeaders()
+          .put(new HttpString("Access-Control-Allow-Credentials"), Boolean.toString(true));
+      httpServerExchange
+          .getResponseHeaders()
+          .put(new HttpString("Access-Control-Allow-Origin"), getOriginParam());
+    }
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
     t.printStackTrace(new PrintStream(byteArrayOutputStream));
     httpServerExchange
         .getResponseSender()
         .send(ByteBuffer.wrap(byteArrayOutputStream.toByteArray()));
+  }
+
+  void modifyAuthRequestBuilder(AuthRequest.Builder builder) {
+    String auth = getCookie(Flags.getAuthCookieName());
+    String saltKey = getCookie(Flags.getSaltKeyCookieName());
+
+    if (auth != null) {
+      builder.setAuth(auth);
+    }
+    if (saltKey != null) {
+      builder.setSaltKey(saltKey);
+    }
+  }
+
+  private String getCookie(String key) {
+    Cookie cookie = httpServerExchange.getRequestCookies().get(key);
+
+    return cookie == null ? null : cookie.getValue();
+  }
+
+  private String getOriginParam() {
+    Map<String, Deque<String>> urlParams = httpServerExchange.getQueryParameters();
+    if (!urlParams.containsKey("origin")) {
+      return null;
+    }
+
+    return urlParams.get("origin").getFirst();
   }
 
   private ContentType getInputContentType() {

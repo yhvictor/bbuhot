@@ -65,7 +65,8 @@ proto.bhuhot.service.Configuration.toObject = function(includeInstance, msg) {
     discuzConfig: (f = msg.getDiscuzConfig()) && proto.bhuhot.service.Configuration.DiscuzConfig.toObject(includeInstance, f),
     host: jspb.Message.getField(msg, 3),
     port: jspb.Message.getField(msg, 4),
-    isDebug: jspb.Message.getField(msg, 5)
+    isDebug: jspb.Message.getField(msg, 5),
+    allowCors: jspb.Message.getField(msg, 6)
   };
 
   if (includeInstance) {
@@ -123,6 +124,10 @@ proto.bhuhot.service.Configuration.deserializeBinaryFromReader = function(msg, r
     case 5:
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setIsDebug(value);
+      break;
+    case 6:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setAllowCors(value);
       break;
     default:
       reader.skipField();
@@ -187,6 +192,13 @@ proto.bhuhot.service.Configuration.serializeBinaryToWriter = function(message, w
   if (f != null) {
     writer.writeBool(
       5,
+      f
+    );
+  }
+  f = /** @type {boolean} */ (jspb.Message.getField(message, 6));
+  if (f != null) {
+    writer.writeBool(
+      6,
       f
     );
   }
@@ -527,7 +539,8 @@ proto.bhuhot.service.Configuration.DiscuzConfig.prototype.toObject = function(op
 proto.bhuhot.service.Configuration.DiscuzConfig.toObject = function(includeInstance, msg) {
   var f, obj = {
     authKey: jspb.Message.getField(msg, 1),
-    adminGroupList: jspb.Message.getRepeatedField(msg, 2)
+    adminGroupList: jspb.Message.getRepeatedField(msg, 2),
+    cookiePre: jspb.Message.getField(msg, 3)
   };
 
   if (includeInstance) {
@@ -572,6 +585,10 @@ proto.bhuhot.service.Configuration.DiscuzConfig.deserializeBinaryFromReader = fu
       var value = /** @type {number} */ (reader.readInt32());
       msg.addAdminGroup(value);
       break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCookiePre(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -612,6 +629,13 @@ proto.bhuhot.service.Configuration.DiscuzConfig.serializeBinaryToWriter = functi
   if (f.length > 0) {
     writer.writeRepeatedInt32(
       2,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 3));
+  if (f != null) {
+    writer.writeString(
+      3,
       f
     );
   }
@@ -673,6 +697,35 @@ proto.bhuhot.service.Configuration.DiscuzConfig.prototype.addAdminGroup = functi
 
 proto.bhuhot.service.Configuration.DiscuzConfig.prototype.clearAdminGroupList = function() {
   this.setAdminGroupList([]);
+};
+
+
+/**
+ * required string cookie_pre = 3;
+ * @return {string}
+ */
+proto.bhuhot.service.Configuration.DiscuzConfig.prototype.getCookiePre = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/** @param {string} value */
+proto.bhuhot.service.Configuration.DiscuzConfig.prototype.setCookiePre = function(value) {
+  jspb.Message.setField(this, 3, value);
+};
+
+
+proto.bhuhot.service.Configuration.DiscuzConfig.prototype.clearCookiePre = function() {
+  jspb.Message.setField(this, 3, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {!boolean}
+ */
+proto.bhuhot.service.Configuration.DiscuzConfig.prototype.hasCookiePre = function() {
+  return jspb.Message.getField(this, 3) != null;
 };
 
 
@@ -822,6 +875,37 @@ proto.bhuhot.service.Configuration.prototype.clearIsDebug = function() {
  */
 proto.bhuhot.service.Configuration.prototype.hasIsDebug = function() {
   return jspb.Message.getField(this, 5) != null;
+};
+
+
+/**
+ * required bool allow_cors = 6;
+ * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
+ * You should avoid comparisons like {@code val === true/false} in those cases.
+ * @return {boolean}
+ */
+proto.bhuhot.service.Configuration.prototype.getAllowCors = function() {
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 6, false));
+};
+
+
+/** @param {boolean} value */
+proto.bhuhot.service.Configuration.prototype.setAllowCors = function(value) {
+  jspb.Message.setField(this, 6, value);
+};
+
+
+proto.bhuhot.service.Configuration.prototype.clearAllowCors = function() {
+  jspb.Message.setField(this, 6, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {!boolean}
+ */
+proto.bhuhot.service.Configuration.prototype.hasAllowCors = function() {
+  return jspb.Message.getField(this, 6) != null;
 };
 
 

@@ -21,8 +21,10 @@ class ListGameService extends AbstractProtobufService<ListGameRequest, ListGameR
   }
 
   @Override
-  ListGameRequest getInputMessageDefaultInstance() {
-    return ListGameRequest.getDefaultInstance();
+  ListGameRequest.Builder getInputMessageBuilder(HttpServerExchangeMessageWrapper exchange) {
+    ListGameRequest.Builder builder = ListGameRequest.newBuilder();
+    exchange.modifyAuthRequestBuilder(builder.getAuthBuilder());
+    return builder;
   }
 
   @Override

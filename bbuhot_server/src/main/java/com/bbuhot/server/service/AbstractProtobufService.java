@@ -10,18 +10,17 @@ import io.undertow.server.HttpServerExchange;
 abstract class AbstractProtobufService<InputMessage extends Message, OutputMessage extends Message>
     implements HttpHandler {
 
-  abstract InputMessage getInputMessageDefaultInstance();
+  abstract Message.Builder getInputMessageBuilder(HttpServerExchangeMessageWrapper exchange);
 
   abstract OutputMessage callProtobufServiceImpl(InputMessage inputMessage);
 
   @Override
   public void handleRequest(HttpServerExchange httpServerExchange) {
     long start = System.nanoTime();
-    HttpServerExchangeMessageWrapper<InputMessage> exchange =
-        new HttpServerExchangeMessageWrapper<>(
-            getInputMessageDefaultInstance(), httpServerExchange);
-
-    ListenableFuture<InputMessage> inputMessage = exchange.parseRequest();
+    HttpServerExchangeMessageWrapper exchange =
+        new HttpServerExchangeMessageWrapper(httpServerExchange);
+    ListenableFuture<InputMessage> inputMessage =
+        exchange.parseRequest(getInputMessageBuilder(exchange));
     ListenableFuture<OutputMessage> output =
         Futures.transform(
             inputMessage, this::callProtobufServiceImpl, BbuhotThreadPool.limitedThreadPool);

@@ -1,6 +1,7 @@
 package com.bbuhot.server.domain;
 
 import com.bbuhot.server.app.Flags;
+import com.bbuhot.server.domain.AuthorityUtil.AuthResult;
 import com.bbuhot.server.entity.UserEntity;
 import com.bbuhot.server.persistence.UserQueries;
 import com.bbuhot.server.service.AuthReply;
@@ -18,20 +19,20 @@ public class Authority {
   }
 
   public AuthReply auth(AuthRequest authRequest, boolean checkIsAdmin) {
-    UserEntity userEntity =
-        userQueries
-            .queryUserById(authRequest.getUid())
-            .orElseGet(
-                () -> {
-                  throw new IllegalStateException("No user with such uid: " + authRequest.getUid());
-                });
-
-    if (!AuthorityUtil.isValid(
+    AuthResult result = AuthorityUtil.getAuthResult(
         Flags.getInstance().getDiscuzConfig().getAuthKey(),
         authRequest.getSaltKey(),
-        authRequest.getAuth(),
-        userEntity.getUid(),
-        userEntity.getPassword())) {
+        authRequest.getAuth());
+
+    UserEntity userEntity =
+        userQueries
+            .queryUserById(result.getUid())
+            .orElseGet(
+                () -> {
+                  throw new IllegalStateException("No user with such uid: " + result.getUid());
+                });
+
+    if (!userEntity.getPassword().equals(result.getPassword())) {
       return AuthReply.newBuilder().setErrorCode(AuthReply.AuthErrorCode.KEY_NOT_MATCHING).build();
     }
 

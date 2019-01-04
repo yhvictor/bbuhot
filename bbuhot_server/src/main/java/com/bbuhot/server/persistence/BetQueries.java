@@ -80,6 +80,7 @@ public class BetQueries {
   }
 
   public List<BetEntity> queryByGameAndUser(int gameId, int uid) {
+    @SuppressWarnings("unchecked")
     List<BetEntity> betEntities =
         entityManagerFactory
             .createEntityManager()

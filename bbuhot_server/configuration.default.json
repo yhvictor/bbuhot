@@ -11,9 +11,11 @@
       1,
       2,
       3
-    ]
+    ],
+    "cookie_pre": "0flr_2132_"
   },
   "host": "0.0.0.0",
   "port": 8080,
-  "is_debug": true
+  "is_debug": true,
+  "allow_cors": true
 }
