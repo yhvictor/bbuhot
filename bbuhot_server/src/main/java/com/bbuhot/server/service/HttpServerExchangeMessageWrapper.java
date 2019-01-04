@@ -20,6 +20,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Deque;
@@ -176,7 +178,11 @@ class HttpServerExchangeMessageWrapper {
   private String getCookie(String key) {
     Cookie cookie = httpServerExchange.getRequestCookies().get(key);
 
-    return cookie == null ? null : cookie.getValue();
+    try {
+      return cookie == null ? null : URLDecoder.decode(cookie.getValue(), "utf8");
+    } catch (UnsupportedEncodingException e) {
+      throw new IllegalStateException(e);
+    }
   }
 
   private String getOriginParam() {
