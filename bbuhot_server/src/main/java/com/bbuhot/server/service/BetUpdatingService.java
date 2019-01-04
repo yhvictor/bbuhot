@@ -20,19 +20,23 @@ class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
     this.bettingOnGame = bettingOnGame;
   }
 
-  @Override
-  BetRequest.Builder getInputMessageBuilder(HttpServerExchangeMessageWrapper exchange) {
-    BetRequest.Builder builder = BetRequest.newBuilder();
-    exchange.modifyAuthRequestBuilder(builder.getAuthBuilder());
-    return builder;
-  }
-
   private static Game.Bet toBet(BetEntity betEntity) {
     Game.Bet.Builder betBuild =
         Game.Bet.newBuilder()
             .setBettingOptionId(betEntity.getBettingOptionId())
             .setMoney(betEntity.getBetAmount());
     return betBuild.build();
+  }
+
+  @Override
+  BetRequest getInputMessage(HttpServerExchangeMessageWrapper exchange, byte[] bytes) {
+    BetRequest.Builder builder = BetRequest.newBuilder();
+    exchange.mergeFieldsFromBody(builder.getAuthBuilder(), bytes);
+    AuthRequest authRequest = exchange.generateAuthRequestFromCookie();
+    if (authRequest != null) {
+      builder.setAuth(authRequest);
+    }
+    return builder.build();
   }
 
   @Override
