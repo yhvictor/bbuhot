@@ -86,9 +86,9 @@ npm install
 
 #### Serve the project
 ```
-ng serve
+npm start
 ```
-Then the pages will be served at http://localhost:4200
+Then the pages will be served at http://localhost:4200/v2/
 
 ## What to do next
 See [developing flow](developing-flow.md) for how to submit the code to git repo.

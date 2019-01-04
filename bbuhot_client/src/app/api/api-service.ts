@@ -24,25 +24,18 @@ export class ApiService {
     path: string,
     transform: (bytes: Uint8Array) => O
   ): Observable<O> {
-    return this.http
-      .request<Uint8Array>(
-        new ApiService.MessageHttpRequest(
-          'http://localhost:8080' + path + '?origin=http://localhost:4200',
-          input
-        )
-      )
-      .pipe(
-        filter((httpEvent: HttpEvent<Uint8Array>) => {
-          return httpEvent.type === HttpEventType.Response;
-        }),
-        map((httpEvent) => {
-          if (httpEvent instanceof HttpResponse) {
-            return transform(httpEvent.body);
-          } else {
-            throw new Error(JSON.stringify(httpEvent));
-          }
-        })
-      );
+    return this.http.request<Uint8Array>(new ApiService.MessageHttpRequest(path, input)).pipe(
+      filter((httpEvent: HttpEvent<Uint8Array>) => {
+        return httpEvent.type === HttpEventType.Response;
+      }),
+      map((httpEvent) => {
+        if (httpEvent instanceof HttpResponse) {
+          return transform(httpEvent.body);
+        } else {
+          throw new Error(JSON.stringify(httpEvent));
+        }
+      })
+    );
   }
 
   public listGames(listGameRequest: ListGameRequest): Observable<ListGameReply> {
