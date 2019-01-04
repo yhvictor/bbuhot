@@ -1,12 +1,10 @@
-use ultrax;
-
-DROP TABLE bbuhot_betting_options;
-DROP TABLE bbuhot_game;
+DROP TABLE IF EXISTS bbuhot_betting_options;
+DROP TABLE IF EXISTS bbuhot_game;
 
 CREATE TABLE bbuhot_game (
   id INT NOT NULL AUTO_INCREMENT,
-  name TEXT NOT NULL DEFAULT '',
-  description TEXT NOT NULL DEFAULT '',
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
   normal_user_visible TINYINT(1) NOT NULL DEFAULT '0',
   status TINYINT NOT NULL DEFAULT '0',
   bet_option_limit TINYINT NOT NULL DEFAULT '1',
@@ -20,7 +18,7 @@ CREATE TABLE bbuhot_game (
 CREATE TABLE bbuhot_betting_options (
   id INT NOT NULL AUTO_INCREMENT,
   game_id INT, # Have to keep this nullable to allow hibernate to delete.
-  name TEXT NOT NULL DEFAULT '',
+  name TEXT NOT NULL,
   odds INT NOT NULL DEFAULT '1000000',
   INDEX game_index (game_id),
   PRIMARY KEY (id),
@@ -28,6 +26,7 @@ CREATE TABLE bbuhot_betting_options (
       REFERENCES bbuhot_game(id)
       ON DELETE CASCADE
 ) ENGINE = INNODB;
+
 
 -- TODO(luciusgone): find ways to add foreign key constraint for use_id.
 --                   change `pre_common_member` storage engine to INNODB?
