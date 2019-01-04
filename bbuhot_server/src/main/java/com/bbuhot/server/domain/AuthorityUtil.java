@@ -27,7 +27,7 @@ class AuthorityUtil {
     @SuppressWarnings("StringSplitter")
     String[] pair = decode(mixedInput, authKey).split("\t");
     if (pair.length != 2) {
-      throw new IllegalStateException("Auth decode error: wrong length");
+      throw new IllegalStateException("Auth decode error: wrong pair length");
     }
 
     return new AuthResult(/* uid= */ Integer.valueOf(pair[1]), /* password= */ pair[0]);
