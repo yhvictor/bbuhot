@@ -5,7 +5,6 @@ import com.bbuhot.server.util.BbuhotThreadPool;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
@@ -35,7 +34,7 @@ class HttpServerExchangeMessageWrapper {
     this.httpServerExchange = httpServerExchange;
   }
 
-  <T extends Message> ListenableFuture<T> parseRequest(Message.Builder builder) {
+  ListenableFuture<byte[]> getRequestBody() {
     SettableFuture<byte[]> requestBodyFuture = SettableFuture.create();
     httpServerExchange
         .getRequestReceiver()
@@ -47,18 +46,10 @@ class HttpServerExchangeMessageWrapper {
                 exchange.dispatch(
                     BbuhotThreadPool.workerThreadPool, () -> requestBodyFuture.setException(e)));
 
-    return Futures.transform(
-        requestBodyFuture,
-        request -> {
-          assert request != null;
-          @SuppressWarnings("unchecked")
-          T message = (T) this.parseRequestBody(builder, request);
-          return message;
-        },
-        MoreExecutors.directExecutor());
+    return requestBodyFuture;
   }
 
-  private Message parseRequestBody(Message.Builder builder, byte[] bytes) {
+  void mergeFieldsFromBody(Message.Builder builder, byte[] bytes) {
     try {
       switch (getInputContentType()) {
         case JSON:
@@ -66,21 +57,20 @@ class HttpServerExchangeMessageWrapper {
               .merge(
                   new InputStreamReader(new ByteArrayInputStream(bytes), StandardCharsets.UTF_8),
                   builder);
-          break;
+          return;
         case TEXT_PROTO:
           TextFormat.getParser()
               .merge(
                   new InputStreamReader(new ByteArrayInputStream(bytes), StandardCharsets.UTF_8),
                   builder);
-          break;
+          return;
         case PROTO:
           builder.mergeFrom(bytes);
+          return;
       }
     } catch (IOException exception) {
       throw new IllegalStateException(exception);
     }
-
-    return builder.build();
   }
 
   void writeOutputMessage(ListenableFuture<? extends Message> outputMessageFuture, long startTime) {
@@ -146,15 +136,14 @@ class HttpServerExchangeMessageWrapper {
         .send(ByteBuffer.wrap(byteArrayOutputStream.toByteArray()));
   }
 
-  void modifyAuthRequestBuilder(AuthRequest.Builder builder) {
+  AuthRequest generateAuthRequestFromCookie() {
     String auth = getCookie(Flags.getAuthCookieName());
     String saltKey = getCookie(Flags.getSaltKeyCookieName());
 
-    if (auth != null) {
-      builder.setAuth(auth);
-    }
-    if (saltKey != null) {
-      builder.setSaltKey(saltKey);
+    if (auth != null && saltKey != null) {
+      return AuthRequest.newBuilder().setAuth(auth).setSaltKey(saltKey).build();
+    } else {
+      return null;
     }
   }
 

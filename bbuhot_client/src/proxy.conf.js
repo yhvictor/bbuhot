@@ -3,7 +3,7 @@ const BACKEND_HOST = "165.227.17.140"
 
 const PROXY_CONFIG = {
     "/api": {
-        "target": "http://" + DISCUZ_HOST + "/",
+        "target": "http://" + BACKEND_HOST + "/",
         "secure": false,
     },
     "/assets": {
@@ -11,7 +11,7 @@ const PROXY_CONFIG = {
         "secure": false,
     },
     "/": {
-        "target": "http://" + BACKEND_HOST + "/",
+        "target": "http://" + DISCUZ_HOST + "/",
         "secure": false,
     },
     "changeOrigin": true,

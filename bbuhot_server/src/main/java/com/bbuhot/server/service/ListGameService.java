@@ -21,10 +21,14 @@ class ListGameService extends AbstractProtobufService<ListGameRequest, ListGameR
   }
 
   @Override
-  ListGameRequest.Builder getInputMessageBuilder(HttpServerExchangeMessageWrapper exchange) {
+  ListGameRequest getInputMessage(HttpServerExchangeMessageWrapper exchange, byte[] bytes) {
     ListGameRequest.Builder builder = ListGameRequest.newBuilder();
-    exchange.modifyAuthRequestBuilder(builder.getAuthBuilder());
-    return builder;
+    exchange.mergeFieldsFromBody(builder, bytes);
+    AuthRequest authRequest = exchange.generateAuthRequestFromCookie();
+    if (authRequest != null) {
+      builder.setAuth(authRequest);
+    }
+    return builder.build();
   }
 
   @Override

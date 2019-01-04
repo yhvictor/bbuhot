@@ -21,10 +21,14 @@ class AdminGameStatusChangeService
   }
 
   @Override
-  AdminGameStatusRequest.Builder getInputMessageBuilder(HttpServerExchangeMessageWrapper exchange) {
+  AdminGameStatusRequest getInputMessage(HttpServerExchangeMessageWrapper exchange, byte[] bytes) {
     AdminGameStatusRequest.Builder builder = AdminGameStatusRequest.newBuilder();
-    exchange.modifyAuthRequestBuilder(builder.getAuthBuilder());
-    return builder;
+    exchange.mergeFieldsFromBody(builder, bytes);
+    AuthRequest authRequest = exchange.generateAuthRequestFromCookie();
+    if (authRequest != null) {
+      builder.setAuth(authRequest);
+    }
+    return builder.build();
   }
 
   @Override

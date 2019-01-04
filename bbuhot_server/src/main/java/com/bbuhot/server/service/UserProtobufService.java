@@ -3,6 +3,7 @@ package com.bbuhot.server.service;
 import com.bbuhot.server.app.Flags;
 import com.bbuhot.server.entity.UserEntity;
 import com.bbuhot.server.persistence.UserQueries;
+import com.bbuhot.server.service.AuthReply.User;
 import java.util.Optional;
 import javax.inject.Inject;
 
@@ -17,8 +18,10 @@ class UserProtobufService extends AbstractProtobufService<AuthReply.User, AuthRe
   }
 
   @Override
-  AuthReply.Builder getInputMessageBuilder(HttpServerExchangeMessageWrapper exchange) {
-    return AuthReply.newBuilder();
+  User getInputMessage(HttpServerExchangeMessageWrapper exchange, byte[] bytes) {
+    User.Builder builder = User.newBuilder();
+    exchange.mergeFieldsFromBody(builder, bytes);
+    return builder.build();
   }
 
   @Override
