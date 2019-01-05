@@ -28,6 +28,12 @@ public class BetEntity {
   @Column(name = "bet_amount", nullable = false)
   private int betAmount = 0;
 
+  @Column(name = "settled", nullable = false)
+  private boolean settled = false;
+
+  @Column(name = "earning", nullable = false)
+  private int earning = 0;
+
   @Column(name = "created_at")
   private Timestamp createdAt;
 
@@ -71,6 +77,22 @@ public class BetEntity {
 
   public void setBetAmount(int betAmount) {
     this.betAmount = betAmount;
+  }
+
+  public boolean isSettled() {
+    return settled;
+  }
+
+  public void setSettled(boolean settled) {
+    this.settled = settled;
+  }
+
+  public int getEarning() {
+    return earning;
+  }
+
+  public void setEarning(int earning) {
+    this.earning = earning;
   }
 
   public Timestamp getCreatedAt() {

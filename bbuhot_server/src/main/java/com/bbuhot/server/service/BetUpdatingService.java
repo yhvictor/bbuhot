@@ -31,7 +31,7 @@ class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
   @Override
   BetRequest getInputMessage(HttpServerExchangeMessageWrapper exchange, byte[] bytes) {
     BetRequest.Builder builder = BetRequest.newBuilder();
-    exchange.mergeFieldsFromBody(builder.getAuthBuilder(), bytes);
+    exchange.mergeFieldsFromBody(builder, bytes);
     AuthRequest authRequest = exchange.generateAuthRequestFromCookie();
     if (authRequest != null) {
       builder.setAuth(authRequest);
