@@ -63,7 +63,7 @@ class ListGameService extends AbstractProtobufService<ListGameRequest, ListGameR
 
       if (!listGameRequest.getIsAdminRequest()) {
           List<BetEntity> betEntities =
-              betEntities.queryByGameAndUser(gameEntity.getId(), authReply.getUser().getUid());
+              betQueries.queryByGameAndUser(gameEntity.getId(), authReply.getUser().getUid());
 
           for(BetEntity betEntity : betEntities) {
               gameBuilder.addBets(BetUpdatingService.toBet(betEntity));
