@@ -20,7 +20,7 @@ class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
     this.bettingOnGame = bettingOnGame;
   }
 
-  private static Game.Bet toBet(BetEntity betEntity) {
+  public static Game.Bet toBet(BetEntity betEntity) {
     Game.Bet.Builder betBuild =
         Game.Bet.newBuilder()
             .setBettingOptionId(betEntity.getBettingOptionId())
