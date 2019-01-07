@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "ng serve --base_href=/v2/",
+    "build": "ng build --base_href=/v2/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -49,12 +49,12 @@
     "tslint": "~5.11.0",
     "tslint-jasmine-rules": "^1.5.1",
     "tslint-plugin-prettier": "^2.0.1",
-    "typescript": "^3.1.6",
+    "typescript": "3.1.6",
     "typescript-tslint-plugin": "^0.2.1"
   },
   "prettier": {
     "singleQuote": true,
-    "printWidth": 140,
+    "printWidth": 120,
     "semi": true,
     "bracketSpacing": true,
     "arrowParens": "always",

@@ -3,16 +3,26 @@
 		<nz-content>
 			<div class="content-bg">
 				<div class="player">
-					<app-competition-player></app-competition-player>
+					<bbuhot-competition-player></bbuhot-competition-player>
 				</div>
 				<div class="detail">
-					<app-competition-detail></app-competition-detail>
+					<bbuhot-competition-detail></bbuhot-competition-detail>
 				</div>
 				<div class="player">
-					<app-competition-player></app-competition-player>
+					<bbuhot-competition-player></bbuhot-competition-player>
 				</div>
 			</div>
-			<!--</div>-->
 		</nz-content>
+		<nz-footer>
+			<div class="footer-bg">
+				<div class="footer-wrapper">
+					<bbuhot-betting-card (clickEvent)="onItemClick($event, quiz)" *ngFor="let quiz of QuizArr" [quiz]="quiz" [teamLeft]="quiz.teamLeft"
+					 [teamRight]="quiz.teamRight" class="footer-card"></bbuhot-betting-card>
+				</div>
+				<div class="footer-bar-wrapper">
+					<bbuhot-betting-footer-bar (onConfirm)="onConfirmClick($event)" [quiz]="QuizArr[0]" [selectedTeam]="QuizArr[0].teamLeft"></bbuhot-betting-footer-bar>
+				</div>
+			</div>
+		</nz-footer>
 	</div>
 </nz-layout>

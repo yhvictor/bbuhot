@@ -6,9 +6,8 @@ option java_package = "com.bbuhot.server.service";
 option java_multiple_files = true;
 
 message AuthRequest {
-  required int32 uid = 1;
-  required string auth = 2;
-  required string saltKey = 3;
+  optional string auth = 1;
+  optional string salt_key = 2;
 }
 
 message AuthReply {

@@ -215,5 +215,5 @@ message BetReply {
 
   // Bets after made the request.
   // Will be the original bets if the change failed.
-  optional Game.Bet bets = 3;
+  repeated Game.Bet bets = 3;
 }

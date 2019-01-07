@@ -4,20 +4,15 @@
 import * as jspb from "google-protobuf";
 
 export class AuthRequest extends jspb.Message {
-  hasUid(): boolean;
-  clearUid(): void;
-  getUid(): number | undefined;
-  setUid(value: number): void;
-
   hasAuth(): boolean;
   clearAuth(): void;
   getAuth(): string | undefined;
   setAuth(value: string): void;
 
-  hasSaltkey(): boolean;
-  clearSaltkey(): void;
-  getSaltkey(): string | undefined;
-  setSaltkey(value: string): void;
+  hasSaltKey(): boolean;
+  clearSaltKey(): void;
+  getSaltKey(): string | undefined;
+  setSaltKey(value: string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): AuthRequest.AsObject;
@@ -31,9 +26,8 @@ export class AuthRequest extends jspb.Message {
 
 export namespace AuthRequest {
   export type AsObject = {
-    uid?: number,
     auth?: string,
-    saltkey?: string,
+    saltKey?: string,
   }
 }
 

@@ -1,0 +1,43 @@
+.competition-player-bg {
+    background-color: red;
+    width: 100%;
+    height: 500px;
+    background-image: url("../../../assets/image/competition/card-bg-batman@2x.png");
+    background-size:100% 100%;
+    background-repeat: no-repeat;
+    box-shadow:4px 4px 12px 1px rgba(0,0,0,0.5);
+}
+
+.player-logo-bg {
+    width: 200px;
+    height: 200px;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin-top: 63px;
+}
+.player-logo img{
+    width: 103px;
+    height: 160px;
+    margin-top: 20px;
+}
+.player-name {
+    width:176px;
+    height:51px;
+    font-size:36px;
+    font-family:Arial-Black;
+    font-weight:900;
+    color:rgba(255,255,255,1);
+    line-height:51px;
+    margin-top: 21px;
+}
+
+.player-ratio {
+    width:204px;
+    height:78px;
+    font-size:56px;
+    font-family:PingFangSC-Semibold;
+    font-weight:600;
+    color:rgba(255,255,255,1);
+    line-height:78px;
+    margin-top: 24px;
+}
+

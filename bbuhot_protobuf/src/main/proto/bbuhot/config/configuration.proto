@@ -19,6 +19,7 @@ message Configuration {
   message DiscuzConfig {
     required string auth_key = 1;
     repeated int32 admin_group = 2;
+    required string cookie_pre = 3;
   }
 
   required DiscuzConfig discuz_config = 2;
