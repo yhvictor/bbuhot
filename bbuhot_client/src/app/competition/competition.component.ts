@@ -67,6 +67,6 @@ export class CompetitionComponent implements OnInit {
     console.log(inputValue);
   }
   ngOnInit() {
-    console.log("==CompetitionComponent==ngOnInit");
+    console.log('==CompetitionComponent==ngOnInit');
   }
 }

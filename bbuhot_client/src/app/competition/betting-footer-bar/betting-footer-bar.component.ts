@@ -14,7 +14,7 @@ export class BettingFooterBarComponent {
 
   @Output() confirmEvent = new EventEmitter<string>();
 
-  constructor() { }
+  constructor() {}
 
   onBtnClick() {
     if (this.inputValue) {
@@ -24,7 +24,7 @@ export class BettingFooterBarComponent {
     }
   }
 
-  onInputChange($event: Event) {
+  onInputChange() {
     this.btnDisabled = !this.inputValue;
   }
 }

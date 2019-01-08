@@ -52,7 +52,7 @@ export class BettingCardComponent {
   onItemClick($event: Event, position: Position): void {
     if (this.quiz.status !== Quiz.Status.STATUS_DONE) {
       const newTeam: TeamRatio = this[`team${position.charAt(0).toUpperCase() + position.slice(1)}`];
-      if(this.selectedTeam && this.selectedTeam.teamId === newTeam.teamId) {
+      if (this.selectedTeam && this.selectedTeam.teamId === newTeam.teamId) {
         this.selectedTeam = undefined;
       } else {
         this.selectedTeam = newTeam;
