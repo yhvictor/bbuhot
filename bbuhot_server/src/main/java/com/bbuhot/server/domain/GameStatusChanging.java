@@ -106,21 +106,22 @@ public class GameStatusChanging {
   }
 
   private void updateBets(GameEntity gameEntity, Runnable releaseLock) {
-    Runnable job = () -> {
-      GameEntityStatus status = GameEntityStatus.valueOf(gameEntity.getStatus());
-      int gameId = gameEntity.getId();
-
-      if (status == GameEntityStatus.PUBLISHED) {
-        betQueries.revokeAllRewards(gameId);
-      } else if (status == GameEntityStatus.SETTLED) {
-        int winningOptionId = gameEntity.getWinningBetOption();
-        int odds = gameEntity.getBettingOptionEntities().get(winningOptionId).getOdds();
-        betQueries.rewardAllBets(gameId, winningOptionId, odds);
-      }
-    };
     BbuhotThreadPool.scheduleExecutor
-        .schedule(job, 3000, TimeUnit.MILLISECONDS)
+        .schedule(() -> updateBetsImpl(gameEntity), 3000, TimeUnit.MILLISECONDS)
         .addListener(releaseLock, MoreExecutors.directExecutor());
+  }
+
+  private void updateBetsImpl(GameEntity gameEntity) {
+    GameEntityStatus status = GameEntityStatus.valueOf(gameEntity.getStatus());
+    int gameId = gameEntity.getId();
+
+    if (status == GameEntityStatus.PUBLISHED) {
+      betQueries.revokeAllRewards(gameId);
+    } else if (status == GameEntityStatus.SETTLED) {
+      int winningOptionId = gameEntity.getWinningBetOption();
+      int odds = gameEntity.getBettingOptionEntities().get(winningOptionId).getOdds();
+      betQueries.rewardAllBets(gameId, winningOptionId, odds);
+    }
   }
 
   public static final class GameStatusChangingException extends Exception {
