@@ -20,17 +20,23 @@ class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
     this.bettingOnGame = bettingOnGame;
   }
 
-  @Override
-  BetRequest getInputMessageDefaultInstance() {
-    return BetRequest.getDefaultInstance();
-  }
-
-  static Game.Bet toBet(BetEntity betEntity) {
+  public static Game.Bet toBet(BetEntity betEntity) {
     Game.Bet.Builder betBuild =
         Game.Bet.newBuilder()
             .setBettingOptionId(betEntity.getBettingOptionId())
             .setMoney(betEntity.getBetAmount());
     return betBuild.build();
+  }
+
+  @Override
+  BetRequest getInputMessage(HttpServerExchangeMessageWrapper exchange, byte[] bytes) {
+    BetRequest.Builder builder = BetRequest.newBuilder();
+    exchange.mergeFieldsFromBody(builder, bytes);
+    AuthRequest authRequest = exchange.generateAuthRequestFromCookie();
+    if (authRequest != null) {
+      builder.setAuth(authRequest);
+    }
+    return builder.build();
   }
 
   @Override
@@ -44,7 +50,7 @@ class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
     BetReply.Builder reply = BetReply.newBuilder().setAuthErrorCode(authReply.getErrorCode());
 
     if (betRequest.getBetsCount() == 0) {
-      bettingOnGame.withdrawFromGame(betRequest.getGameId(), betRequest.getAuth().getUid());
+      bettingOnGame.withdrawFromGame(betRequest.getGameId(), authReply.getUser().getUid());
       reply.setBetErrorCode(BetErrorCode.NO_ERROR);
       return reply.build();
     }
@@ -52,7 +58,7 @@ class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
     try {
       List<BetEntity> betEntities =
           bettingOnGame.bettingOnGame(
-              betRequest.getGameId(), betRequest.getAuth().getUid(), betRequest.getBetsList());
+              betRequest.getGameId(), authReply.getUser().getUid(), betRequest.getBetsList());
       reply.setBetErrorCode(BetErrorCode.NO_ERROR);
       for (BetEntity betEntity : betEntities) {
         reply.addBets(toBet(betEntity));
@@ -60,7 +66,7 @@ class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
     } catch (BettingOnGameException e) {
       reply.setBetErrorCode(e.getBetErrorCode());
       List<BetEntity> betEntities =
-          bettingOnGame.getOriginalBets(betRequest.getGameId(), betRequest.getAuth().getUid());
+          bettingOnGame.getOriginalBets(betRequest.getGameId(), authReply.getUser().getUid());
       for (BetEntity betEntity : betEntities) {
         reply.addBets(toBet(betEntity));
       }

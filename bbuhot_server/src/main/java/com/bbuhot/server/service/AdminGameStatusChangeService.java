@@ -21,8 +21,14 @@ class AdminGameStatusChangeService
   }
 
   @Override
-  AdminGameStatusRequest getInputMessageDefaultInstance() {
-    return AdminGameStatusRequest.getDefaultInstance();
+  AdminGameStatusRequest getInputMessage(HttpServerExchangeMessageWrapper exchange, byte[] bytes) {
+    AdminGameStatusRequest.Builder builder = AdminGameStatusRequest.newBuilder();
+    exchange.mergeFieldsFromBody(builder, bytes);
+    AuthRequest authRequest = exchange.generateAuthRequestFromCookie();
+    if (authRequest != null) {
+      builder.setAuth(authRequest);
+    }
+    return builder.build();
   }
 
   @Override

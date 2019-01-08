@@ -1,7 +1,9 @@
 package com.bbuhot.server.service;
 
 import com.bbuhot.server.domain.Authority;
+import com.bbuhot.server.entity.BetEntity;
 import com.bbuhot.server.entity.GameEntity;
+import com.bbuhot.server.persistence.BetQueries;
 import com.bbuhot.server.persistence.GameQueries;
 import com.bbuhot.server.persistence.GameQueries.GameEntityStatus;
 import com.bbuhot.server.service.AuthReply.AuthErrorCode;
@@ -13,16 +15,24 @@ class ListGameService extends AbstractProtobufService<ListGameRequest, ListGameR
 
   private final Authority authority;
   private final GameQueries gameQueries;
+  private final BetQueries betQueries;
 
   @Inject
-  ListGameService(Authority authority, GameQueries gameQueries) {
+  ListGameService(Authority authority, GameQueries gameQueries, BetQueries betQueries) {
     this.authority = authority;
     this.gameQueries = gameQueries;
+    this.betQueries = betQueries;
   }
 
   @Override
-  ListGameRequest getInputMessageDefaultInstance() {
-    return ListGameRequest.getDefaultInstance();
+  ListGameRequest getInputMessage(HttpServerExchangeMessageWrapper exchange, byte[] bytes) {
+    ListGameRequest.Builder builder = ListGameRequest.newBuilder();
+    exchange.mergeFieldsFromBody(builder, bytes);
+    AuthRequest authRequest = exchange.generateAuthRequestFromCookie();
+    if (authRequest != null) {
+      builder.setAuth(authRequest);
+    }
+    return builder.build();
   }
 
   @Override
@@ -49,11 +59,18 @@ class ListGameService extends AbstractProtobufService<ListGameRequest, ListGameR
         continue;
       }
 
-      reply.addGames(AdminGameUpdatingService.toGame(gameEntity));
-    }
+      Game.Builder gameBuilder = AdminGameUpdatingService.toGame(gameEntity);
 
-    if (!listGameRequest.getIsAdminRequest()) {
-      // TODO(yhvictor): append bets.
+      if (!listGameRequest.getIsAdminRequest()) {
+        List<BetEntity> betEntities =
+            betQueries.queryByGameAndUser(gameEntity.getId(), authReply.getUser().getUid());
+
+        for(BetEntity betEntity : betEntities) {
+          gameBuilder.addBets(BetUpdatingService.toBet(betEntity));
+        }
+      }
+
+      reply.addGames(gameBuilder);
     }
 
     return reply.build();

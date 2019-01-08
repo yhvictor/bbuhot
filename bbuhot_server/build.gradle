@@ -40,6 +40,7 @@ dependencies {
     implementation 'com.google.protobuf:protobuf-java-util:3.0.0'
     implementation 'com.google.guava:guava:27.0.1-jre'
 
+    implementation 'org.flywaydb:flyway-core:5.2.4'
     implementation 'mysql:mysql-connector-java:8.0.13'
     implementation 'javax.xml.bind:jaxb-api:2.3.0'
     implementation 'io.undertow:undertow-core:2.0.1.Final'
@@ -63,5 +64,5 @@ compileJava {
 
 docker {
 	name 'bbuhot_server'
-    files tasks.distTar.outputs, 'configuration.json'
+    files tasks.distTar.outputs
 }

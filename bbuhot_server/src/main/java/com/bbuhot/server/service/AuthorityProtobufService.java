@@ -13,8 +13,14 @@ class AuthorityProtobufService extends AbstractProtobufService<AuthRequest, Auth
   }
 
   @Override
-  AuthRequest getInputMessageDefaultInstance() {
-    return AuthRequest.getDefaultInstance();
+  AuthRequest getInputMessage(HttpServerExchangeMessageWrapper exchange, byte[] bytes) {
+    AuthRequest authRequest = exchange.generateAuthRequestFromCookie();
+    if (authRequest != null) {
+      return authRequest;
+    }
+    AuthRequest.Builder builder = AuthRequest.newBuilder();
+    exchange.mergeFieldsFromBody(builder, bytes);
+    return builder.build();
   }
 
   @Override

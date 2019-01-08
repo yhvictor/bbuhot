@@ -16,6 +16,8 @@ public class Flags {
 
   private static Configuration configuration;
   private static Set<Integer> adminGroups;
+  private static String authCookieName;
+  private static String saltKeyCookieName;
 
   static void initialize(String[] args) {
     // TODO(yhvictor): better flag handling.
@@ -42,6 +44,8 @@ public class Flags {
   public static void initializeWithConfiguration(Configuration configuration) {
     Flags.configuration = configuration;
     adminGroups = ImmutableSet.copyOf(configuration.getDiscuzConfig().getAdminGroupList());
+    authCookieName = configuration.getDiscuzConfig().getCookiePre() + "auth";
+    saltKeyCookieName = configuration.getDiscuzConfig().getCookiePre() + "saltkey";
   }
 
   public static Configuration getInstance() {
@@ -54,5 +58,13 @@ public class Flags {
 
   public static Set<Integer> getAdminGroups() {
     return adminGroups;
+  }
+
+  public static String getAuthCookieName() {
+    return authCookieName;
+  }
+
+  public static String getSaltKeyCookieName() {
+    return saltKeyCookieName;
   }
 }

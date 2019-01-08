@@ -6,8 +6,10 @@
     background-image:url(../../assets/image/Gindex.png);
     background-size:100% 100%;
     height: 389px;
+    min-width: 1110px;
     margin-bottom: 2rem;
-    display: block;
+    /* display: block; */
+    position: relative;
 }
 .banner-slogan{
     display: inline-block;
@@ -15,17 +17,21 @@
     background-size: 100% 100%;
     height: 160px;
     width: 627px;
-    margin-left: 184px;
-    margin-top: 67px;
+    left: 184px;
+    top: 67px;
+    position: absolute;
+    
 }
 
 .user-interface{
     height: 280px;
     width: 270px;
     background-color: white;
-    float:right;
-    margin-top: 22px;
-    margin-right: 178px;
+    /* margin-top: 22px;
+    margin-right: 178px; */
+    top: 22px;
+    right: 178px;
+    position: absolute;
 }
 
 .avatar{
@@ -81,4 +87,5 @@
     height: 170px;
     background-color: white;
     margin-bottom: 1rem;
+    width: 100%;
 }

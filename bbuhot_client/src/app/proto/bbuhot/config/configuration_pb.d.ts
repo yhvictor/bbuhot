@@ -29,6 +29,11 @@ export class Configuration extends jspb.Message {
   getIsDebug(): boolean | undefined;
   setIsDebug(value: boolean): void;
 
+  hasAllowCors(): boolean;
+  clearAllowCors(): void;
+  getAllowCors(): boolean | undefined;
+  setAllowCors(value: boolean): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Configuration.AsObject;
   static toObject(includeInstance: boolean, msg: Configuration): Configuration.AsObject;
@@ -46,6 +51,7 @@ export namespace Configuration {
     host?: string,
     port?: number,
     isDebug?: boolean,
+    allowCors?: boolean,
   }
 
   export class Database extends jspb.Message {
@@ -99,6 +105,11 @@ export namespace Configuration {
     setAdminGroupList(value: Array<number>): void;
     addAdminGroup(value: number, index?: number): number;
 
+    hasCookiePre(): boolean;
+    clearCookiePre(): void;
+    getCookiePre(): string | undefined;
+    setCookiePre(value: string): void;
+
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): DiscuzConfig.AsObject;
     static toObject(includeInstance: boolean, msg: DiscuzConfig): DiscuzConfig.AsObject;
@@ -113,6 +124,7 @@ export namespace Configuration {
     export type AsObject = {
       authKey?: string,
       adminGroupList: Array<number>,
+      cookiePre?: string,
     }
   }
 }

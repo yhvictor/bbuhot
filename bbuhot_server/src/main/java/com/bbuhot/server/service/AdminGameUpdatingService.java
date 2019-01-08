@@ -23,11 +23,6 @@ class AdminGameUpdatingService extends AbstractProtobufService<AdminGameRequest,
     this.gameQueries = gameQueries;
   }
 
-  @Override
-  AdminGameRequest getInputMessageDefaultInstance() {
-    return AdminGameRequest.getDefaultInstance();
-  }
-
   // TODO(yh_victor): move to util?
   static Game.Builder toGame(GameEntity gameEntity) {
     Game.Builder gameBuild = Game.newBuilder();
@@ -76,6 +71,17 @@ class AdminGameUpdatingService extends AbstractProtobufService<AdminGameRequest,
       bettingOptionEntity.setName(bettingOption.getName());
       bettingOptionEntity.setOdds(bettingOption.getOdds());
     }
+  }
+
+  @Override
+  AdminGameRequest getInputMessage(HttpServerExchangeMessageWrapper exchange, byte[] bytes) {
+    AdminGameRequest.Builder builder = AdminGameRequest.newBuilder();
+    exchange.mergeFieldsFromBody(builder, bytes);
+    AuthRequest authRequest = exchange.generateAuthRequestFromCookie();
+    if (authRequest != null) {
+      builder.setAuth(authRequest);
+    }
+    return builder.build();
   }
 
   @Override
