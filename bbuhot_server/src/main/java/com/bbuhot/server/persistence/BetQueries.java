@@ -112,7 +112,9 @@ public class BetQueries {
       BetEntity bet = (BetEntity) cur.get(0);
 
       // skip already settled bets
-      if (bet.isSettled() && bet.getEarning() != 0) continue;
+      if (BetEntityStatus.valueOf(bet.getStatus()) == BetEntityStatus.SETTLED) {
+        continue;
+      }
 
       // set earning
       if (bet.getBettingOptionId() == winningOptionId) {
@@ -123,7 +125,7 @@ public class BetQueries {
       }
 
       // set the status to settled
-      bet.setSettled(true);
+      bet.setStatus(BetEntityStatus.SETTLED.value);
 
       // save bets and update user's credit
       em2.merge(bet);
@@ -153,15 +155,17 @@ public class BetQueries {
       em2.getTransaction().begin();
       BetEntity bet = (BetEntity) cur.get(0);
 
-      // skip already settled bets
-      if (!bet.isSettled() && bet.getEarning() == 0) continue;
+      // skip already processed bets
+      if (BetEntityStatus.valueOf(bet.getStatus()) == BetEntityStatus.UNSETTLED) {
+        continue;
+      }
 
       // set earning
       int earning = bet.getEarning();
       bet.setEarning(0);
 
       // set the status to unsettled
-      bet.setSettled(false);
+      bet.setStatus(BetEntityStatus.UNSETTLED.value);
 
       // save bets and update user's credit
       em2.merge(bet);
@@ -174,5 +178,26 @@ public class BetQueries {
       em2.getTransaction().commit();
     }
     session.disconnect();
+  }
+
+  public enum BetEntityStatus {
+    UNSETTLED(0),
+    SETTLED(1),
+    ;
+    public final int value;
+
+    BetEntityStatus(int value) {
+      this.value = value;
+    }
+
+    public static BetEntityStatus valueOf(int value) {
+      for (BetEntityStatus status : BetEntityStatus.values()) {
+        if (status.value == value) {
+          return status;
+        }
+      }
+
+      throw new IllegalStateException("Wrong bet status mapping value");
+    }
   }
 }

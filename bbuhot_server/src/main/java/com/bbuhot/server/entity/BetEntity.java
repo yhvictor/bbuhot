@@ -28,8 +28,8 @@ public class BetEntity {
   @Column(name = "bet_amount", nullable = false)
   private int betAmount = 0;
 
-  @Column(name = "settled", nullable = false)
-  private boolean settled = false;
+  @Column(name = "status", nullable = false)
+  private int status = 0;
 
   @Column(name = "earning", nullable = false)
   private int earning = 0;
@@ -79,12 +79,12 @@ public class BetEntity {
     this.betAmount = betAmount;
   }
 
-  public boolean isSettled() {
-    return settled;
+  public int getStatus() {
+    return status;
   }
 
-  public void setSettled(boolean settled) {
-    this.settled = settled;
+  public void setStatus(int status) {
+    this.status = status;
   }
 
   public int getEarning() {
