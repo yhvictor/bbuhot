@@ -22,10 +22,11 @@ public class GameStatusChanging {
           .put(GameEntityStatus.DRAFT, ImmutableSet.of(GameEntityStatus.PUBLISHED))
           .put(
               GameEntityStatus.PUBLISHED,
-              ImmutableSet.of(GameEntityStatus.PUBLISHED, GameEntityStatus.SETTLED))
+              ImmutableSet.of(GameEntityStatus.PUBLISHED, GameEntityStatus.SETTLED, GameEntityStatus.CANCELLED))
           .put(
               GameEntityStatus.SETTLED,
               ImmutableSet.of(GameEntityStatus.PUBLISHED, GameEntityStatus.SETTLED))
+          .put(GameEntityStatus.CANCELLED, ImmutableSet.of(GameEntityStatus.CANCELLED))
           .build();
 
   private static final ConcurrentHashMap<Integer, AtomicBoolean> LOCK_MAP =
@@ -115,12 +116,20 @@ public class GameStatusChanging {
     GameEntityStatus status = GameEntityStatus.valueOf(gameEntity.getStatus());
     int gameId = gameEntity.getId();
 
-    if (status == GameEntityStatus.PUBLISHED) {
-      betQueries.revokeAllRewards(gameId);
-    } else if (status == GameEntityStatus.SETTLED) {
-      int winningOptionId = gameEntity.getWinningBetOption();
-      int odds = gameEntity.getBettingOptionEntities().get(winningOptionId).getOdds();
-      betQueries.rewardAllBets(gameId, winningOptionId, odds);
+    switch (status) {
+      case GameEntityStatus.PUBLISHED:
+        betQueries.revokeAllRewards(gameId);
+        break;
+      case GameEntityStatus.SETTLED:
+        int winningOptionId = gameEntity.getWinningBetOption();
+        int odds = gameEntity.getBettingOptionEntities().get(winningOptionId).getOdds();
+        betQueries.rewardAllBets(gameId, winningOptionId, odds);
+        break;
+      case GameEntityStatus.CANCELLED:
+        betQueries.revokeAllBets(gameId);
+        break;
+      default:
+          throw new IllegalStateException("Internal error. wrong game status");
     }
   }
 

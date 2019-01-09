@@ -180,9 +180,48 @@ public class BetQueries {
     session.disconnect();
   }
 
+  public void revokeAllBets(int gameId) {
+    EntityManager em1 = entityManagerFactory.createEntityManager();
+    EntityManager em2 = entityManagerFactory.createEntityManager();
+    Session session = em1.unwrap(Session.class);
+
+    ScrollableResults cur =
+        session
+            .createQuery(SELECT_SQL)
+            .setParameter("game_id", gameId)
+            .scroll(ScrollMode.FORWARD_ONLY);
+
+    while (cur.next()) {
+      em2.getTransaction().begin();
+      BetEntity bet = (BetEntity) cur.get(0);
+
+      // skip already processed bets
+      if (BetEntityStatus.valueOf(bet.getStatus()) == BetEntityStatus.CANCELLED) {
+        continue;
+      }
+
+      // set earning
+      int earning = bet.getBetAmount();
+      bet.setEarning(0);
+
+      // set the status to unsettled
+      bet.setStatus(BetEntityStatus.CANCELLED.value);
+
+      // save bets and update user's credit
+      em2.merge(bet);
+      em2.createQuery(UPDATE_EXTCREDITS2_SQL)
+          .setParameter("increment", -earning)
+          .setParameter("uid", bet.getUid())
+          .executeUpdate();
+      em2.getTransaction().commit();
+    }
+    session.disconnect();
+  }
+
   public enum BetEntityStatus {
     UNSETTLED(0),
     SETTLED(1),
+    CANCELLED(2),
     ;
     public final int value;
 
