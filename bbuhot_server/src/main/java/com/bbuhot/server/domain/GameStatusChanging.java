@@ -41,7 +41,7 @@ public class GameStatusChanging {
     this.betQueries = betQueries;
   }
 
-  public boolean isGameLocked(int gameId) {
+  public static boolean isGameLocked(int gameId) {
     if (LOCK_MAP.containsKey(gameId)) {
       return LOCK_MAP.get(gameId).get();
     }
