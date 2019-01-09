@@ -47,7 +47,9 @@ public class BettingOnGame {
       throw new IllegalStateException("Betting time over for game: " + gameId);
     }
 
-    // TODO(luciusgone): make sure user can't bet when server settles bets
+    if (GameStatusChanging.isGameLocked(gameId)) {
+      throw new IllegalStateException("Game is locked. game id: " + gameId);
+    }
 
     return gameEntity;
   }
