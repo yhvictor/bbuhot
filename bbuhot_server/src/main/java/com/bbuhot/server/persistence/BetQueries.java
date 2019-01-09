@@ -46,13 +46,13 @@ public class BetQueries {
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     entityManager.getTransaction().begin();
     // delete all bets
-    deleteBetsImpl(entityManager, gameId, uid);
+    doDeleteBets(entityManager, gameId, uid);
     // add all bets
     for (BetEntity betEntity : betEntities) {
       entityManager.persist(betEntity);
     }
     // update credits
-    updateExtcredits2Impl(entityManager, uid, increment);
+    doUpdateExtcredits2(entityManager, uid, increment);
     entityManager.getTransaction().commit();
   }
 
@@ -60,9 +60,9 @@ public class BetQueries {
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     entityManager.getTransaction().begin();
     // delete all bets
-    deleteBetsImpl(entityManager, gameId, uid);
+    doDeleteBets(entityManager, gameId, uid);
     // update credits
-    updateExtcredits2Impl(entityManager, uid, increment);
+    doUpdateExtcredits2(entityManager, uid, increment);
     entityManager.getTransaction().commit();
   }
 
@@ -80,18 +80,18 @@ public class BetQueries {
   }
 
   public void rewardAllBets(int gameId, int winningOptionId, int odds) {
-    updateBetsImpl(gameId, winningOptionId, odds, BetEntityStatus.SETTLED);
+    updateBetsForGame(gameId, winningOptionId, odds, BetEntityStatus.SETTLED);
   }
 
   public void revokeAllRewards(int gameId) {
-    updateBetsImpl(gameId, /* winningOptionId= */ 0, /* odds= */ 0, BetEntityStatus.UNSETTLED);
+    updateBetsForGame(gameId, /* winningOptionId= */ 0, /* odds= */ 0, BetEntityStatus.UNSETTLED);
   }
 
   public void revokeAllBets(int gameId) {
-    updateBetsImpl(gameId, /* winningOptionId= */ 0, /* odds= */ 0, BetEntityStatus.CANCELLED);
+    updateBetsForGame(gameId, /* winningOptionId= */ 0, /* odds= */ 0, BetEntityStatus.CANCELLED);
   }
 
-  private void deleteBetsImpl(EntityManager entityManager, int gameId, int uid) {
+  private void doDeleteBets(EntityManager entityManager, int gameId, int uid) {
     entityManager
         .createQuery(DELETE_SQL)
         .setParameter("game_id", gameId)
@@ -99,7 +99,7 @@ public class BetQueries {
         .executeUpdate();
   }
 
-  private void updateExtcredits2Impl(EntityManager entityManager, int uid, int increment) {
+  private void doUpdateExtcredits2(EntityManager entityManager, int uid, int increment) {
     entityManager
         .createQuery(UPDATE_EXTCREDITS2_SQL)
         .setParameter("increment", increment)
@@ -113,7 +113,7 @@ public class BetQueries {
   // BetEntity.earning            | 0         | +/-     | 0         |
   // ExtcreditsEntity.extcredits2 | -/0       | +/0     | +         |
   // -----------------------------+-----------+---------+-----------+
-  private void updateBetsImpl(
+  private void updateBetsForGame(
       int gameId, int winningOptionId, int odds, BetEntityStatus newStatus) {
     EntityManager em1 = entityManagerFactory.createEntityManager();
     EntityManager em2 = entityManagerFactory.createEntityManager();
@@ -166,7 +166,7 @@ public class BetQueries {
       // save bets and update user's credit
       em2.merge(bet);
       if (increment != 0) {
-        updateExtcredits2Impl(em2, bet.getUid(), increment);
+        doUpdateExtcredits2(em2, bet.getUid(), increment);
       }
       em2.getTransaction().commit();
     }
