@@ -22,7 +22,8 @@ public class GameStatusChanging {
           .put(GameEntityStatus.DRAFT, ImmutableSet.of(GameEntityStatus.PUBLISHED))
           .put(
               GameEntityStatus.PUBLISHED,
-              ImmutableSet.of(GameEntityStatus.PUBLISHED, GameEntityStatus.SETTLED, GameEntityStatus.CANCELLED))
+              ImmutableSet.of(
+                  GameEntityStatus.PUBLISHED, GameEntityStatus.SETTLED, GameEntityStatus.CANCELLED))
           .put(
               GameEntityStatus.SETTLED,
               ImmutableSet.of(GameEntityStatus.PUBLISHED, GameEntityStatus.SETTLED))
@@ -129,7 +130,7 @@ public class GameStatusChanging {
         betQueries.revokeAllBets(gameId);
         break;
       default:
-          throw new IllegalStateException("Internal error. wrong game status");
+        throw new IllegalStateException("Internal error. wrong game status");
     }
   }
 

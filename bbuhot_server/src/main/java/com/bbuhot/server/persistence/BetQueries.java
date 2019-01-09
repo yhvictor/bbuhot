@@ -16,8 +16,7 @@ public class BetQueries {
       "SELECT SUM(b.betAmount) FROM BetEntity b WHERE b.gameId = :game_id AND b.uid = :uid";
   private static final String DELETE_SQL =
       "DELETE FROM BetEntity b WHERE b.gameId = :game_id AND b.uid = :uid";
-  private static final String SELECT_SQL =
-      "SELECT b FROM BetEntity b WHERE b.gameId = :game_id";
+  private static final String SELECT_SQL = "SELECT b FROM BetEntity b WHERE b.gameId = :game_id";
   private static final String UPDATE_EXTCREDITS2_SQL =
       "UPDATE ExtcreditsEntity e SET e.extcredits2 = e.extcredits2 + (:increment) WHERE e.uid = :uid";
 
@@ -85,19 +84,11 @@ public class BetQueries {
   }
 
   public void revokeAllRewards(int gameId) {
-    updateBetsImpl(
-        gameId,
-        /* winningOptionId= */ 0,
-        /* odds= */ 0,
-        BetEntityStatus.UNSETTLED);
+    updateBetsImpl(gameId, /* winningOptionId= */ 0, /* odds= */ 0, BetEntityStatus.UNSETTLED);
   }
 
   public void revokeAllBets(int gameId) {
-    updateBetsImpl(
-        gameId,
-        /* winningOptionId= */ 0,
-        /* odds= */ 0,
-        BetEntityStatus.CANCELLED);
+    updateBetsImpl(gameId, /* winningOptionId= */ 0, /* odds= */ 0, BetEntityStatus.CANCELLED);
   }
 
   private void deleteBetsImpl(EntityManager entityManager, int gameId, int uid) {
@@ -122,7 +113,8 @@ public class BetQueries {
   // BetEntity.earning            | 0         | +/-     | 0         |
   // ExtcreditsEntity.extcredits2 | -/0       | +/0     | +         |
   // -----------------------------+-----------+---------+-----------+
-  private void updateBetsImpl(int gameId, int winningOptionId, int odds, BetEntityStatus newStatus) {
+  private void updateBetsImpl(
+      int gameId, int winningOptionId, int odds, BetEntityStatus newStatus) {
     EntityManager em1 = entityManagerFactory.createEntityManager();
     EntityManager em2 = entityManagerFactory.createEntityManager();
     Session session = em1.unwrap(Session.class);
@@ -147,6 +139,7 @@ public class BetQueries {
       // set the new status
       bet.setStatus(newStatus.value);
 
+      // set earning and credit increment
       switch (newStatus) {
         case UNSETTLED:
           if (bet.getEarning() > 0) {
