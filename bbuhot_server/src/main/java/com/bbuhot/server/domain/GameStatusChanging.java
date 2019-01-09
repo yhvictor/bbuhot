@@ -1,6 +1,7 @@
 package com.bbuhot.server.domain;
 
 import com.bbuhot.server.entity.GameEntity;
+import com.bbuhot.server.persistence.BetQueries;
 import com.bbuhot.server.persistence.GameQueries;
 import com.bbuhot.server.persistence.GameQueries.GameEntityStatus;
 import com.bbuhot.server.service.AdminGameStatusReply.ErrorCode;
@@ -32,9 +33,12 @@ public class GameStatusChanging {
 
   private final GameQueries gameQueries;
 
+  private final BetQueries betQueries;
+
   @Inject
-  public GameStatusChanging(GameQueries gameQueries) {
+  public GameStatusChanging(GameQueries gameQueries, BetQueries betQueries) {
     this.gameQueries = gameQueries;
+    this.betQueries = betQueries;
   }
 
   public GameEntity changeGameStatus(int gameId, GameEntityStatus newStatus, int winningOption)
@@ -102,10 +106,22 @@ public class GameStatusChanging {
   }
 
   private void updateBets(GameEntity gameEntity, Runnable releaseLock) {
-    // TODO(yhvictor): update this.
     BbuhotThreadPool.scheduleExecutor
-        .schedule(() -> {}, 3000, TimeUnit.MILLISECONDS)
+        .schedule(() -> updateBetsImpl(gameEntity), 3000, TimeUnit.MILLISECONDS)
         .addListener(releaseLock, MoreExecutors.directExecutor());
+  }
+
+  private void updateBetsImpl(GameEntity gameEntity) {
+    GameEntityStatus status = GameEntityStatus.valueOf(gameEntity.getStatus());
+    int gameId = gameEntity.getId();
+
+    if (status == GameEntityStatus.PUBLISHED) {
+      betQueries.revokeAllRewards(gameId);
+    } else if (status == GameEntityStatus.SETTLED) {
+      int winningOptionId = gameEntity.getWinningBetOption();
+      int odds = gameEntity.getBettingOptionEntities().get(winningOptionId).getOdds();
+      betQueries.rewardAllBets(gameId, winningOptionId, odds);
+    }
   }
 
   public static final class GameStatusChangingException extends Exception {
