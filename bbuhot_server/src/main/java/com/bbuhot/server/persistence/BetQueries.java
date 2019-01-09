@@ -47,21 +47,13 @@ public class BetQueries {
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     entityManager.getTransaction().begin();
     // delete all bets
-    entityManager
-        .createQuery(DELETE_SQL)
-        .setParameter("game_id", gameId)
-        .setParameter("uid", uid)
-        .executeUpdate();
+    deleteBetsImpl(entityManager, gameId, uid);
     // add all bets
     for (BetEntity betEntity : betEntities) {
       entityManager.persist(betEntity);
     }
     // update credits
-    entityManager
-        .createQuery(UPDATE_EXTCREDITS2_SQL)
-        .setParameter("increment", increment)
-        .setParameter("uid", uid)
-        .executeUpdate();
+    updateExtcredits2Impl(entityManager, uid, increment);
     entityManager.getTransaction().commit();
   }
 
@@ -69,17 +61,9 @@ public class BetQueries {
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     entityManager.getTransaction().begin();
     // delete all bets
-    entityManager
-        .createQuery(DELETE_SQL)
-        .setParameter("game_id", gameId)
-        .setParameter("uid", uid)
-        .executeUpdate();
+    deleteBetsImpl(entityManager, gameId, uid);
     // update credits
-    entityManager
-        .createQuery(UPDATE_EXTCREDITS2_SQL)
-        .setParameter("increment", increment)
-        .setParameter("uid", uid)
-        .executeUpdate();
+    updateExtcredits2Impl(entityManager, uid, increment);
     entityManager.getTransaction().commit();
   }
 
@@ -97,93 +81,53 @@ public class BetQueries {
   }
 
   public void rewardAllBets(int gameId, int winningOptionId, int odds) {
-    EntityManager em1 = entityManagerFactory.createEntityManager();
-    EntityManager em2 = entityManagerFactory.createEntityManager();
-    Session session = em1.unwrap(Session.class);
-
-    ScrollableResults cur =
-        session
-            .createQuery(SELECT_SQL)
-            .setParameter("game_id", gameId)
-            .scroll(ScrollMode.FORWARD_ONLY);
-
-    while (cur.next()) {
-      em2.getTransaction().begin();
-      BetEntity bet = (BetEntity) cur.get(0);
-
-      // skip already settled bets
-      if (BetEntityStatus.valueOf(bet.getStatus()) == BetEntityStatus.SETTLED) {
-        continue;
-      }
-
-      // set earning
-      if (bet.getBettingOptionId() == winningOptionId) {
-        int earning = (int) (odds / 1000000.0 * bet.getBetAmount());
-        bet.setEarning(earning);
-      } else {
-        bet.setEarning(-bet.getBetAmount());
-      }
-
-      // set the status to settled
-      bet.setStatus(BetEntityStatus.SETTLED.value);
-
-      // save bets and update user's credit
-      em2.merge(bet);
-      if (bet.getEarning() > 0) {
-        em2.createQuery(UPDATE_EXTCREDITS2_SQL)
-            .setParameter("increment", bet.getEarning())
-            .setParameter("uid", bet.getUid())
-            .executeUpdate();
-      }
-      em2.getTransaction().commit();
-    }
-    session.disconnect();
+    updateBetsImpl(gameId, winningOptionId, odds, BetEntityStatus.SETTLED);
   }
 
   public void revokeAllRewards(int gameId) {
-    EntityManager em1 = entityManagerFactory.createEntityManager();
-    EntityManager em2 = entityManagerFactory.createEntityManager();
-    Session session = em1.unwrap(Session.class);
-
-    ScrollableResults cur =
-        session
-            .createQuery(SELECT_SQL)
-            .setParameter("game_id", gameId)
-            .scroll(ScrollMode.FORWARD_ONLY);
-
-    while (cur.next()) {
-      em2.getTransaction().begin();
-      BetEntity bet = (BetEntity) cur.get(0);
-
-      // skip already processed bets
-      if (BetEntityStatus.valueOf(bet.getStatus()) == BetEntityStatus.UNSETTLED) {
-        continue;
-      }
-
-      // set earning
-      int earning = bet.getEarning();
-      bet.setEarning(0);
-
-      // set the status to unsettled
-      bet.setStatus(BetEntityStatus.UNSETTLED.value);
-
-      // save bets and update user's credit
-      em2.merge(bet);
-      if (earning > 0) {
-        em2.createQuery(UPDATE_EXTCREDITS2_SQL)
-            .setParameter("increment", -earning)
-            .setParameter("uid", bet.getUid())
-            .executeUpdate();
-      }
-      em2.getTransaction().commit();
-    }
-    session.disconnect();
+    updateBetsImpl(
+        gameId,
+        /* winningOptionId= */ 0,
+        /* odds= */ 0,
+        BetEntityStatus.UNSETTLED);
   }
 
   public void revokeAllBets(int gameId) {
+    updateBetsImpl(
+        gameId,
+        /* winningOptionId= */ 0,
+        /* odds= */ 0,
+        BetEntityStatus.CANCELLED);
+  }
+
+  private void deleteBetsImpl(EntityManager entityManager, int gameId, int uid) {
+    entityManager
+        .createQuery(DELETE_SQL)
+        .setParameter("game_id", gameId)
+        .setParameter("uid", uid)
+        .executeUpdate();
+  }
+
+  private void updateExtcredits2Impl(EntityManager entityManager, int uid, int increment) {
+    entityManager
+        .createQuery(UPDATE_EXTCREDITS2_SQL)
+        .setParameter("increment", increment)
+        .setParameter("uid", uid)
+        .executeUpdate();
+  }
+
+  //                              | Revoke    | SETTLE  | CANCEL    |
+  // -----------------------------+-----------+---------+-----------+
+  // BetEntity.status             | UNSETTLED | SETTLED | CANCELLED |
+  // BetEntity.earning            | 0         | +/-     | 0         |
+  // ExtcreditsEntity.extcredits2 | -/0       | +/0     | +         |
+  // -----------------------------+-----------+---------+-----------+
+  private void updateBetsImpl(int gameId, int winningOptionId, int odds, BetEntityStatus newStatus) {
     EntityManager em1 = entityManagerFactory.createEntityManager();
     EntityManager em2 = entityManagerFactory.createEntityManager();
     Session session = em1.unwrap(Session.class);
+    int increment;
+    BetEntityStatus oldStatus;
 
     ScrollableResults cur =
         session
@@ -193,26 +137,44 @@ public class BetQueries {
 
     while (cur.next()) {
       em2.getTransaction().begin();
+      increment = 0;
       BetEntity bet = (BetEntity) cur.get(0);
 
-      // skip already processed bets
-      if (BetEntityStatus.valueOf(bet.getStatus()) == BetEntityStatus.CANCELLED) {
-        continue;
+      oldStatus = BetEntityStatus.valueOf(bet.getStatus());
+
+      if (oldStatus == newStatus) continue;
+
+      // set the new status
+      bet.setStatus(newStatus.value);
+
+      switch (newStatus) {
+        case UNSETTLED:
+          if (bet.getEarning() > 0) {
+            increment = -bet.getEarning();
+          }
+          bet.setEarning(0);
+          break;
+        case SETTLED:
+          if (bet.getBettingOptionId() == winningOptionId) {
+            increment = (int) (odds / 1000000.0 * bet.getBetAmount());
+            bet.setEarning(increment);
+          } else {
+            bet.setEarning(-bet.getBetAmount());
+          }
+          break;
+        case CANCELLED:
+          increment = bet.getBetAmount();
+          bet.setEarning(0);
+          break;
+        default:
+          throw new IllegalStateException("Internal Error. Wrong BetEntity status");
       }
-
-      // set earning
-      int earning = bet.getBetAmount();
-      bet.setEarning(0);
-
-      // set the status to unsettled
-      bet.setStatus(BetEntityStatus.CANCELLED.value);
 
       // save bets and update user's credit
       em2.merge(bet);
-      em2.createQuery(UPDATE_EXTCREDITS2_SQL)
-          .setParameter("increment", earning)
-          .setParameter("uid", bet.getUid())
-          .executeUpdate();
+      if (increment != 0) {
+        updateExtcredits2Impl(em2, bet.getUid(), increment);
+      }
       em2.getTransaction().commit();
     }
     session.disconnect();
