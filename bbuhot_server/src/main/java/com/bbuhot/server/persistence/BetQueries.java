@@ -210,7 +210,7 @@ public class BetQueries {
       // save bets and update user's credit
       em2.merge(bet);
       em2.createQuery(UPDATE_EXTCREDITS2_SQL)
-          .setParameter("increment", -earning)
+          .setParameter("increment", earning)
           .setParameter("uid", bet.getUid())
           .executeUpdate();
       em2.getTransaction().commit();

@@ -117,15 +117,15 @@ public class GameStatusChanging {
     int gameId = gameEntity.getId();
 
     switch (status) {
-      case GameEntityStatus.PUBLISHED:
+      case PUBLISHED:
         betQueries.revokeAllRewards(gameId);
         break;
-      case GameEntityStatus.SETTLED:
+      case SETTLED:
         int winningOptionId = gameEntity.getWinningBetOption();
         int odds = gameEntity.getBettingOptionEntities().get(winningOptionId).getOdds();
         betQueries.rewardAllBets(gameId, winningOptionId, odds);
         break;
-      case GameEntityStatus.CANCELLED:
+      case CANCELLED:
         betQueries.revokeAllBets(gameId);
         break;
       default:
