@@ -1,6 +1,7 @@
 package com.bbuhot.server.persistence;
 
 import com.bbuhot.server.entity.BetEntity;
+import com.google.common.collect.ImmutableTable;
 import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -19,6 +20,14 @@ public class BetQueries {
   private static final String SELECT_SQL = "SELECT b FROM BetEntity b WHERE b.gameId = :game_id";
   private static final String UPDATE_EXTCREDITS2_SQL =
       "UPDATE ExtcreditsEntity e SET e.extcredits2 = e.extcredits2 + (:increment) WHERE e.uid = :uid";
+
+  private static final ImmutableTable<BetEntityStatus, BetEntityStatus, String> TRANSITIONS =
+      new ImmutableTable.Builder<BetEntityStatus, BetEntityStatus, String>()
+          .put(BetEntityStatus.UNSETTLED, BetEntityStatus.SETTLED, "Settle")
+          .put(BetEntityStatus.SETTLED, BetEntityStatus.UNSETTLED, "Revoke")
+          .put(BetEntityStatus.UNSETTLED, BetEntityStatus.CANCELLED, "Cancel")
+          .put(BetEntityStatus.CANCELLED, BetEntityStatus.UNSETTLED, "Restore")
+          .build();
 
   private final EntityManagerFactory entityManagerFactory;
 
@@ -83,7 +92,7 @@ public class BetQueries {
     updateBetsForGame(gameId, winningOptionId, odds, BetEntityStatus.SETTLED);
   }
 
-  public void revokeAllRewards(int gameId) {
+  public void revokeCancellationOrAllRewards(int gameId) {
     updateBetsForGame(gameId, /* winningOptionId= */ 0, /* odds= */ 0, BetEntityStatus.UNSETTLED);
   }
 
@@ -107,18 +116,11 @@ public class BetQueries {
         .executeUpdate();
   }
 
-  //                              | Revoke    | SETTLE  | CANCEL    |
-  // -----------------------------+-----------+---------+-----------+
-  // BetEntity.status             | UNSETTLED | SETTLED | CANCELLED |
-  // BetEntity.earning            | 0         | +/-     | 0         |
-  // ExtcreditsEntity.extcredits2 | -/0       | +/0     | +         |
-  // -----------------------------+-----------+---------+-----------+
   private void updateBetsForGame(
       int gameId, int winningOptionId, int odds, BetEntityStatus newStatus) {
     EntityManager em1 = entityManagerFactory.createEntityManager();
     EntityManager em2 = entityManagerFactory.createEntityManager();
     Session session = em1.unwrap(Session.class);
-    int increment;
     BetEntityStatus oldStatus;
 
     ScrollableResults cur =
@@ -129,39 +131,40 @@ public class BetQueries {
 
     while (cur.next()) {
       em2.getTransaction().begin();
-      increment = 0;
       BetEntity bet = (BetEntity) cur.get(0);
 
       oldStatus = BetEntityStatus.valueOf(bet.getStatus());
 
+      // skip already processed
       if (oldStatus == newStatus) continue;
+
+      // set credit increment
+      final int increment;
+      switch (TRANSITIONS.get(oldStatus, newStatus)) {
+        case "Settle":
+          if (bet.getBettingOptionId() == winningOptionId) {
+            increment = (int) (odds / 1000000.0 * bet.getBetAmount());
+          } else {
+            increment = 0;
+          }
+          break;
+        case "Revoke":
+          increment = -bet.getEarning();
+          break;
+        case "Cancel":
+          increment = bet.getBetAmount();
+          break;
+        case "Restore":
+          increment = -bet.getBetAmount();
+          break;
+        default:
+          throw new IllegalStateException("Internal Error. Wrong transition.");
+      }
 
       // set the new status
       bet.setStatus(newStatus.value);
-
-      // set earning and credit increment
-      switch (newStatus) {
-        case UNSETTLED:
-          if (bet.getEarning() > 0) {
-            increment = -bet.getEarning();
-          }
-          bet.setEarning(0);
-          break;
-        case SETTLED:
-          if (bet.getBettingOptionId() == winningOptionId) {
-            increment = (int) (odds / 1000000.0 * bet.getBetAmount());
-            bet.setEarning(increment);
-          } else {
-            bet.setEarning(-bet.getBetAmount());
-          }
-          break;
-        case CANCELLED:
-          increment = bet.getBetAmount();
-          bet.setEarning(0);
-          break;
-        default:
-          throw new IllegalStateException("Internal Error. Wrong BetEntity status");
-      }
+      // set earning
+      bet.setEarning(bet.getEarning() + increment);
 
       // save bets and update user's credit
       em2.merge(bet);

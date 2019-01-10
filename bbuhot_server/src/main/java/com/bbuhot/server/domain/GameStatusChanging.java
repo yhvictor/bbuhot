@@ -27,7 +27,9 @@ public class GameStatusChanging {
           .put(
               GameEntityStatus.SETTLED,
               ImmutableSet.of(GameEntityStatus.PUBLISHED, GameEntityStatus.SETTLED))
-          .put(GameEntityStatus.CANCELLED, ImmutableSet.of(GameEntityStatus.CANCELLED))
+          .put(
+              GameEntityStatus.CANCELLED,
+              ImmutableSet.of(GameEntityStatus.PUBLISHED, GameEntityStatus.CANCELLED))
           .build();
 
   private static final ConcurrentHashMap<Integer, AtomicBoolean> LOCK_MAP =
@@ -119,7 +121,7 @@ public class GameStatusChanging {
 
     switch (status) {
       case PUBLISHED:
-        betQueries.revokeAllRewards(gameId);
+        betQueries.revokeCancellationOrAllRewards(gameId);
         break;
       case SETTLED:
         int winningOptionId = gameEntity.getWinningBetOption();
