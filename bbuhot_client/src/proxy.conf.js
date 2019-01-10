@@ -6,10 +6,6 @@ const PROXY_CONFIG = {
         "target": "http://" + BACKEND_HOST + "/",
         "secure": false,
     },
-    "/assets": {
-        "target": "http://localhost:4200/v2/",
-        "secure": false,
-    },
     "/": {
         "target": "http://" + DISCUZ_HOST + "/",
         "secure": false,
