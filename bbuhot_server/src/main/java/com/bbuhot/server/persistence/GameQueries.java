@@ -52,6 +52,7 @@ public class GameQueries {
     DRAFT(0, Game.Status.DRAFT),
     PUBLISHED(1, Status.PUBLISHED),
     SETTLED(2, Status.SETTLED),
+    CANCELLED(3, Status.CANCELLED),
     ;
     public final int value;
     public final Game.Status serviceStatus;
