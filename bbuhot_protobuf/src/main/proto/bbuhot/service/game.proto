@@ -55,7 +55,9 @@ message Game {
   //   If end_time_stamp_ms is in future, this will set it to be a time in the past.
   //   This will kick off worker to reimburse all the pending bets.
   // SETTLED -> PUBLISHED:
-  //   This will kick of worker to revoke all the rewards.
+  //   This will kick off worker to revoke all the rewards.
+  // CANCELLED -> PUBLISHED:
+  //   This will kick off worker to restore all bets of this game.
   //
   // Special cases to trigger worker (to recover bad data):
   // PUBLISHED -> PUBLISHED:
