@@ -20,7 +20,7 @@ class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
     this.bettingOnGame = bettingOnGame;
   }
 
-  private static Game.Bet toBet(BetEntity betEntity) {
+  public static Game.Bet toBet(BetEntity betEntity) {
     Game.Bet.Builder betBuild =
         Game.Bet.newBuilder()
             .setBettingOptionId(betEntity.getBettingOptionId())
@@ -31,7 +31,7 @@ class BetUpdatingService extends AbstractProtobufService<BetRequest, BetReply> {
   @Override
   BetRequest getInputMessage(HttpServerExchangeMessageWrapper exchange, byte[] bytes) {
     BetRequest.Builder builder = BetRequest.newBuilder();
-    exchange.mergeFieldsFromBody(builder.getAuthBuilder(), bytes);
+    exchange.mergeFieldsFromBody(builder, bytes);
     AuthRequest authRequest = exchange.generateAuthRequestFromCookie();
     if (authRequest != null) {
       builder.setAuth(authRequest);

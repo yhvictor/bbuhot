@@ -64,5 +64,5 @@ compileJava {
 
 docker {
 	name 'bbuhot_server'
-    files tasks.distTar.outputs, 'configuration.json'
+    files tasks.distTar.outputs
 }

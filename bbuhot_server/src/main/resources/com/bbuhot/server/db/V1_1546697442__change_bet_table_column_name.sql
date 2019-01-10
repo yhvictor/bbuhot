@@ -1,0 +1,2 @@
+ALTER TABLE bbuhot_bets
+CHANGE COLUMN is_settled status TINYINT NOT NULL DEFAULT '0';
