@@ -1,7 +1,6 @@
 package com.bbuhot.server.persistence;
 
 import com.bbuhot.server.entity.BetEntity;
-import com.google.common.collect.ImmutableTable;
 import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -20,14 +19,6 @@ public class BetQueries {
   private static final String SELECT_SQL = "SELECT b FROM BetEntity b WHERE b.gameId = :game_id";
   private static final String UPDATE_EXTCREDITS2_SQL =
       "UPDATE ExtcreditsEntity e SET e.extcredits2 = e.extcredits2 + (:increment) WHERE e.uid = :uid";
-
-  private static final ImmutableTable<BetEntityStatus, BetEntityStatus, String> TRANSITIONS =
-      new ImmutableTable.Builder<BetEntityStatus, BetEntityStatus, String>()
-          .put(BetEntityStatus.UNSETTLED, BetEntityStatus.SETTLED, "Settle")
-          .put(BetEntityStatus.SETTLED, BetEntityStatus.UNSETTLED, "Revoke")
-          .put(BetEntityStatus.UNSETTLED, BetEntityStatus.CANCELLED, "Cancel")
-          .put(BetEntityStatus.CANCELLED, BetEntityStatus.UNSETTLED, "Restore")
-          .build();
 
   private final EntityManagerFactory entityManagerFactory;
 
@@ -121,7 +112,6 @@ public class BetQueries {
     EntityManager em1 = entityManagerFactory.createEntityManager();
     EntityManager em2 = entityManagerFactory.createEntityManager();
     Session session = em1.unwrap(Session.class);
-    BetEntityStatus oldStatus;
 
     ScrollableResults cur =
         session
@@ -133,29 +123,26 @@ public class BetQueries {
       em2.getTransaction().begin();
       BetEntity bet = (BetEntity) cur.get(0);
 
-      oldStatus = BetEntityStatus.valueOf(bet.getStatus());
+      BetEntityStatus oldStatus = BetEntityStatus.valueOf(bet.getStatus());
 
       // skip already processed
       if (oldStatus == newStatus) continue;
 
       // set credit increment
       final int increment;
-      switch (TRANSITIONS.get(oldStatus, newStatus)) {
-        case "Settle":
+      switch (newStatus) {
+        case SETTLED:
           if (bet.getBettingOptionId() == winningOptionId) {
             increment = (int) (odds / 1000000.0 * bet.getBetAmount());
           } else {
             increment = 0;
           }
           break;
-        case "Revoke":
+        case UNSETTLED:
           increment = -bet.getEarning();
           break;
-        case "Cancel":
+        case CANCELLED:
           increment = bet.getBetAmount();
-          break;
-        case "Restore":
-          increment = -bet.getBetAmount();
           break;
         default:
           throw new IllegalStateException("Internal Error. Wrong transition.");
