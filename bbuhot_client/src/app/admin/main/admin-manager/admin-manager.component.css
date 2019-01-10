@@ -1,0 +1,27 @@
+ * {
+     margin: 0;
+     padding: 0;
+ }
+nz-layout {
+    background-color: #F0F2F5;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 40px;
+    background-color: white;
+    margin-top: 5px;
+}
+.header h1 {
+    line-height: 40px;
+    font-size: 30px;
+}
+
+.content-bg {
+    background-color: white;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
