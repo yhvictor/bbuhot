@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { AdminMainComponent } from '../admin/main/admin-main/admin-main.component';
+import { routes as adminRoutes } from '../admin/main/admin-main/admin-main.component';
 import { CompetitionComponent } from '../competition/competition.component';
 import { HomepageComponent } from '../homepage/homepage.component';
 import { LeaderBoardComponent } from '../leader-board/leader-board.component';
@@ -16,7 +17,7 @@ const routes: Routes = [
   { path: 'competition', component: CompetitionComponent },
   { path: 'leaderboard', component: LeaderBoardComponent },
   { path: 'wayne', component: WayneComponent },
-  { path: 'admin', component: AdminMainComponent }
+  { path: 'admin', component: AdminMainComponent, children: adminRoutes }
 ];
 
 @NgModule({
