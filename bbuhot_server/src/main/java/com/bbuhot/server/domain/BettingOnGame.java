@@ -43,6 +43,10 @@ public class BettingOnGame {
       throw new IllegalStateException("Game status is not published. game id: " + gameId);
     }
 
+    if (!gameEntity.isNormalUserVisible()) {
+      throw new IllegalStateException("Game is not visible. game id: " + gameId);
+    }
+
     if (date.getTime() >= gameEntity.getEndTimeMs().getTime()) {
       throw new IllegalStateException("Betting time over for game: " + gameId);
     }
