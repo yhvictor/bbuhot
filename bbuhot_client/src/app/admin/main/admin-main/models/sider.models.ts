@@ -1,6 +1,3 @@
 export class SiderModels {
-  constructor(private title: string, private icon: string) {
-    this.title = title;
-    this.icon = icon;
-  }
+  constructor(private title: string, private icon: string, private path: string) {}
 }

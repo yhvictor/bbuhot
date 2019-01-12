@@ -1,8 +1,8 @@
 <ul nz-menu [nzMode]="'inline'" nzTheme='dark'>
   <li *ngFor="let sider of siderArr" nz-menu-item>
-    <span title>
+    <a [routerLink]=[sider.path]>
       <i nz-icon type="{{ sider.icon }}" theme="fill"></i>
       <span>{{ sider.title }}</span>
-    </span>
+    </a>
   </li>
 </ul>

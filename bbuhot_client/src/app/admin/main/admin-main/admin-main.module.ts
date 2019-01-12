@@ -1,11 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
+import { AdminHistoryComponent } from '../admin-history/admin-history.component';
+import { AdminManagerComponent } from '../admin-manager/admin-manager.component';
 import { AdminMainComponent } from './admin-main.component';
 import { AdminSiderComponent } from './admin-sider/admin-sider.component';
 
 @NgModule({
-  declarations: [AdminMainComponent, AdminSiderComponent],
-  imports: [CommonModule, NgZorroAntdModule]
+  declarations: [AdminMainComponent, AdminSiderComponent, AdminManagerComponent, AdminHistoryComponent],
+  imports: [CommonModule, NgZorroAntdModule, RouterModule]
 })
 export class AdminMainModule {}
