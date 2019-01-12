@@ -100,11 +100,13 @@ public class BetQueries {
   }
 
   private void doUpdateExtcredits2(EntityManager entityManager, int uid, int increment) {
-    entityManager
-        .createQuery(UPDATE_EXTCREDITS2_SQL)
-        .setParameter("increment", increment)
-        .setParameter("uid", uid)
-        .executeUpdate();
+    if (increment != 0) {
+      entityManager
+          .createQuery(UPDATE_EXTCREDITS2_SQL)
+          .setParameter("increment", increment)
+          .setParameter("uid", uid)
+          .executeUpdate();
+    }
   }
 
   private void updateBetsForGame(
@@ -155,9 +157,7 @@ public class BetQueries {
 
       // save bets and update user's credit
       em2.merge(bet);
-      if (increment != 0) {
-        doUpdateExtcredits2(em2, bet.getUid(), increment);
-      }
+      doUpdateExtcredits2(em2, bet.getUid(), increment);
       em2.getTransaction().commit();
     }
     session.disconnect();
