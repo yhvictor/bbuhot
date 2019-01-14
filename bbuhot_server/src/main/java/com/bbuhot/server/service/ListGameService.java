@@ -51,14 +51,11 @@ class ListGameService extends AbstractProtobufService<ListGameRequest, ListGameR
     }
 
     List<GameEntity> gameEntities =
-        gameQueries.queryByStatus(GameEntityStatus.valueOf(listGameRequest.getGameStatus()));
+        gameQueries.queryByStatus(
+            GameEntityStatus.valueOf(listGameRequest.getGameStatus()),
+            listGameRequest.getIsAdminRequest());
 
     for (GameEntity gameEntity : gameEntities) {
-      if (!listGameRequest.getIsAdminRequest() && !gameEntity.isNormalUserVisible()) {
-        // TODO(yhvictor): move this to db query.
-        continue;
-      }
-
       Game.Builder gameBuilder = AdminGameUpdatingService.toGame(gameEntity);
 
       if (!listGameRequest.getIsAdminRequest()) {
