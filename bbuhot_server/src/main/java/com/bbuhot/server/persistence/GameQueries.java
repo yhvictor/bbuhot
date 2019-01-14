@@ -6,12 +6,13 @@ import com.bbuhot.server.service.Game.Status;
 import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 public class GameQueries {
-
-  private static final String LIST_SQL = "Select g From GameEntity g where ";
 
   private final EntityManagerFactory entityManagerFactory;
 
@@ -36,13 +37,24 @@ public class GameQueries {
     return Optional.ofNullable(gameEntity);
   }
 
-  public List<GameEntity> queryByStatus(GameEntityStatus gameEntityStatus) {
-    @SuppressWarnings("unchecked")
+  public List<GameEntity> queryByStatus(GameEntityStatus gameEntityStatus, boolean isAdmin) {
+    CriteriaBuilder builder = entityManagerFactory.getCriteriaBuilder();
+    CriteriaQuery<GameEntity> criteria = builder.createQuery(GameEntity.class);
+    Root<GameEntity> root = criteria.from(GameEntity.class);
+    criteria.select(root);
+
+    if (isAdmin) {
+      criteria.where(builder.equal(root.get("status"), gameEntityStatus.value));
+    } else {
+      criteria.where(builder.and(
+            builder.equal(root.get("normalUserVisible"), true),
+            builder.equal(root.get("status"), gameEntityStatus.value)));
+    }
+
     List<GameEntity> gameList =
         entityManagerFactory
             .createEntityManager()
-            .createQuery(LIST_SQL + "g.status = ?1")
-            .setParameter(1, gameEntityStatus.value)
+            .createQuery(criteria)
             .getResultList();
 
     return gameList;
