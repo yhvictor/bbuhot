@@ -25,3 +25,16 @@ nz-layout {
     margin-left: 10px;
     margin-right: 10px;
 }
+
+ .add-item-button {
+     margin-left: 30px;
+     margin-top: 20px;
+     width: 100px;
+     height: 30px;
+ }
+
+ .manage-item-list-bg {
+     margin-left: 30px;
+     margin-right: 30px;
+     margin-top: 10px;
+ }
