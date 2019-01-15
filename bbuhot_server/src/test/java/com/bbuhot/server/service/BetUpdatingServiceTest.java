@@ -2,6 +2,7 @@ package com.bbuhot.server.service;
 
 import static junit.framework.TestCase.assertEquals;
 
+import com.bbuhot.server.domain.GameStatusChanging;
 import com.bbuhot.server.entity.ExtcreditsEntity;
 import com.bbuhot.server.entity.GameEntity;
 import com.bbuhot.server.entity.GameEntity.BettingOptionEntity;
@@ -74,6 +75,9 @@ public class BetUpdatingServiceTest {
     option3.setOdds(20000000);
     game.getBettingOptionEntities().add(option3);
     gameQueries.save(game);
+
+    // avoid game lock
+    while(GameStatusChanging.isGameLocked(game.getId())) {}
   }
 
   @After

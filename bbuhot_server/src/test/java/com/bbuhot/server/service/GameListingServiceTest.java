@@ -47,7 +47,7 @@ public class GameListingServiceTest {
     // create games
     // draft game
     GameEntity game = new GameEntity();
-    game.setId(10);
+    game.setId(1);
     game.setName("Ti8 Grand final LGD vs OG");
     game.setDescription("Ti8 Grand final LGD vs OG");
     game.setNormalUserVisible(false);
@@ -68,7 +68,7 @@ public class GameListingServiceTest {
     gameQueries.save(game);
     // published game
     GameEntity game2 = new GameEntity();
-    game2.setId(11);
+    game2.setId(2);
     game2.setName("Ti8 Grand final LGD vs OG BO5");
     game2.setDescription("Ti8 Grand final LGD vs OG BO5");
     game2.setNormalUserVisible(true);

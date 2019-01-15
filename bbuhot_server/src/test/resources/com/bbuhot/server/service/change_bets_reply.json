@@ -1,9 +1,9 @@
 {
-  "auth_error_code": "NO_ERROR",
-  "bet_error_code": "NO_ERROR",
+  "authErrorCode": "NO_ERROR",
+  "betErrorCode": "NO_ERROR",
   "bets": [
     {
-      "betting_option_id": 0,
+      "bettingOptionId": 0,
       "money": 300
     }
   ]
