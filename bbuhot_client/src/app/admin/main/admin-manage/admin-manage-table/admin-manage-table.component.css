@@ -1,0 +1,9 @@
+.bg {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.pagination {
+    align-self: flex-end;
+}

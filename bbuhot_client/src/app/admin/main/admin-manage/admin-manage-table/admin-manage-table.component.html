@@ -1,0 +1,33 @@
+<nz-layout>
+  <div class="bg">
+    <nz-table>
+      <thead>
+      <tr>
+        <!--th可变为model-->
+        <th>竞猜编号</th>
+        <th>游戏</th>
+        <th>比赛名称</th>
+        <th>队伍一</th>
+        <th>队伍二</th>
+        <th>状态</th>
+        <th>创建时间</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of itemsArr">
+        <td>{{item.id}}</td>
+        <td>{{item.type}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.playerOne}}</td>
+        <td>{{item.playerTwo}}</td>
+        <td>{{item.status}}</td>
+        <td>{{item.time}}</td>
+        <td>{{item.operators}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+    <nz-pagination class="pagination" [nzPageIndex]="2" [nzTotal]="500" nzShowQuickJumper></nz-pagination>
+  </div>
+</nz-layout>
+
