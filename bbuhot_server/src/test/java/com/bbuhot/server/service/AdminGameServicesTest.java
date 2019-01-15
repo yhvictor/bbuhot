@@ -18,7 +18,6 @@ public class AdminGameServicesTest {
 
   @Inject AdminGameUpdatingService adminGameUpdatingService;
   @Inject AdminGameStatusChangeService adminGameStatusChangeService;
-  @Inject ListGameService listGameService;
 
   @Inject UserQueries userQueries;
   @Inject EntityManagerFactory entityManagerFactory;

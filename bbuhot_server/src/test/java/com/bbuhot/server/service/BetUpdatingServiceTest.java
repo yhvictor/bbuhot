@@ -86,7 +86,7 @@ public class BetUpdatingServiceTest {
 
   @Test
   public void testBettingWorkflow() {
-    // betting on game
+    // bet on game
     BetRequest betRequest =
         TestMessageUtil.getResourcesAsMessage(
             BetRequest.getDefaultInstance(),

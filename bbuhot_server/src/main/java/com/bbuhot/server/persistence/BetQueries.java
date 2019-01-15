@@ -1,5 +1,6 @@
 package com.bbuhot.server.persistence;
 
+import com.bbuhot.errorprone.TestOnly;
 import com.bbuhot.server.entity.BetEntity;
 import java.util.List;
 import javax.inject.Inject;
@@ -40,6 +41,18 @@ public class BetQueries {
 
     // TODO(luciusgone): refactoring code?
     return ((Long) result).intValue();
+  }
+
+  @TestOnly
+  public void save(BetEntity betEntity) {
+    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    entityManager.getTransaction().begin();
+    if (betEntity.getUid() > 0) {
+      entityManager.merge(betEntity);
+    } else {
+      entityManager.persist(betEntity);
+    }
+    entityManager.getTransaction().commit();
   }
 
   public void saveBets(List<BetEntity> betEntities, int gameId, int uid, int increment) {
