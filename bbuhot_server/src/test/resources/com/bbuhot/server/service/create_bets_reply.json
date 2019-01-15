@@ -1,0 +1,14 @@
+{
+  "auth_error_code": "NO_ERROR",
+  "bet_error_code": "NO_ERROR",
+  "bets": [
+    {
+      "betting_option_id": 0,
+      "money": 150
+    },
+    {
+      "betting_option_id": 2,
+      "money": 100
+    }
+  ]
+}

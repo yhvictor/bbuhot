@@ -26,4 +26,5 @@ abstract class TestServiceComponent {
   }
 
   abstract void inject(AdminGameServicesTest adminGameServicesTest);
+  abstract void inject(BetUpdatingServiceTest betUpdatingServiceTest);
 }
