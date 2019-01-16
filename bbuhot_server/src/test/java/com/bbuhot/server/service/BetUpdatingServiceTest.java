@@ -47,7 +47,7 @@ public class BetUpdatingServiceTest {
     // create credits
     ExtcreditsEntity credits = new ExtcreditsEntity();
     credits.setUid(1);
-    credits.setExtcredits2(300);
+    credits.setExtcredits2(500);
     extcreditsQueries.save(credits);
 
     // create game
@@ -127,6 +127,66 @@ public class BetUpdatingServiceTest {
             "com/bbuhot/server/service/withdraw_bets_reply.json");
 
     betReply = betUpdatingService.callProtobufServiceImpl(betRequest);
+    assertEquals(betReplyExpected, betReply);
+  }
+
+  @Test
+  public void testBettingBelowLowest() {
+    BetRequest betRequest =
+        TestMessageUtil.getResourcesAsMessage(
+            BetRequest.getDefaultInstance(),
+            "com/bbuhot/server/service/bet_below_lowest_request.json");
+    BetReply betReplyExpected =
+        TestMessageUtil.getResourcesAsMessage(
+            BetReply.getDefaultInstance(),
+            "com/bbuhot/server/service/bet_below_lowest_reply.json");
+
+    BetReply betReply = betUpdatingService.callProtobufServiceImpl(betRequest);
+    assertEquals(betReplyExpected, betReply);
+  }
+
+  @Test
+  public void testBettingAboveHighest() {
+    BetRequest betRequest =
+        TestMessageUtil.getResourcesAsMessage(
+            BetRequest.getDefaultInstance(),
+            "com/bbuhot/server/service/bet_above_highest_request.json");
+    BetReply betReplyExpected =
+        TestMessageUtil.getResourcesAsMessage(
+            BetReply.getDefaultInstance(),
+            "com/bbuhot/server/service/bet_above_highest_reply.json");
+
+    BetReply betReply = betUpdatingService.callProtobufServiceImpl(betRequest);
+    assertEquals(betReplyExpected, betReply);
+  }
+
+  @Test
+  public void testBettingOnTooManyOptions() {
+    BetRequest betRequest =
+        TestMessageUtil.getResourcesAsMessage(
+            BetRequest.getDefaultInstance(),
+            "com/bbuhot/server/service/bet_on_too_many_options_request.json");
+    BetReply betReplyExpected =
+        TestMessageUtil.getResourcesAsMessage(
+            BetReply.getDefaultInstance(),
+            "com/bbuhot/server/service/bet_on_too_many_options_reply.json");
+
+    BetReply betReply = betUpdatingService.callProtobufServiceImpl(betRequest);
+    assertEquals(betReplyExpected, betReply);
+  }
+
+  @Test
+  public void testBettingOverCapacity() {
+    BetRequest betRequest =
+        TestMessageUtil.getResourcesAsMessage(
+            BetRequest.getDefaultInstance(),
+            "com/bbuhot/server/service/bet_over_capacity_request.json");
+    BetReply betReplyExpected =
+        TestMessageUtil.getResourcesAsMessage(
+            BetReply.getDefaultInstance(),
+            "com/bbuhot/server/service/bet_over_capacity_reply.json");
+
+    BetReply betReply = betUpdatingService.callProtobufServiceImpl(betRequest);
     assertEquals(betReplyExpected, betReply);
   }
 }
