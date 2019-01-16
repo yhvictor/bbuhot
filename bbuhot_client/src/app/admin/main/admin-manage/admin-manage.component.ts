@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../api/api-service';
+import { Game, ListGameRequest } from '../../../proto/bbuhot/service/game_pb';
 import { AdminManageItem } from './models/admin-manage-item.model';
 
 @Component({
@@ -8,9 +10,27 @@ import { AdminManageItem } from './models/admin-manage-item.model';
 })
 export class AdminManageComponent implements OnInit {
   itemsArr: Array<AdminManageItem>;
+  gamesList: Game[];
 
-  constructor() {
+  constructor(private apiService: ApiService) {
     this.setupItems();
+    this.loadGamesListData();
+  }
+
+  loadGamesListData() {
+    const listGameRequest = new ListGameRequest();
+    listGameRequest.setIsAdminRequest(true);
+    listGameRequest.setGameStatus(Game.Status.DRAFT);
+
+    this.apiService.listGames(listGameRequest).subscribe(
+      (reply) => {
+        this.gamesList = reply.getGamesList();
+        console.log(this.gamesList);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   setupItems() {
