@@ -1,0 +1,27 @@
+{
+  "authErrorCode": "NO_ERROR",
+  "games": [
+    {
+      "id": 5,
+      "name": "Ti8 Grand final LGD vs OG",
+      "description": "Ti8 Grand final LGD vs OG",
+      "normalUserVisible": true,
+      "status": "CANCELLED",
+      "betOptionLimit": 1,
+      "betAmountLowest": 100,
+      "betAmountHighest": 400,
+      "endTimeMs": "1535126400000",
+      "bettingOptions": [
+        {
+          "name": "LGD win",
+          "odds": 2000000
+        },
+        {
+          "name": "OG win",
+          "odds": 8000000
+        }
+      ],
+      "winningOption": -2
+    }
+  ]
+}

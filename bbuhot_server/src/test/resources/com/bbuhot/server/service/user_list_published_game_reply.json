@@ -2,9 +2,9 @@
   "authErrorCode": "NO_ERROR",
   "games": [
     {
-      "id": 2,
-      "name": "Ti8 Grand final LGD vs OG BO5",
-      "description": "Ti8 Grand final LGD vs OG BO5",
+      "id": 3,
+      "name": "Ti8 Grand final LGD vs OG",
+      "description": "Ti8 Grand final LGD vs OG",
       "normalUserVisible": true,
       "status": "PUBLISHED",
       "betOptionLimit": 1,
@@ -21,7 +21,13 @@
           "odds": 8000000
         }
       ],
-      "winningOption": -2
+      "winningOption": -2,
+      "bets": [
+        {
+          "bettingOptionId": 0,
+          "money": 100
+        }
+      ]
     }
   ]
 }
