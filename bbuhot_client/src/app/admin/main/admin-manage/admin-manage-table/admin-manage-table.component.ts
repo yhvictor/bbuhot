@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AdminManageItem } from '../models/admin-manage-item.model';
+import { Game } from '../../../../proto/bbuhot/service/game_pb';
 
 @Component({
   selector: 'bbuhot-admin-manage-table',
@@ -7,7 +7,7 @@ import { AdminManageItem } from '../models/admin-manage-item.model';
   styleUrls: ['./admin-manage-table.component.css']
 })
 export class AdminManageTableComponent implements OnInit {
-  @Input() itemsArr: Array<AdminManageItem>;
+  @Input() gamesList: Game[];
   constructor() {}
 
   ngOnInit() {}

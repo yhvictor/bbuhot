@@ -15,15 +15,14 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let item of itemsArr">
-        <td>{{item.id}}</td>
-        <td>{{item.type}}</td>
-        <td>{{item.name}}</td>
-        <td>{{item.playerOne}}</td>
-        <td>{{item.playerTwo}}</td>
-        <td>{{item.status}}</td>
-        <td>{{item.time}}</td>
-        <td>{{item.operators}}</td>
+      <tr *ngFor="let game of gamesList">
+        <td>{{game.getId()}}</td>
+        <td>暴打熊猫头类型</td>
+        <td>{{game.getName()}}</td>
+        <td>暴打熊猫头玩家１</td>
+        <td>暴打熊猫头玩家２</td>
+        <td>{{game.getStatus()}}</td>
+        <td>暴打熊猫头时间</td>
       </tr>
       </tbody>
     </nz-table>

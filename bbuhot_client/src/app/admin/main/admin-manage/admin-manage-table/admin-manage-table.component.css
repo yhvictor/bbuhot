@@ -7,3 +7,8 @@
 .pagination {
     align-self: flex-end;
 }
+
+:host ::ng-deep .ant-table-placeholder{
+    display: none;
+}
+
