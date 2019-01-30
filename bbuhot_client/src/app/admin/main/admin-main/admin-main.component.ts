@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Routes } from '@angular/router';
+import { AdminEditComponent } from '../admin-edit/admin-edit.component';
 import { AdminHistoryComponent } from '../admin-history/admin-history.component';
 import { AdminManageComponent } from '../admin-manage/admin-manage.component';
 import { SiderModel } from './models/sider.model';
@@ -7,7 +8,8 @@ import { SiderModel } from './models/sider.model';
 export const routes: Routes = [
   { path: '', redirectTo: 'manage', pathMatch: 'full' },
   { path: 'manage', component: AdminManageComponent },
-  { path: 'history', component: AdminHistoryComponent }
+  { path: 'history', component: AdminHistoryComponent },
+  { path: 'edit', component: AdminEditComponent }
 ];
 
 @Component({

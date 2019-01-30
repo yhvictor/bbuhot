@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiService } from '../../../api/api-service';
 import { Game, ListGameRequest } from '../../../proto/bbuhot/service/game_pb';
 
@@ -10,8 +11,12 @@ import { Game, ListGameRequest } from '../../../proto/bbuhot/service/game_pb';
 export class AdminManageComponent implements OnInit {
   gamesList: Game[];
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private router: Router) {
     this.loadGamesListData();
+  }
+
+  pushToEditView() {
+    this.router.navigate(['/admin/edit']);
   }
 
   loadGamesListData() {

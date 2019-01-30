@@ -3,7 +3,7 @@
     <h1>竞猜管理</h1>
   </div>
   <div class="content-bg">
-    <button nz-button nzType="primary" class="add-item-button"><i nz-icon type="plus" theme="outline"></i>新增竞猜</button>
+    <button nz-button nzType="primary" class="add-item-button" (click)="pushToEditView()" ><i nz-icon type="plus" theme="outline"></i>新增竞猜</button>
     <div class="manage-item-list-bg">
       <bbuhot-admin-manage-table [gamesList]="this.gamesList"></bbuhot-admin-manage-table>
     </div>
