@@ -10,5 +10,7 @@ export class AdminManageTableComponent implements OnInit {
   @Input() gamesList: Game[];
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.gamesList = [];
+  }
 }
