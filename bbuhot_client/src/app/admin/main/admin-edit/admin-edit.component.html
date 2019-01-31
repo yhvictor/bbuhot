@@ -1,3 +1,3 @@
-<p>
-  admin-edit works!
-</p>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Modal Title" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" [nzOkLoading]="isOkLoading">
+	<p>Modal Content</p>
+</nz-modal>

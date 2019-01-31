@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'bbuhot-admin-edit',
@@ -6,7 +6,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./admin-edit.component.css']
 })
 export class AdminEditComponent implements OnInit {
-  constructor() {}
 
-  ngOnInit() {}
+  @Input() isVisible: boolean;
+
+  constructor() {}
+  ngOnInit() {
+    this.isVisible = false;
+  }
+
+  handleOk(): void {
+    this.isVisible = false;
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
+  }
 }
