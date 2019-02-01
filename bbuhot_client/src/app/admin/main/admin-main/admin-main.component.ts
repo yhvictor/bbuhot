@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Routes } from '@angular/router';
-import { AdminEditComponent } from '../admin-edit/admin-edit.component';
 import { AdminHistoryComponent } from '../admin-history/admin-history.component';
+import { AdminEditComponent } from '../admin-manage/admin-edit/admin-edit.component';
 import { AdminManageComponent } from '../admin-manage/admin-manage.component';
 import { SiderModel } from './models/sider.model';
 

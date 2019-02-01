@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { ApiService } from '../../../api/api-service';
 import { Game, ListGameRequest } from '../../../proto/bbuhot/service/game_pb';
 
@@ -11,12 +10,15 @@ import { Game, ListGameRequest } from '../../../proto/bbuhot/service/game_pb';
 export class AdminManageComponent implements OnInit {
   gamesList: Game[];
   isVisible: boolean;
-  constructor(private apiService: ApiService, private router: Router) {
+  constructor(private apiService: ApiService) {
     this.loadGamesListData();
   }
 
-  pushToEditView() {
-    this.isVisible = !this.isVisible;
+  showEditView() {
+    this.isVisible = true;
+  }
+  dismissEditView(visible: boolean) {
+    this.isVisible = visible;
   }
 
   loadGamesListData() {
