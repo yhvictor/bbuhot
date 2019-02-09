@@ -37,14 +37,10 @@ public class AdminGameServicesTest {
   }
 
   @After
-  public void tearDown() {
+  public void tearDown() throws Exception {
     // wait for releasing lock before tear down the persistence context
     while (GameStatusChanging.isGameLocked(1)) {
-      try {
-        Thread.sleep(500);
-      } catch(InterruptedException ex) {
-        Thread.currentThread().interrupt();
-      }
+      Thread.sleep(500);
     }
 
     EntityManager entityManager = entityManagerFactory.createEntityManager();
