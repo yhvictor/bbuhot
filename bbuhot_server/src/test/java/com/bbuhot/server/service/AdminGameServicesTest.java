@@ -2,6 +2,7 @@ package com.bbuhot.server.service;
 
 import static junit.framework.TestCase.assertEquals;
 
+import com.bbuhot.server.domain.GameStatusChanging;
 import com.bbuhot.server.entity.UserEntity;
 import com.bbuhot.server.persistence.UserQueries;
 import com.bbuhot.server.util.TestMessageUtil;
@@ -18,7 +19,6 @@ public class AdminGameServicesTest {
 
   @Inject AdminGameUpdatingService adminGameUpdatingService;
   @Inject AdminGameStatusChangeService adminGameStatusChangeService;
-  @Inject ListGameService listGameService;
 
   @Inject UserQueries userQueries;
   @Inject EntityManagerFactory entityManagerFactory;
@@ -37,7 +37,12 @@ public class AdminGameServicesTest {
   }
 
   @After
-  public void tearDown() {
+  public void tearDown() throws Exception {
+    // wait for releasing lock before tear down the persistence context
+    while (GameStatusChanging.isGameLocked(1)) {
+      Thread.sleep(500);
+    }
+
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     entityManager.getTransaction().begin();
     entityManager.createNativeQuery("DROP ALL OBJECTS").executeUpdate();
