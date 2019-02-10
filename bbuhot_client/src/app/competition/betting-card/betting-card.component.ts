@@ -2,6 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Quiz } from '../models/quiz';
 import { TeamRatio } from '../models/team-ratio';
 
+enum CardPosition {
+  LEFT = 'left',
+  RIGHT = 'right'
+}
+
 @Component({
   selector: 'bbuhot-betting-card',
   templateUrl: './betting-card.component.html',
@@ -9,16 +14,16 @@ import { TeamRatio } from '../models/team-ratio';
 })
 export class BettingCardComponent {
   @Input() quiz: Quiz;
-  @Input() teamLeft: TeamRatio;
-  @Input() teamRight: TeamRatio;
+  @Input() teams: {
+    left: TeamRatio;
+    right: TeamRatio;
+  };
 
   @Output() clickEvent = new EventEmitter<{ $event: Event; team: TeamRatio; quiz: Quiz }>();
 
   selectedTeam: TeamRatio;
 
-  constructor() {}
-
-  getStatusStyle() {
+  getStatusStyle(): any {
     return {
       ['card-status']: true,
       ['card-status-doing']: this.quiz.status === Quiz.Status.STATUS_DOING,
@@ -27,26 +32,40 @@ export class BettingCardComponent {
     };
   }
 
-  getRatioLabelStyle(position: 'left' | 'right') {
+  getRatioLabelStyle(position: CardPosition): any {
     return {
       ['team-ratio']: true,
       [`team-ratio-${position}${this.quiz.status === Quiz.Status.STATUS_DONE ? '-done' : ''}`]: true
     };
   }
 
-  onItemClick($event: Event, position: 'left' | 'right'): void {
-    if (this.quiz.status !== Quiz.Status.STATUS_DONE) {
-      this.clickEvent.emit({
-        $event,
-        team: this[`team${position.charAt(0).toUpperCase() + position.slice(1)}`],
-        quiz: this.quiz
-      });
-    } else {
-      return;
-    }
+  getRenderIndicator(position: CardPosition): any {
+    return {
+      ['team-item']: true,
+      [`team-${position}`]: true,
+      ['team-active_indicator']: this.selectedTeam && this.selectedTeam.teamId === this.teams[position].teamId
+    };
   }
 
-  isWin(position: 'left' | 'right'): boolean {
+  onItemClick($event: Event, position: CardPosition): void {
+    if (this.quiz.status !== Quiz.Status.STATUS_DOING) {
+      return;
+    }
+    const newTeam: TeamRatio = this.teams[position];
+    if (this.selectedTeam && this.selectedTeam.teamId === newTeam.teamId) {
+      // User is clicking on the same team again, just unselect the team.
+      this.selectedTeam = undefined;
+    } else {
+      this.selectedTeam = newTeam;
+    }
+    this.clickEvent.emit({
+      $event,
+      team: this.selectedTeam,
+      quiz: this.quiz
+    });
+  }
+
+  isWin(position: CardPosition): boolean {
     return this.quiz.result === position && this.quiz.status === Quiz.Status.STATUS_DONE;
   }
 

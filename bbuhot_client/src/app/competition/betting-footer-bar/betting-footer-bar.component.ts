@@ -24,7 +24,7 @@ export class BettingFooterBarComponent {
     }
   }
 
-  onInputChange($event: Event) {
+  onInputChange() {
     this.btnDisabled = !this.inputValue;
   }
 }

@@ -9,7 +9,8 @@ import { TeamRatio } from './models/team-ratio';
 })
 export class CompetitionComponent implements OnInit {
   QuizArr: Array<Quiz> = [];
-
+  currentTeam: TeamRatio | undefined | null;
+  currentQuiz: Quiz | undefined | null;
   constructor() {
     this.QuizArr = [
       new Quiz(
@@ -58,12 +59,14 @@ export class CompetitionComponent implements OnInit {
   }
 
   onItemClick({ $event, team, quiz }: { $event: Event; team: TeamRatio; quiz: Quiz }) {
-    // TODO
-    console.log('TODO: onItemClick', $event, team, quiz);
+    this.currentTeam = team;
+    this.currentQuiz = quiz;
   }
   onConfirmClick(inputValue: string) {
     // 点击确定按钮将输入框的值带入
     console.log(inputValue);
   }
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('==CompetitionComponent==ngOnInit');
+  }
 }

@@ -11,7 +11,7 @@
     </div>
     <div class="card-horizontal_spliter"></div>
     <div class="team-wrapper">
-        <div class="team-item team-left team-active_indicator" (click)="onItemClick($event, 'left')">
+        <div [ngClass]="getRenderIndicator('left')" (click)="onItemClick($event, 'left')">
             <div *ngIf="isWin('left')" class="team-item-victory-tag">
                 <div class="team-item-victory-tag-font">
                     胜
@@ -21,7 +21,7 @@
             <div class="team-team_name">{{quiz.teamLeft.teamName}}</div>
         </div>
         <div class="card-vertical_spliter"></div>
-        <div class="team-item team-right" (click)="onItemClick($event, 'right')">
+        <div [ngClass]="getRenderIndicator('right')" (click)="onItemClick($event, 'right')">
             <div *ngIf="isWin('right')" class="team-item-victory-tag">
                 <div class="team-item-victory-tag-font">
                     胜
