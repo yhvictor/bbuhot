@@ -1,15 +1,11 @@
-import { registerLocaleData } from '@angular/common';
-import zh from '@angular/common/locales/zh';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { zh_CN, NZ_I18N } from 'ng-zorro-antd';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { DataStoreModule } from './data-store/data-store.module';
 import { FacadeModule } from './facade/facade.module';
 
-registerLocaleData(zh);
 
 @NgModule({
   declarations: [
@@ -18,9 +14,10 @@ registerLocaleData(zh);
   imports: [
     BrowserModule,
     AppRoutingModule,
+    DataStoreModule,
     FacadeModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN }],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

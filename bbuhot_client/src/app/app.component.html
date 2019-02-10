@@ -7,4 +7,8 @@
         <a routerLink="/lobby" routerLinkActive="active">Lobby</a>
     </p>
 </nav>
+
+<p *ngIf="authReply">
+    {{ authReply.user.name }}
+</p>
 <router-outlet></router-outlet>
