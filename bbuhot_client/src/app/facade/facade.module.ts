@@ -1,11 +1,9 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { LobbyComponent } from './lobby/lobby.component';
 
 @NgModule({
   declarations: [LobbyComponent],
-  imports: [
-    CommonModule
-  ]
+  imports: [CommonModule]
 })
-export class FacadeModule { }
+export class FacadeModule {}

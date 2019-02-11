@@ -6,17 +6,9 @@ import { AppComponent } from './app.component';
 import { DataStoreModule } from './data-store/data-store.module';
 import { FacadeModule } from './facade/facade.module';
 
-
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    DataStoreModule,
-    FacadeModule
-  ],
+  declarations: [AppComponent],
+  imports: [BrowserModule, AppRoutingModule, DataStoreModule, FacadeModule],
   providers: [],
   bootstrap: [AppComponent]
 })
