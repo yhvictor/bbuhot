@@ -42,8 +42,6 @@ export class DataSourceService {
       map((httpEvent) => {
         if (httpEvent instanceof HttpResponse) {
           return transform(httpEvent.body);
-        } else {
-          throw new Error(JSON.stringify(httpEvent));
         }
       })
     );
