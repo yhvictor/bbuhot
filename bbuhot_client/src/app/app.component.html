@@ -1,14 +1,4 @@
-<h1>Gotham Spinach</h1>
-<nav>
-    <p>
-        <a routerLink="/admin" routerLinkActive="active">Admin</a>
-    </p>
-    <p>
-        <a routerLink="/lobby" routerLinkActive="active">Lobby</a>
-    </p>
-</nav>
-
-<p *ngIf="user">
-    {{ user.name }}
-</p>
-<router-outlet></router-outlet>
+<bbuhot-header></bbuhot-header>
+<main role="main">
+  <router-outlet></router-outlet>
+</main>

@@ -41,7 +41,6 @@ export class DataStoreService {
         switch (reply.getErrorCode()) {
           case AuthReply.AuthErrorCode.NO_ERROR:
             return reply.getUser();
-            break;
           case AuthReply.AuthErrorCode.KEY_NOT_MATCHING:
             throw new Error('Key not matching');
           case AuthReply.AuthErrorCode.PERMISSION_DENY:

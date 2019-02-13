@@ -14,9 +14,10 @@ export class AppComponent implements OnInit {
   constructor(private store: DataStoreService) {}
 
   ngOnInit() {
-    this.login();
+    // this.login();
   }
 
+  // TODO(luciusgone): implement real login
   login(): void {
     this.store
       .userLogin(
