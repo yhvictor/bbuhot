@@ -10,14 +10,16 @@ import { Game, ListGameRequest } from '../../../proto/bbuhot/service/game_pb';
 export class AdminManageComponent implements OnInit {
   gamesList: Game[];
   isVisible: boolean;
-  constructor(private apiService: ApiService) {
+
+  constructor(private apiService: ApiService) {}
+  ngOnInit() {
     this.loadGamesListData();
   }
 
-  showEditView() {
+  presentModal() {
     this.isVisible = true;
   }
-  dismissEditView(visible: boolean) {
+  dismissModal(visible: boolean) {
     this.isVisible = visible;
   }
 
@@ -35,6 +37,4 @@ export class AdminManageComponent implements OnInit {
       }
     );
   }
-
-  ngOnInit() {}
 }

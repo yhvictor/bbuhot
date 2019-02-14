@@ -19,17 +19,17 @@ export const routes: Routes = [
 })
 export class AdminMainComponent implements OnInit {
   siderArr: Array<SiderModel>;
-  constructor() {
-    this.setupSider();
+  constructor() {}
+
+  ngOnInit() {
+    this.configureSider();
   }
 
-  setupSider() {
+  configureSider() {
     const sider1 = new SiderModel('竞猜管理', 'diff', 'manage');
     const sider2 = new SiderModel('历史竞猜', 'calendar', 'history');
     this.siderArr = new Array<SiderModel>();
     this.siderArr.push(sider1);
     this.siderArr.push(sider2);
   }
-
-  ngOnInit() {}
 }

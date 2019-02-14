@@ -1,4 +1,4 @@
-.bg {
+.table-bg {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -11,4 +11,3 @@
 :host ::ng-deep .ant-table-placeholder{
     display: none;
 }
-
