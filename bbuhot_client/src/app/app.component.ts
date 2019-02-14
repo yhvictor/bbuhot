@@ -9,7 +9,8 @@ import { AuthReply } from './proto/bbuhot/service/auth_pb';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  user: AuthReply.User.AsObject;
+  user: AuthReply.User;
+  errorMsg: string;
 
   constructor(private store: DataStoreService) {}
 
@@ -24,6 +25,9 @@ export class AppComponent implements OnInit {
         /* auth= */ 'f864Wjt+ccE9euGuZQppnfu5aeSSuWkuVPt91ou9mcUAtMwHgvTfDoqX0nT2fgOb6ykQ22WzfOPZVxoHwT7I',
         /* saltKey= */ 'T9Zz8d5b'
       )
-      .subscribe((user) => (this.user = user.toObject()));
+      .subscribe({
+        next: (user: AuthReply.User) => (this.user = user),
+        error: (err) => (this.errorMsg = err)
+      });
   }
 }
