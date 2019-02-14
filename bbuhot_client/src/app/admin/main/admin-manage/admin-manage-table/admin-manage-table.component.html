@@ -1,0 +1,32 @@
+<nz-layout>
+  <div class="table-bg">
+    <nz-table>
+      <thead>
+      <tr>
+        <!--th可变为model-->
+        <th>竞猜编号</th>
+        <th>游戏</th>
+        <th>比赛名称</th>
+        <th>队伍一</th>
+        <th>队伍二</th>
+        <th>状态</th>
+        <th>创建时间</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let game of gamesList">
+        <td>{{game.getId()}}</td>
+        <td>暴打熊猫头类型</td>
+        <td>{{game.getName()}}</td>
+        <td>暴打熊猫头玩家１</td>
+        <td>暴打熊猫头玩家２</td>
+        <td>{{game.getStatus()}}</td>
+        <td>暴打熊猫头时间</td>
+      </tr>
+      </tbody>
+    </nz-table>
+    <nz-pagination class="pagination" [nzPageIndex]="1" [nzTotal]="gamesList.length" nzShowQuickJumper></nz-pagination>
+  </div>
+</nz-layout>
+

@@ -1,0 +1,13 @@
+.table-bg {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.pagination {
+    align-self: flex-end;
+}
+
+:host ::ng-deep .ant-table-placeholder{
+    display: none;
+}
