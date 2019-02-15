@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { DataStoreService } from '../../data-store/data-store.service';
+import { AuthService } from '../../auth/auth.service';
 import { AuthReply } from '../../proto/bbuhot/service/auth_pb';
 
 @Component({
@@ -12,7 +12,7 @@ import { AuthReply } from '../../proto/bbuhot/service/auth_pb';
 export class LoginComponent implements OnInit {
   errorMsg: string;
 
-  constructor(private store: DataStoreService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.login();
@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
 
   // TODO(luciusgone): implement real login
   login(): void {
-    this.store
+    this.auth
       .userLogin(
         /* auth= */ 'f864Wjt+ccE9euGuZQppnfu5aeSSuWkuVPt91ou9mcUAtMwHgvTfDoqX0nT2fgOb6ykQ22WzfOPZVxoHwT7I',
         /* saltKey= */ 'T9Zz8d5b'

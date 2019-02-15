@@ -24,7 +24,6 @@ interface HasAuthErrorCode {
 @Injectable()
 export class DataStoreService {
   auth: AuthRequest;
-  isLoggedIn = false;
 
   constructor(private source: DataSourceService) {}
 
@@ -123,30 +122,6 @@ export class DataStoreService {
         this.handleAuthError(reply);
         this.handleBetError(reply);
         return reply.getBetsList();
-      })
-    );
-  }
-
-  // TODO(luciusgone): move login logic to auth service when this service grows too big
-  public userLogin(auth: string, saltKey: string): Observable<AuthReply.User> {
-    const req = new AuthRequest();
-    req.setAuth(auth);
-    req.setSaltKey(saltKey);
-
-    return this.source.userLogin(req).pipe(
-      map((reply: AuthReply) => {
-        switch (reply.getErrorCode()) {
-          case AuthReply.AuthErrorCode.NO_ERROR:
-            this.auth = req;
-            this.isLoggedIn = true;
-            return reply.getUser();
-          case AuthReply.AuthErrorCode.KEY_NOT_MATCHING:
-            throw new Error('AuthenticationError: Key Not Matching');
-          case AuthReply.AuthErrorCode.PERMISSION_DENY:
-            throw new Error('AuthenticationError: Permission Denied');
-          default:
-            throw new Error('Internal Error');
-        }
       })
     );
   }
