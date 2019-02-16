@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,15 +10,7 @@ import { WarehouseModule } from './warehouse/warehouse.module';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    DataStoreModule,
-    AuthModule,
-    WarehouseModule,
-    FacadeModule
-  ],
+  imports: [BrowserModule, AppRoutingModule, DataStoreModule, AuthModule, WarehouseModule, FacadeModule],
   providers: [],
   bootstrap: [AppComponent]
 })
