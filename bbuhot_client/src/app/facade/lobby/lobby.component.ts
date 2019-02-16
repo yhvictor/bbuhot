@@ -9,15 +9,17 @@ import { Game } from '../../proto/bbuhot/service/game_pb';
   styleUrls: ['./lobby.component.scss']
 })
 export class LobbyComponent implements OnInit {
-  games: Game[];
+  upcomingGames: Game[];
 
   constructor(private store: DataStoreService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadPublishedGames();
+  }
 
-  loadGames(): void {
+  loadPublishedGames(): void {
     this.store.listGames(/* isAdmin= */ false, Game.Status.PUBLISHED).subscribe({
-      next: (games: Game[]) => (this.games = games),
+      next: (games: Game[]) => (this.upcomingGames = games),
       error: (err) => console.log(err)
     });
   }
