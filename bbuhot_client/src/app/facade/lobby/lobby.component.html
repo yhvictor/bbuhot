@@ -1,24 +1,9 @@
-<div class="banner">
-  <img src="assets/image/Gindex.png" alt="banner-background">
-  <img src="assets/image/banner-slogan.png" alt="banner-foreground">
-</div>
-<!-- TODO(luciusgone): move this to warehouse after we have user info API -->
-<div class="user-info">
-  <img src="assets/image/avatar.png" alt="avatar">
-  <div class="user-info-details">
-    <p class="usrename">BruceWayne</p>
-    <p class="credits">Gold: <span>500,000</span></p>
-    <p><a href="#">My Bets</a></p>
-  </div>
-</div>
-<!-- end -->
+<bbuhot-banner></bbuhot-banner>
+<bbuhot-user-info-card></bbuhot-user-info-card>
 <div>
-  <div class="heading">
-    <img src="assets/image/title-upcoming.png" alt="title-upcomming">
-  </div>
+  <bbuhot-image-heading></bbuhot-image-heading>
   <div class="games-list">
-    <div *ngFor="let game of upcomingGames">
-      {{ game.getName() }}
-    </div>
+    <bbuhot-game-card *ngFor="let game of upcomingGames" [game]="game">
+    </bbuhot-game-card>
   </div>
 </div>
