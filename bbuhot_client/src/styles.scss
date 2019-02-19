@@ -1,0 +1,6 @@
+// set all elements to display properly as border box
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}

@@ -1,0 +1,12 @@
+:host {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+bbuhot-header {
+  display: flex;
+  flex-flow: row wrap;
+  width: 100%;
+  background: #142641;
+  padding: 0 3%;
+}
