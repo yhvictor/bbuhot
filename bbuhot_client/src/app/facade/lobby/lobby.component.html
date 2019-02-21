@@ -1,3 +1,9 @@
-<p>
-  lobby works!
+<p *ngIf="errorMsg">
+  {{ errorMsg }}
 </p>
+
+<p *ngFor="let game of upcomingGames">
+  {{ game.getName() }}
+</p>
+
+<button type="button" (click)="betOnGame()">bet</button>
