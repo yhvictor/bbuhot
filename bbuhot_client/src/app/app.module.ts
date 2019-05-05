@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { ApiModule } from './api/api.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthModule } from './auth/auth.module';
-import { FacadeModule } from './facade/facade.module';
-import { WarehouseModule } from './warehouse/warehouse.module';
+import { BetPageModule } from './bet-page/bet-page.module';
+import { ComponentsModule } from './components/components.module';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, AuthModule, WarehouseModule, FacadeModule],
+  imports: [ApiModule, BrowserModule, AppRoutingModule, ComponentsModule, BetPageModule],
   providers: [],
   bootstrap: [AppComponent]
 })
