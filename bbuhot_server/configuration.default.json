@@ -1,6 +1,6 @@
 {
   "database": {
-    "connection_url": "jdbc:mysql://192.168.1.101:3306/ultrax",
+    "connection_url": "jdbc:mysql://192.168.1.101:3306/ultrax?useUnicode=yes&characterEncoding=UTF-8",
     "user": "root",
     "password": "bbuhot",
     "tablePrefix": "pre_"

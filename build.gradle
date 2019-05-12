@@ -10,6 +10,7 @@ buildscript {
         classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.7'
         classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
         classpath "net.ltgt.gradle:gradle-errorprone-plugin:0.6"
+        classpath("com.google.guava:guava:27.0.1-jre")
     }
 }
 
