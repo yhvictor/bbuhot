@@ -1,12 +1,15 @@
 :host {
   display: flex;
-  flex-flow: column nowrap;
+  align-items: stretch;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height:100%;
 }
 
-bbuhot-header {
+.layout{
   display: flex;
-  flex-flow: row wrap;
-  width: 100%;
-  background: #142641;
-  padding: 0 3%;
+  align-items: stretch;
+  flex-direction: column;
+  flex: 1 1 auto;
+  background: #f5f7f9;
 }

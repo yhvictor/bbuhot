@@ -1,0 +1,43 @@
+<div *ngIf="game && game.isSimpleGame; then thenBlock else elseBlock"></div>
+<ng-template #thenBlock>
+    <div class="container">
+      <div class="container-slider batman">
+        <div class="white-box">
+          <img src="" width="100%" height="100%">
+        </div>
+        <div class="team-name">{{game.firstBetOption.name}}</div>
+        <div class="proportion">1 : {{game.firstBetOption.odds / 1000000.0}}</div>
+      </div>
+      <div class="container-box">
+        <div class="box-pic">
+          <img src="" width="100%" height="100%">
+        </div>
+        <div class="match-name">The International 8</div>
+        <div class="match-type">淘汰赛 BO5</div>
+        <div class="match-time">2018-12-12 18:30</div>
+        <div class="match-pic">
+          <img src="" width="100%" height="100%">
+        </div>
+        <div class="bets-end-time">下注截止时间</div>
+        <div class="bets-time">2018-12-12 18：30</div>
+      </div>
+      <div class="container-slider joker">
+        <div class="white-box">
+          <img src="" width="100%" height="100%">
+        </div>
+        <div class="team-name">{{game.secondBetOption.name}}</div>
+        <div class="proportion">1 : {{game.secondBetOption.odds / 1000000.0}}</div>
+      </div>
+    </div>
+    <div class="card-group">
+    </div>
+    <div class="game-bottom">
+      <div class="bottom-bar">您还未选择任何盘口，请先选择</div>
+    </div>
+</ng-template>
+<ng-template #elseBlock>
+  Navigating directly to this page is not supported yet.
+</ng-template>
+<div>
+  <button (click)="onClickBack()">Back</button>
+</div>

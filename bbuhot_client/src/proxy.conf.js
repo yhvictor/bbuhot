@@ -1,11 +1,13 @@
-const PROXY_CONFIG = [
-    {
-        context: ['**', '!/v2/**'],
+const PROXY_CONFIG = {
+    '/api': {
         target: 'http://165.227.17.140/',
-        secure: false,
-        changeOrigin: true,
-        logLevel: 'debug'
-    }
-]
+    },
+    '/': {
+        target: 'http://165.227.17.140/',
+    },
+    secure: false,
+    changeOrigin: true,
+    logLevel: 'debug'
+}
 
 module.exports = PROXY_CONFIG;

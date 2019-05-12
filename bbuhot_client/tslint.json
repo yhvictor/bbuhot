@@ -1,5 +1,5 @@
 {
-  "extends": "tslint-plugin-prettier",
+  "extends": ["tslint-plugin-prettier"],
   "linterOptions": {
     "exclude": [
         "src/proto/**/*"
@@ -30,7 +30,7 @@
       "rxjs/Rx"
     ],
     "import-spacing": true,
-    "indent": [true, "spaces", 4],
+    "indent": [true, "spaces", 2],
     "interface-over-type-literal": true,
     "label-position": true,
     "max-line-length": [

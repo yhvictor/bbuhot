@@ -1,10 +1,24 @@
-import { HttpClient, HttpEvent, HttpEventType, HttpRequest, HttpResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpEvent,
+  HttpEventType,
+  HttpRequest,
+  HttpResponse
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Message } from 'google-protobuf';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { AuthReply, AuthRequest } from '../proto/bbuhot/service/auth_pb';
 import { ListGameReply, ListGameRequest } from '../proto/bbuhot/service/game_pb';
+
+export class ApiRemoteError extends Error {
+  constructor(error: any) {
+    super(JSON.stringify(error));
+
+    Object.setPrototypeOf(this, ApiRemoteError.prototype);
+  }
+}
 
 @Injectable()
 export class ApiService {
@@ -30,19 +44,23 @@ export class ApiService {
       }),
       map((httpEvent) => {
         if (httpEvent instanceof HttpResponse) {
-          return transform(httpEvent.body);
+          return transform(httpEvent.body as Uint8Array);
         } else {
-          throw new Error(JSON.stringify(httpEvent));
+          throw new ApiRemoteError(httpEvent);
         }
       })
     );
   }
 
   public listGames(listGameRequest: ListGameRequest): Observable<ListGameReply> {
-    return this.callServiceImpl(listGameRequest, '/api/bet/list_game', ListGameReply.deserializeBinary);
+    return this.callServiceImpl(
+      listGameRequest,
+      '/api/bet/list_game',
+      ListGameReply.deserializeBinary
+    );
   }
 
-  public userLogin(authRequest: AuthRequest): Observable<AuthReply> {
+  public auth(authRequest: AuthRequest): Observable<AuthReply> {
     return this.callServiceImpl(authRequest, '/api/auth', AuthReply.deserializeBinary);
   }
 }

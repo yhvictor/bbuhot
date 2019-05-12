@@ -1,0 +1,85 @@
+.list-bg {
+    width: 1200px;
+    height: 170px;
+    background: #fff;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.game-type {
+    display: flex;
+    justify-content: space-around;
+    width: 140px;
+}
+.game-logo {
+    width: 68px;
+    height: 68px;
+}
+.game-time {
+    width: 68px;
+    height: 68px;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    font-size:20px;
+    font-weight: 600;
+    color: rgba(85,85,85,1);
+    line-height: 28px;
+}
+.team {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 68px;
+}
+.team-name {
+    font-size: 24px;
+    font-weight: 600;
+    color: rgba(51,51,51,1);
+    line-height: 33px;
+}
+.team-p {
+    font-size: 18px;
+    font-weight: 500;
+    color: rgba(251,13,13,1);
+    line-height: 25px;
+}
+.team-logo {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.logo {
+    width: 59px;
+    height: 92px;
+}
+.btn-group {
+    width: 150px;
+    height: 150px;
+    flex-direction: column;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.bo-n {
+    font-size:24px;
+    font-weight: 600;
+    color: rgba(245,51,19,1);
+    line-height: 33px;
+}
+button {
+    color: #fff;
+    display: inline-block;
+    padding: 5px 15px 6px;
+    background-color: #e13d13;
+    border-color: #e13d13;
+}
+button:hover {
+    color: #fff;
+    background-color: #f16643;
+    border-color: #f16643;
+}
