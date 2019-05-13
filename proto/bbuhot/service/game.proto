@@ -1,0 +1,221 @@
+syntax = "proto2";
+
+package bhuhot.service;
+
+import "proto/bbuhot/service/auth.proto";
+
+option java_package = "com.bbuhot.server.service";
+option java_multiple_files = true;
+
+message Game {
+  // The unique id for the game.
+  // In request, set to -1 to create a new game, otherwise it will update the existing game with same id.
+  // In response, server will always attach the id.
+  required int32 id = 1;
+
+  // The name of the game.
+  required string name = 2;
+
+  // The description of the game.
+  required string description = 3;
+
+  // If true, normal user can see and bet on it.
+  optional bool normal_user_visible = 4 [default = false];
+
+  enum Status {
+    // The game is draft.
+    // After the game became published, it can never go back.
+    DRAFT = 0;
+
+    // The game is published.
+    // All users can see and bet on it if not banned.
+    // This is the only bet-able status.
+    PUBLISHED = 1;
+
+    // The game result is published and all money is settled.
+    // This is one of the final status of the game.
+    SETTLED = 2;
+
+    // The game is cancelled.
+    // This is also one of the final status of the game.
+    CANCELLED = 3;
+  }
+
+  // Status of the game.
+  // In request, this value will be ignored.
+  // In response, it will return the current status.
+  //
+  // The valid status changes:
+  // DRAFT -> PUBLISHED:
+  //   This will set game.normal_user_visible to true.
+  // PUBLISHED -> SETTLED:
+  //   If end_time_stamp_ms is in future, this will set it to be a time in the past.
+  //   This will kick of worker to pay the rewards.
+  // PUBLISHED -> CANCELLED:
+  //   If end_time_stamp_ms is in future, this will set it to be a time in the past.
+  //   This will kick off worker to reimburse all the pending bets.
+  // SETTLED -> PUBLISHED:
+  //   This will kick off worker to revoke all the rewards.
+  // CANCELLED -> PUBLISHED:
+  //   This will kick off worker to restore all bets of this game.
+  //
+  // Special cases to trigger worker (to recover bad data):
+  // PUBLISHED -> PUBLISHED:
+  //   This will kick of worker to revoke all the rewards.
+  // CANCELLED -> CANCELLED:
+  //   This will kick off worker to reimburse all the pending bets.
+  // SETTLED -> SETTLED:
+  //   This will kick of worker to pay the rewards.
+  optional Status status = 5;
+
+  // Maximum number of bets one can made.
+  // In most cases, this should be 1.
+  required int32 bet_option_limit = 6;
+
+  // The least money one need to make a bet.
+  required int32 bet_amount_lowest = 7;
+
+  // The highest money one can bet.
+  required int32 bet_amount_highest = 8;
+
+  // The end time of the game in ms. Only before that, one can bet.
+  required int64 end_time_ms = 9;
+
+  message BettingOption {
+    // The name of the betting option.
+    required string name = 1;
+
+    // The odds of the betting option.
+    // If the user payed 100 units on this bet options and wins,
+    // the user will be rewarded with 100 * (odds / 1000000).
+    required int32 odds = 2;
+  }
+
+  // All the betting options.
+  // Betting options are only editable when game status is draft.
+  repeated BettingOption betting_options = 10;
+
+  // The zero-based winning option of the game.
+  // In request, this value is ignored.
+  // The corresponding BettingOption is betting_options[winning_option].
+  // The value is only available when the game status is SETTLED.
+  optional int32 winning_option = 11;
+
+  message Bet {
+    required int32 betting_option_id = 1;
+    required int32 money = 2;
+  }
+
+  // In request, this will be ignored.
+  // In response, this will contain bets of requesting user.
+  repeated Bet bets = 12;
+}
+
+// Changes properties of a game.
+// protobuf: GameRequest -> GameReply
+
+message AdminGameRequest {
+  required AuthRequest auth = 1;
+  required Game game = 2;
+}
+
+message AdminGameReply {
+  required AuthReply.AuthErrorCode auth_error_code = 1;
+  optional Game game = 2;
+}
+
+// Changes status of a game.
+// URL: /api/bet/admin_status
+// protobuf: AdminGameStatusRequest -> AdminGameStatusReply
+
+message AdminGameStatusRequest {
+  required AuthRequest auth = 1;
+
+  // The id of game to be changed.
+  required int32 game_id = 2;
+
+  // Sets the game status to be the desired status, and trigger necessary jobs.
+  required Game.Status game_status = 3;
+
+  // Sets the winning_option of the game. This is only needed if game_status is set to settled.
+  optional int32 winning_option = 4;
+}
+
+message AdminGameStatusReply {
+  required AuthReply.AuthErrorCode auth_error_code = 1;
+
+  enum ErrorCode {
+    // No error.
+    NO_ERROR = 0;
+
+    // There's worker ongoing to change the user betting log. So this time, the modification failed.
+    LOCKED = 1;
+  }
+
+  optional ErrorCode game_status_error_code = 2;
+
+  // The game after the change.
+  optional Game game = 3;
+}
+
+// Lists games.
+// protobuf: ListGameRequest -> ListGameReply
+
+message ListGameRequest {
+  required AuthRequest auth = 1;
+
+  // If false:
+  //  1) draft games won't be included.
+  //  2) games with normal_user_visible == false won't be included.
+  // ErrorCode.PERMISSION_DENY will be returned if the user doesn't have admin rights.
+  optional bool is_admin_request = 2 [default = false];
+
+  // List all game of that status.
+  required Game.Status game_status = 3;
+}
+
+message ListGameReply {
+  required AuthReply.AuthErrorCode auth_error_code = 1;
+
+  // The games.
+  repeated Game games = 2;
+}
+
+// Bets on game.
+// URL: /api/bet/bet
+// protobuf: BetRequest -> BetReply
+message BetRequest {
+  required AuthRequest auth = 1;
+
+  required int32 game_id = 2;
+
+  // Puts all the bets the user made.
+  // Sets to an empty array to clear bets.
+  repeated Game.Bet bets = 3;
+}
+
+message BetReply {
+  required AuthReply.AuthErrorCode auth_error_code = 1;
+
+  enum BetErrorCode {
+    NO_ERROR = 0;
+
+    // One of the money is too low.
+    MONEY_TOO_LOW = 1;
+
+    // One of the money is too high.
+    MONEY_TOO_HIGH = 2;
+
+    // More options than the limit is chosen.
+    OPTION_TOO_MANY = 3;
+
+    // No enough money to bet.
+    NO_ENOUGH_MONEY = 4;
+  }
+
+  optional BetErrorCode bet_error_code = 2;
+
+  // Bets after made the request.
+  // Will be the original bets if the change failed.
+  repeated Game.Bet bets = 3;
+}

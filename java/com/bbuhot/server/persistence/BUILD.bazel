@@ -1,0 +1,17 @@
+package(default_visibility = ["//java/com/bbuhot/server:server_group"])
+
+java_library(
+    name = "persistence",
+    srcs = glob(["*.java"]),
+    deps = [
+        "//java/com/bbuhot/errorprone:annotation",
+        "//java/com/bbuhot/server/config",
+        "//java/com/bbuhot/server/entity",
+        "//proto/bbuhot/service:service_java_proto",
+        "//third_party/java/dagger",
+        "//third_party/java/guava",
+        "@maven//:mysql_mysql_connector_java",
+        "@maven//:org_hibernate_hibernate_core",
+        "@maven//:org_hibernate_javax_persistence_hibernate_jpa_2_1_api",
+    ],
+)

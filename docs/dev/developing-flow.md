@@ -27,7 +27,7 @@ ng lint --fix
 Testing the code
 * For backend
 ```
-bash gradlew :bbuhot_server:test
+bazel test //javatests/...
 ```
 * For frontend
 ```

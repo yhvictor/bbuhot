@@ -1,0 +1,10 @@
+package(default_visibility = ["//java/com/bbuhot/server:server_group"])
+
+java_library(
+    name = "util",
+    srcs = glob(["*.java"]),
+    deps = [
+        "//java/com/bbuhot/errorprone:annotation",
+        "//third_party/java/guava",
+    ],
+)

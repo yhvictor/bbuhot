@@ -1,0 +1,19 @@
+package(default_visibility = ["//visibility:public"])
+
+load("//third_party/node_js/ts_protoc_gen:defs.bzl", "typescript_proto_library")
+load("@npm_bazel_typescript//:index.bzl", "ts_proto_library")
+
+proto_library(
+    name = "service",
+    srcs = glob(["*.proto"]),
+)
+
+java_proto_library(
+    name = "service_java_proto",
+    deps = [":service"],
+)
+
+typescript_proto_library(
+    name = "service_ts_proto",
+    proto = ":service",
+)

@@ -1,0 +1,14 @@
+package(default_visibility = ["//java/com/bbuhot/server:server_group"])
+
+java_library(
+    name = "test_peristence_module",
+    srcs = [
+        "TestPersistenceModule.java",
+    ],
+    deps = [
+        "//java/com/bbuhot/server/persistence",
+        "//third_party/java/dagger",
+        "@maven//:com_h2database_h2",
+        "@maven//:org_hibernate_hibernate_core",
+    ],
+)

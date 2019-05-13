@@ -1,0 +1,49 @@
+package com.bbuhot.server.util;
+
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.ListeningScheduledExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
+
+import javax.annotation.Nonnull;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class BbuhotThreadPool {
+
+  public static final ListeningExecutorService limitedThreadPool =
+      MoreExecutors.listeningDecorator(
+          Executors.newFixedThreadPool(10, new BbuhotThreadFactory("bbuhot-limited")));
+  public static final ListeningExecutorService workerThreadPool =
+      MoreExecutors.listeningDecorator(
+          Executors.newCachedThreadPool(new BbuhotThreadFactory("bbuhot-worker")));
+  public static final ListeningScheduledExecutorService scheduleExecutor =
+      MoreExecutors.listeningDecorator(Executors.newScheduledThreadPool(1));
+
+    private BbuhotThreadPool() {
+    }
+
+  private static class BbuhotThreadFactory implements ThreadFactory {
+
+    private static final AtomicInteger poolNumber = new AtomicInteger(1);
+    private final ThreadGroup group;
+    private final AtomicInteger threadNumber = new AtomicInteger(1);
+    private final String namePrefix;
+
+    BbuhotThreadFactory(String namePrefix) {
+      SecurityManager s = System.getSecurityManager();
+      group = (s != null) ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
+
+      this.namePrefix = namePrefix;
+    }
+
+    @Override
+    public Thread newThread(@Nonnull Runnable r) {
+      Thread t = new Thread(group, r, namePrefix + threadNumber.getAndIncrement(), 0);
+      if (t.isDaemon()) {
+        t.setDaemon(false);
+      }
+      return t;
+    }
+  }
+}

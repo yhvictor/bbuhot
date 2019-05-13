@@ -1,0 +1,16 @@
+package(default_visibility = ["//java/com/bbuhot/server:server_group"])
+
+java_library(
+    name = "config",
+    srcs = glob(["*.java"]),
+    exports = [
+        "//proto/bbuhot/config:config_java_proto",
+    ],
+    deps = [
+        "//java/com/bbuhot/errorprone:annotation",
+        "//proto/bbuhot/config:config_java_proto",
+        "//third_party/java/guava",
+        "@com_google_protobuf//:protobuf_java",
+        "@com_google_protobuf//:protobuf_java_util",
+    ],
+)

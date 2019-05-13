@@ -1,0 +1,20 @@
+java_library(
+    name = "dagger",
+    exported_plugins = [
+        ":dagger-plugin",
+    ],
+    visibility = ["//visibility:public"],
+    exports = [
+        "@maven//:com_google_dagger_dagger",
+        "@maven//:javax_inject_javax_inject",
+    ],
+)
+
+java_plugin(
+    name = "dagger-plugin",
+    generates_api = True,
+    processor_class = "dagger.internal.codegen.ComponentProcessor",
+    deps = [
+        "@maven//:com_google_dagger_dagger_compiler",
+    ],
+)

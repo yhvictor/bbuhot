@@ -1,0 +1,14 @@
+load("//third_party/java/junit4:junit4.bzl", "junit4_test")
+
+junit4_test(
+    name = "domain",
+    test_srcs = glob(["*Test.java"]),
+    deps = [
+        "//java/com/bbuhot/server/domain",
+        "//javatests/com/bbuhot/server/persistence:test_peristence_module",
+        "//javatests/com/bbuhot/server/util",
+        "//third_party/java/dagger",
+        "@maven//:junit_junit",
+        "@maven//:org_hibernate_javax_persistence_hibernate_jpa_2_1_api",
+    ],
+)

@@ -1,0 +1,20 @@
+package(default_visibility = ["//java/com/bbuhot/server:server_group"])
+
+java_library(
+    name = "service",
+    srcs = glob(["*.java"]),
+    deps = [
+        "//java/com/bbuhot/errorprone:annotation",
+        "//java/com/bbuhot/server/config",
+        "//java/com/bbuhot/server/domain",
+        "//java/com/bbuhot/server/entity",
+        "//java/com/bbuhot/server/persistence",
+        "//java/com/bbuhot/server/util",
+        "//proto/bbuhot/service:service_java_proto",
+        "//third_party/java/dagger",
+        "//third_party/java/guava",
+        "@com_google_protobuf//:protobuf_java",
+        "@com_google_protobuf//:protobuf_java_util",
+        "@maven//:io_undertow_undertow_core",
+    ],
+)

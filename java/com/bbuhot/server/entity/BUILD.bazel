@@ -1,0 +1,13 @@
+package(default_visibility = ["//java/com/bbuhot/server:server_group"])
+
+java_library(
+    name = "entity",
+    srcs = glob(["*.java"]),
+    deps = [
+        "//java/com/bbuhot/errorprone:annotation",
+        "//third_party/java/dagger",
+        "//third_party/java/guava",
+        "@maven//:org_hibernate_hibernate_core",
+        "@maven//:org_hibernate_javax_persistence_hibernate_jpa_2_1_api",
+    ],
+)

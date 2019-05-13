@@ -29,6 +29,9 @@ Backend is using:
 * [protopuf](https://developers.google.com/protocol-buffers/)
 * [hibernate](http://hibernate.org/)
 
+We are using bazel for compiling, for installation, see:
+[bazel](https://docs.bazel.build/versions/master/install-ubuntu.html)
+
 And in order to produce high quality java code, we are using:
 * google-java-format
 * google-error-prone
@@ -46,6 +49,8 @@ If that's not the only version of java you intalled,follow [this link](https://w
 #### Get Intellij IDEA (Community version)
 I'd suggest to use intellij for developing. It's free and effective.
 Follow [this link](https://www.jetbrains.com/idea/download/#section=linux) to install.
+
+Also get the bazel plugin for intellij.
 
 #### Install apache, php, mysql and discuz
 By now, we need to develop with old discuz client.

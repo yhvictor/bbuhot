@@ -1,0 +1,16 @@
+package(default_visibility = ["//java/com/bbuhot/server:server_group"])
+
+java_library(
+    name = "domain",
+    srcs = glob(["*.java"]),
+    deps = [
+        "//java/com/bbuhot/errorprone:annotation",
+        "//java/com/bbuhot/server/config",
+        "//java/com/bbuhot/server/entity",
+        "//java/com/bbuhot/server/persistence",
+        "//java/com/bbuhot/server/util",
+        "//proto/bbuhot/service:service_java_proto",
+        "//third_party/java/dagger",
+        "//third_party/java/guava",
+    ],
+)

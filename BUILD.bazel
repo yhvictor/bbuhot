@@ -1,0 +1,14 @@
+package(default_visibility = ["//visibility:public"])
+
+load("@build_bazel_rules_nodejs//:defs.bzl", "npm_package")
+
+# TODO: move inside proto folder.
+npm_package(
+    name = "publish",
+    srcs = [
+        "package.json",
+    ],
+    deps = [
+        "//proto/bbuhot/service:service_ts_proto",
+    ],
+)

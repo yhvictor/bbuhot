@@ -1,0 +1,7 @@
+java_library(
+    name = "junit4",
+    visibility = ["//visibility:public"],
+    exports = [
+        "@maven//:junit_junit",
+    ],
+)

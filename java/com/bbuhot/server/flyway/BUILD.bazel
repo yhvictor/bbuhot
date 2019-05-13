@@ -1,0 +1,18 @@
+package(default_visibility = ["//java/com/bbuhot/server:server_group"])
+
+filegroup(
+    name = "db",
+    srcs = glob(["db/*.sql"]),
+)
+
+java_library(
+    name = "flyway",
+    srcs = glob(["*.java"]),
+    resources = [
+        ":db",
+    ],
+    deps = [
+        "//proto/bbuhot/config:config_java_proto",
+        "@maven//:org_flywaydb_flyway_core",
+    ],
+)

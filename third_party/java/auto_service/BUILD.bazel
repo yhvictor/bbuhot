@@ -1,0 +1,24 @@
+licenses(["notice"])  # Apache License 2.0
+
+java_library(
+    name = "auto_service",
+    exported_plugins = [":auto_service_plugin"],
+    visibility = ["//visibility:public"],
+    exports = [
+        "@maven//:com_google_auto_service_auto_service",
+        "@maven//:com_google_auto_service_auto_service_annotations",
+    ],
+    runtime_deps = [
+        "//third_party/java/guava",
+    ],
+)
+
+java_plugin(
+    name = "auto_service_plugin",
+    processor_class = "com.google.auto.service.processor.AutoServiceProcessor",
+    deps = [
+        "//third_party/java/guava",
+        "@maven//:com_google_auto_auto_common",
+        "@maven//:com_google_auto_service_auto_service",
+    ],
+)

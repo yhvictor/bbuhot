@@ -1,0 +1,20 @@
+{
+  "database": {
+    "connection_url": "jdbc:mysql://10.1.10.14:3306/ultrax?useUnicode=yes&characterEncoding=UTF-8",
+    "user": "root",
+    "password": "bbuhot",
+    "tablePrefix": "pre_"
+  },
+  "discuz_config": {
+    "auth_key": "fefc9468fa7b03a1126458ad9e7d0d9aWbCzTIHCfutaOF2Pk8",
+    "admin_group": [
+      1,
+      2,
+      3
+    ],
+    "cookie_pre": "G0RW_2132_"
+  },
+  "host": "127.0.0.1",
+  "port": 8080,
+  "is_debug": true
+}
