@@ -1,9 +1,9 @@
 package(default_visibility = ["//visibility:public"])
 
-load("@build_bazel_rules_nodejs//:defs.bzl", "npm_package")
+load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
 
 # TODO: move inside proto folder.
-npm_package(
+pkg_npm(
     name = "publish",
     srcs = [
         "package.json",

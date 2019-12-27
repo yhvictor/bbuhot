@@ -1,12 +1,12 @@
 package(default_visibility = ["//visibility:public"])
 
-load("@build_bazel_rules_nodejs//:defs.bzl", "nodejs_binary")
+load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary")
 
 nodejs_binary(
     name = "ts_protoc_gen",
+    entry_point = "@npm//:node_modules/ts-protoc-gen/bin/protoc-gen-ts",
     data = [
         "@npm//google-protobuf",
         "@npm//ts-protoc-gen",
     ],
-    entry_point = "ts-protoc-gen/bin/protoc-gen-ts",
 )

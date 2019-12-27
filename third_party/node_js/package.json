@@ -5,6 +5,7 @@
     "google-protobuf": "^3.8.0-rc.1"
   },
   "devDependencies": {
+    "@bazel/hide-bazel-files": "latest",
     "@bazel/karma": "0.29.0",
     "@bazel/typescript": "0.29.0",
     "@types/jasmine": "2.8.2",

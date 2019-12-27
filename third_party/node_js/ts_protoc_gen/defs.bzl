@@ -1,3 +1,5 @@
+load("@rules_proto//proto:defs.bzl", "ProtoInfo")
+
 TypescriptProtoLibraryAspect = provider(
     fields = {
         "js_outputs": "The JS output files produced directly from the src protos",
@@ -6,24 +8,6 @@ TypescriptProtoLibraryAspect = provider(
         "deps_dts": "The transitive dependencies' TS definitions",
     },
 )
-
-def proto_path(proto):
-    """
-    The proto path is not really a file path
-    It's the path to the proto that was seen when the descriptor file was generated.
-    """
-    path = proto.path
-    root = proto.root.path
-    ws = proto.owner.workspace_root
-    if path.startswith(root):
-        path = path[len(root):]
-    if path.startswith("/"):
-        path = path[1:]
-    if path.startswith(ws):
-        path = path[len(ws):]
-    if path.startswith("/"):
-        path = path[1:]
-    return path
 
 def append_to_outputs(ctx, file_name, js_outputs, dts_outputs):
     generated_filenames = ["_pb.d.ts", "_pb.js"]
@@ -44,48 +28,39 @@ def typescript_proto_library_aspect_(target, ctx):
     """
     js_outputs = []
     dts_outputs = []
-    proto_inputs = []
+    direct_sources_path = []
 
-    inputs = depset([ctx.file._protoc])
-    for src in target.proto.direct_sources:
+    for src in target[ProtoInfo].direct_sources:
         if src.extension != "proto":
             fail("Input must be a proto file")
 
         file_name = src.basename[:-len(src.extension) - 1]
-        normalized_file = proto_path(src)
-        proto_inputs.append(normalized_file)
+        direct_sources_path.append(src.path)
         append_to_outputs(ctx, file_name, js_outputs, dts_outputs)
 
     outputs = dts_outputs + js_outputs
-
-    inputs += ctx.files._ts_protoc_gen
-    inputs += target.proto.direct_sources
-    inputs += target.proto.transitive_descriptor_sets
-
-    descriptor_sets_paths = [desc.path for desc in target.proto.transitive_descriptor_sets]
-
+    descriptor_sets = target[ProtoInfo].transitive_descriptor_sets.to_list();
     protoc_output_dir = ctx.var["BINDIR"]
-    protoc_command = "%s" % (ctx.file._protoc.path)
 
-    protoc_command += " --plugin=protoc-gen-ts=%s" % (ctx.files._ts_protoc_gen[1].path)
+    tools = ctx.files._protoc + ctx.files._ts_protoc_gen
+    
+    protoc_command = "%s" % (ctx.executable._protoc.path)
+    protoc_command += " --plugin=protoc-gen-ts=%s" % (ctx.executable._ts_protoc_gen.path)
     protoc_command += " --ts_out=service=true:%s" % (protoc_output_dir)
     protoc_command += " --js_out=import_style=commonjs,binary:%s" % (protoc_output_dir)
-    protoc_command += " --descriptor_set_in=%s" % (":".join(descriptor_sets_paths))
-    protoc_command += " %s" % (" ".join(proto_inputs))
+    protoc_command += " --descriptor_set_in=%s" % (":".join([desc.path for desc in descriptor_sets]))
+    protoc_command += " %s" % (" ".join(direct_sources_path))
 
-    commands = [protoc_command]
-    command = " && ".join(commands)
     ctx.actions.run_shell(
-        inputs = inputs,
+        inputs = descriptor_sets,
         outputs = outputs,
+        tools = tools,
         progress_message = "Creating Typescript pb files %s" % ctx.label,
-        command = command,
+        command = protoc_command,
     )
 
-    dts_outputs = depset(dts_outputs)
-    js_outputs = depset(js_outputs)
-    deps_js = depset([])
-    deps_dts = depset([])
+    deps_dts = []
+    deps_js = []
 
     for dep in ctx.rule.attr.deps:
         aspect_data = dep[TypescriptProtoLibraryAspect]
@@ -104,17 +79,16 @@ typescript_proto_library_aspect = aspect(
     attr_aspects = ["deps"],
     attrs = {
         "_ts_protoc_gen": attr.label(
+            default = Label("//third_party/node_js/ts_protoc_gen"),
+            cfg = "host",
             allow_files = True,
             executable = True,
-            cfg = "host",
-            default = Label("//third_party/node_js/ts_protoc_gen"),
         ),
         "_protoc": attr.label(
-            allow_files = True,
-            single_file = True,
-            executable = True,
-            cfg = "host",
             default = Label("@com_google_protobuf//:protoc"),
+            cfg = "host",
+            allow_single_file = True,
+            executable = True,
         ),
     },
 )
@@ -142,7 +116,7 @@ def _typescript_proto_library_impl(ctx):
             files = outputs,
         ),
         providers = [
-            DefaultInfo(files = outputs),
+            DefaultInfo(files = depset(outputs)),
         ],
     )
 
@@ -150,23 +124,9 @@ typescript_proto_library = rule(
     attrs = {
         "proto": attr.label(
             mandatory = True,
-            allow_files = True,
-            single_file = True,
-            providers = ["proto"],
+            allow_single_file = True,
+            providers = [ProtoInfo],
             aspects = [typescript_proto_library_aspect],
-        ),
-        "_ts_protoc_gen": attr.label(
-            allow_files = True,
-            executable = True,
-            cfg = "host",
-            default = Label("//third_party/node_js/ts_protoc_gen"),
-        ),
-        "_protoc": attr.label(
-            allow_files = True,
-            single_file = True,
-            executable = True,
-            cfg = "host",
-            default = Label("@com_google_protobuf//:protoc"),
         ),
     },
     implementation = _typescript_proto_library_impl,

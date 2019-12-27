@@ -6,12 +6,14 @@ java_library(
     deps = [
         "//java/com/bbuhot/errorprone:annotation",
         "//java/com/bbuhot/server/config",
+        "//java/com/bbuhot/server/domain",
         "//java/com/bbuhot/server/entity",
         "//java/com/bbuhot/server/flyway",
         "//java/com/bbuhot/server/persistence",
         "//java/com/bbuhot/server/service",
         "//third_party/java/dagger",
         "@maven//:com_google_errorprone_error_prone_core",
+        "@maven//:org_hibernate_javax_persistence_hibernate_jpa_2_1_api",
         "@maven//:io_undertow_undertow_core",
     ],
 )

@@ -1,3 +1,10 @@
+workspace(
+    name = "bbuhot",
+    managed_directories = {
+        "@npm": ["third_party/node_js/node_modules"]
+    },
+)
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
@@ -15,13 +22,27 @@ versions.check(minimum_bazel_version = "0.5.4")
 # Protobuf
 http_archive(
     name = "com_google_protobuf",
-    strip_prefix = "protobuf-3.8.0-rc1",
-    urls = ["https://github.com/protocolbuffers/protobuf/archive/v3.8.0-rc1.zip"],
+    sha256 = "e8c7601439dbd4489fe5069c33d374804990a56c2f710e00227ee5d8fd650e67",
+    strip_prefix = "protobuf-3.11.2",
+    urls = ["https://github.com/protocolbuffers/protobuf/archive/v3.11.2.tar.gz"],
 )
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
 protobuf_deps()
+
+http_archive(
+    name = "rules_proto",
+    sha256 = "602e7161d9195e50246177e7c55b2f39950a9cf7366f74ed5f22fd45750cd208",
+    strip_prefix = "rules_proto-97d8af4dc474595af3900dd85cb3a29ad28cc313",
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_proto/archive/97d8af4dc474595af3900dd85cb3a29ad28cc313.tar.gz",
+        "https://github.com/bazelbuild/rules_proto/archive/97d8af4dc474595af3900dd85cb3a29ad28cc313.tar.gz",
+    ],
+)
+load("@rules_proto//proto:repositories.bzl", "rules_proto_dependencies", "rules_proto_toolchains")
+rules_proto_dependencies()
+rules_proto_toolchains()
 
 # Maven
 RULES_JVM_EXTERNAL_TAG = "2.0.1"
@@ -77,9 +98,17 @@ bind(
 # Docker
 http_archive(
     name = "io_bazel_rules_docker",
-    strip_prefix = "rules_docker-0.7.0",
-    urls = ["https://github.com/bazelbuild/rules_docker/archive/v0.7.0.tar.gz"],
+    sha256 = "df13123c44b4a4ff2c2f337b906763879d94871d16411bf82dcfeba892b58607",
+    strip_prefix = "rules_docker-0.13.0",
+    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.13.0/rules_docker-v0.13.0.tar.gz"],
 )
+
+load(
+    "@io_bazel_rules_docker//repositories:repositories.bzl",
+    container_repositories = "repositories",
+)
+
+container_repositories()
 
 load(
     "@io_bazel_rules_docker//java:image.bzl",
@@ -104,37 +133,14 @@ go_register_toolchains()
 # Node JS
 http_archive(
     name = "build_bazel_rules_nodejs",
-    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/0.29.0/rules_nodejs-0.29.0.tar.gz"],
+    sha256 = "3887b948779431ac443e6a64f31b9e1e17b8d386a31eebc50ec1d9b0a6cabd2b",
+    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/1.0.0/rules_nodejs-1.0.0.tar.gz"],
 )
 
-load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories", "yarn_install")
-
-node_repositories(
-    package_json = ["//third_party/node_js:package.json"],
-)
+load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "yarn_install")
 
 yarn_install(
     name = "npm",
     package_json = "//third_party/node_js:package.json",
     yarn_lock = "//third_party/node_js:yarn.lock",
 )
-
-load("@npm//:install_bazel_dependencies.bzl", "install_bazel_dependencies")
-
-install_bazel_dependencies()
-
-load("@npm_bazel_karma//:package.bzl", "rules_karma_dependencies")
-
-rules_karma_dependencies()
-
-load("@io_bazel_rules_webtesting//web:repositories.bzl", "web_test_repositories")
-
-web_test_repositories()
-
-load("@npm_bazel_karma//:browser_repositories.bzl", "browser_repositories")
-
-browser_repositories()
-
-load("@npm_bazel_typescript//:defs.bzl", "ts_setup_workspace")
-
-ts_setup_workspace()
